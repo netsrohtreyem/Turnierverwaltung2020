@@ -41,6 +41,21 @@ namespace Turnierverwaltung2020.Views
                 this.Response.Redirect(@"~\Default.aspx");
                 return;
             }
+            if (!this.Verwalter.UserAuthentificated)
+            {
+                this.Response.Redirect(@"~\Default.aspx");
+                return;
+            }
+            else
+            {
+                if(!this.Verwalter.AuthentifactionRole)
+                {
+                    this.rdbtnList1.Visible = false;
+                    this.btnBestaetigen.Visible = false;
+                    this.tblEingabetabelle.Visible = false;
+                    this.btnSichern.Visible = false;
+                }
+            }
             if (this.IsPostBack)
             {
 
@@ -1195,6 +1210,12 @@ namespace Turnierverwaltung2020.Views
         }
         protected void Btnicon_Click(object sender, ImageClickEventArgs e)
         {
+            if (!this.Verwalter.AuthentifactionRole)
+            {
+                return;
+            }
+            else
+            { }
             int nummer = -1;
             string typ = "none";
             string objekt = ((ImageButton)sender).ClientID.Substring(((ImageButton)sender).ClientID.IndexOf("_") + 1);

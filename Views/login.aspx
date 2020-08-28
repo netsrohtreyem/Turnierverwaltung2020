@@ -8,9 +8,20 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server">        
         <div>
-            <asp:Button ID="btnlogin" runat="server" Text="login" />
+            <h1> login Turnierverwaltung </h1>
+            <br />
+            <asp:Label ID="lblBenutzername" runat="server" Text="Benutzername: "></asp:Label><asp:TextBox ID="txtBenutzername" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Label ID="lblPaswort" runat="server" Text="Passwort: "></asp:Label><asp:TextBox ID="txtpasswd" runat="server" TextMode="Password" TabIndex="0"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Button ID="btnlogin" runat="server" Text="login" OnClick="btnlogin_Click" TabIndex="1"/>
+            <br />
+            <br />
+            <asp:Label ID="lblStatus" runat="server" Text="" Visible =" false"></asp:Label>
         </div>
     </form>
 </body>

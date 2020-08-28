@@ -23,7 +23,13 @@ namespace Turnierverwaltung2020.Views
                 this.Response.Redirect(@"~\Default.aspx");
                 return;
             }
-
+            if (!this.Verwalter.UserAuthentificated)
+            {
+                this.Response.Redirect(@"~\Default.aspx");
+                return;
+            }
+            else
+            { }
 
             if (this.IsPostBack)
             {

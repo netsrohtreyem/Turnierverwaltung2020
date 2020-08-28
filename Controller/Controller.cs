@@ -49,6 +49,9 @@ namespace Turnierverwaltung2020
         private bool _hinundrueck;
         private bool _editSpiel;
         private int _editSpielID;
+        private bool _UserAuthentificated;
+        private bool _DBFailed;
+        private bool _AuthentifactionRole; //admin true; user = false;
         #endregion
 
         #region Accessoren/Modifier
@@ -86,6 +89,9 @@ namespace Turnierverwaltung2020
         public bool hinundrueck { get => _hinundrueck; set => _hinundrueck = value; }
         public bool EditSpiel { get => _editSpiel; set => _editSpiel = value; }
         public int EditSpielID { get => _editSpielID; set => _editSpielID = value; }
+        public bool UserAuthentificated { get => _UserAuthentificated; set => _UserAuthentificated = value; }
+        public bool DBFailed { get => _DBFailed; set => _DBFailed = value; }
+        public bool AuthentifactionRole { get => _AuthentifactionRole; set => _AuthentifactionRole = value; }
         #endregion
 
         #region Konstruktoren
@@ -116,6 +122,9 @@ namespace Turnierverwaltung2020
             SelectedTurnierIndex = -1;
             SelectedTurnierGruppe = -1;
             SelectedTurnierSpieltag = -1;
+            UserAuthentificated = false;
+            DBFailed = false;
+            AuthentifactionRole = false;
         }
         #endregion
 
@@ -2488,6 +2497,62 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Datenbank
+        public bool login(string benutzername, string passwd)
+        {
+            bool ergebnis = false;
+            string connectionstring = MyConnectionString = "Server=localhost;Database=turnierverwaltung;Port=3306;uid=user;pwd=user";
+            MySqlConnection conn = new MySqlConnection(connectionstring);
+
+            try
+            {
+                conn.Open();
+                this.DBFailed = false;
+                ergebnis = true;
+            }
+            catch(Exception ex)
+            {
+                this.DBFailed = true;
+                return false;
+            }
+
+            string SqlString = "select * from `accounts` where `Benutzername` = '" + benutzername + "' AND `Passwort` = '" + passwd + "';";
+
+            MySqlCommand command = new MySqlCommand(SqlString, conn);
+
+            MySqlDataReader rdr = command.ExecuteReader();
+
+            if (rdr.HasRows)
+            {
+                UserAuthentificated = true;
+                rdr.Read();
+                string name = rdr.GetValue(2).ToString();
+                if(name == "admin")
+                {
+                    AuthentifactionRole = true;
+                }
+                else
+                {
+                    AuthentifactionRole = false;
+                }
+
+            }
+            else
+            {
+                UserAuthentificated = false;
+            }
+            rdr.Close();
+            conn.Close();
+            return ergebnis;
+        }
+        public bool logout()
+        {
+            bool ergebnis = false;
+
+            this.UserAuthentificated = false;
+            ergebnis = true;
+            return ergebnis;
+        }
+
         public void loadData()
         {
             this.DB_Status = false;

@@ -7,13 +7,11 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung2020
-{
-
-
-    public partial class SiteMaster
-    {
-
+namespace Turnierverwaltung2020 {
+    
+    
+    public partial class SiteMaster {
+        
         /// <summary>
         /// MainContent-Steuerelement
         /// </summary>
@@ -22,7 +20,7 @@ namespace Turnierverwaltung2020
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-
+        
         /// <summary>
         /// HyperLink1-Steuerelement
         /// </summary>

@@ -28,8 +28,7 @@ namespace Turnierverwaltung2020
             else
             {
                 Verwalter = new Controller();
-                this.Session["Verwalter"] = Verwalter;
-
+                this.Session["Verwalter"] = Verwalter;             
                 #region Testdaten
                 //Standart setzen
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
@@ -104,7 +103,34 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddTurnier(testneu);
                 #endregion
             }
+            if(!Verwalter.UserAuthentificated)
+            {
+                this.Response.Redirect(@"~\Views\login.aspx");
+                return;
+            }
+            else
+            {
+                if(this.Verwalter.AuthentifactionRole)
+                {
 
+                }
+                else
+                {
+                    this.drpdwList1.Visible = false;
+                    this.btnloeschen.Visible = false;
+                    this.CheckBox1.Visible = false;
+                    this.CheckBox2.Visible = false;
+                    this.lblsieg.Visible = false;
+                    this.lbllost.Visible = false;
+                    this.lblunentschieden.Visible = false;
+                    this.lblbezeichnung.Visible = false;
+                    this.txtlost.Visible = false;
+                    this.txtsieg.Visible = false;
+                    this.txtunentschieden.Visible = false;
+                    this.txtSportart.Visible = false;
+                    this.btnSportHinzu.Visible = false;
+                }
+            }
 
             if (this.IsPostBack)
             {
