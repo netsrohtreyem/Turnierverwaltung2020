@@ -177,6 +177,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Views\login.aspx" />
     <Content Include="Views\Mannschaftsverwaltung.aspx" />
     <Content Include="Views\Personenverwaltung.aspx" />
     <Content Include="Views\RankingAnzeige.aspx" />
@@ -237,6 +238,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Mannschaftsverwaltung.aspx.cs">
       <DependentUpon>Mannschaftsverwaltung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

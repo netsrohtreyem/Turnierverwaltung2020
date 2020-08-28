@@ -57,6 +57,7 @@
                         <li><a runat="server" href="~/Views/RankingAnzeige">Tabellen</a></li>
                         <li><a runat="server" href="~/Views/About">Informationen</a></li>
                         <li><a runat="server" href="~/Views/Contact">Kontakt</a></li>
+                        <li><a runat="server" href="~/Views/login">Login</a></li>
                     </ul>
                 </div>
             </div>
