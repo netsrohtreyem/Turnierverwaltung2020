@@ -123,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Datenbanken\turnierverwaltung.sql" />
     <Content Include="Images\muelleimer.png" />
     <Content Include="Images\Pfeilrechts.png" />
     <Content Include="Images\Pfeillinks.png" />
@@ -311,7 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Datenbanken\" />
     <Folder Include="Import_Export\" />
   </ItemGroup>
   <ItemGroup>
