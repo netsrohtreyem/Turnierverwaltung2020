@@ -23,26 +23,27 @@ namespace Turnierverwaltung2020
             if (this.Session.Count > 0)
             {
                 Verwalter = (Controller)this.Session["Verwalter"];
-                //Verwalter.loadData();
             }
             else
             {
+                //Standardvorgaben
                 Verwalter = new Controller();
-                this.Session["Verwalter"] = Verwalter;             
+                this.Session["Verwalter"] = Verwalter;
                 #region Testdaten
-                //Standart setzen
+                #region Sportarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
                 this.Verwalter.Sportarten.Clear();
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Handball", true, false, 2, 2, 1);
                 neu.id = 2;
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Tennis", true, true, 0, 0, 0);
                 neu.id = 3;
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
+                #endregion
 
-
+                #region Mannschaften
                 Mannschaft man1 = new Mannschaft("FC Augsburg", this.Verwalter.Sportarten[0]);
                 Mannschaft man2 = new Mannschaft("Hertha BSC", this.Verwalter.Sportarten[0]);
                 Mannschaft man3 = new Mannschaft("Union Berlin", this.Verwalter.Sportarten[0]);
@@ -79,7 +80,9 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddMannschaft(man16);
                 this.Verwalter.AddMannschaft(man17);
                 this.Verwalter.AddMannschaft(man18);
+                #endregion
 
+                #region Turnier
                 Turnier testneu = new MannschaftsTurnier("Fussball Bundesliga 2020/21", this.Verwalter.Sportarten[0]);
                 testneu.addTeilnehmer(man1);
                 testneu.addTeilnehmer(man2);
@@ -101,6 +104,7 @@ namespace Turnierverwaltung2020
                 testneu.addTeilnehmer(man18);
 
                 this.Verwalter.AddTurnier(testneu);
+                #endregion
                 #endregion
             }
             if(!Verwalter.UserAuthentificated)

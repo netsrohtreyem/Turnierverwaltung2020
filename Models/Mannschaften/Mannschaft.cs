@@ -223,7 +223,7 @@ namespace Turnierverwaltung2020
             sportartenid = rdr.GetInt32(0);
             rdr.Close();
 
-            try
+           /* try
             {
                 Conn = new MySqlConnection();
                 Conn.ConnectionString = MyConnectionString;
@@ -232,7 +232,7 @@ namespace Turnierverwaltung2020
             catch (MySqlException)
             {
                 return false;
-            }
+            }*/
 
             SqlString = "INSERT INTO mannschaften " +
                         "(ID, Name, Sportart, Punkte, toreplus, toreminus, gewonnenespiele, verlorenespiele, unentschieden) " +
@@ -243,6 +243,7 @@ namespace Turnierverwaltung2020
 
             command = new MySqlCommand(SqlString, Conn);
             int anzahl = command.ExecuteNonQuery();
+            this.ID = (int)command.LastInsertedId;
 
             if (anzahl > 0)
             {

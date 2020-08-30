@@ -3067,26 +3067,34 @@ namespace Turnierverwaltung2020
                 {
                     return -1;
                 }
-                SqlString = "insert into sportarten (Bezeichnung) values ('" + value + "');";
+                SqlString = "select * from sportarten;";
+
                 MySqlCommand command = new MySqlCommand(SqlString, Conn);
+                
+                MySqlDataReader rdr = command.ExecuteReader();
+
+                //Schon vorhanden??
+                while(rdr.Read())
+                {
+                    id = rdr.GetInt32(0);
+                    string bezeichnung = rdr.GetValue(1).ToString();
+                    if(value.name == bezeichnung)
+                    {
+                        rdr.Close();
+                        Conn.Close();
+                        return id;
+                    }
+                    else
+                    { }
+                }
+
+                //Wenn nicht, hinzufügen
+                SqlString = "insert into sportarten (Bezeichnung) values ('" + value.name + "');";
+                command = new MySqlCommand(SqlString, Conn);
 
                 int anzahl = command.ExecuteNonQuery();
 
-                if (anzahl > 0)
-                {
-                    SqlString = "select ID from sportarten where Bezeichnung = '" + value + "';";
-                    command = new MySqlCommand(SqlString, Conn);
-                    MySqlDataReader rdr = command.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        id = Convert.ToInt32(rdr.GetValue(0).ToString());
-                        break;
-                    }
-                    rdr.Close();
-                }
-                else
-                {
-                }
+                id = (int)command.LastInsertedId;
 
                 Conn.Close();
             }
