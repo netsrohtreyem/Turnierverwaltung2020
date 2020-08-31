@@ -456,6 +456,45 @@ namespace Turnierverwaltung2020
         {
             return -1; ;
         }
+
+        public override bool isInDatabase()
+        {
+            bool ergebnis = false;
+            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            MySqlConnection Conn;
+
+
+            try
+            {
+                Conn = new MySqlConnection(MyConnectionString);
+                Conn.Open();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            string sqlstring = "select gruppen.Name,sportarten.Bezeichnung from gruppen JOIN sportarten WHERE gruppen.sportart = sportarten.ID;";
+            MySqlCommand command = new MySqlCommand(sqlstring, Conn);
+
+            MySqlDataReader rdr = command.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string name = rdr.GetValue(0).ToString();
+                string sportart = rdr.GetValue(1).ToString();
+                if (name.Equals(this.Name) && this.Sportart.name.Equals(sportart))
+                {
+                    ergebnis = true;
+                    break;
+                }
+                else
+                { }
+            }
+
+            rdr.Close();
+            Conn.Close();
+            return ergebnis;
+        }
         #endregion
     }
 }

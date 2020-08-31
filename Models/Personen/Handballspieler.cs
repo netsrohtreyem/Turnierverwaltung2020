@@ -469,6 +469,11 @@ namespace Turnierverwaltung2020
             return null;
         }
 
+        public override bool isInDatabase()
+        {
+            throw new NotImplementedException();
+        }
+
 
         #endregion
     }

@@ -382,7 +382,16 @@ namespace Turnierverwaltung2020
             {
                 ergebnis = true;
             }
-            if (value.AddToDatabase(new List<int>()) && ergebnis)
+            if(value.isInDatabase())
+            {
+                ergebnis = true;
+            }
+            else
+            {
+                ergebnis = value.AddToDatabase(new List<int>());
+            }
+
+            if (ergebnis)
             {
                 if (value.ID == -1)
                 {
@@ -2509,7 +2518,7 @@ namespace Turnierverwaltung2020
                 this.DBFailed = false;
                 ergebnis = true;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 this.DBFailed = true;
                 return false;

@@ -204,10 +204,11 @@ namespace Turnierverwaltung2020
             }
             catch (MySqlException)
             {
+                Conn.Close();
                 return true;
             }
 
-            string SqlString = "select id from sportarten where Bezeichnung = '" + Sportart + "';";
+            string SqlString = "select id from sportarten where Bezeichnung = '" + Sportart.name + "';";
             MySqlCommand command = new MySqlCommand(SqlString, Conn);
             MySqlDataReader rdr;
             try
@@ -217,22 +218,11 @@ namespace Turnierverwaltung2020
             catch (Exception)
             {
                 Conn.Close();
-                return false;
+                return true;
             }
             rdr.Read();
             sportartenid = rdr.GetInt32(0);
             rdr.Close();
-
-           /* try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return false;
-            }*/
 
             SqlString = "INSERT INTO mannschaften " +
                         "(ID, Name, Sportart, Punkte, toreplus, toreminus, gewonnenespiele, verlorenespiele, unentschieden) " +
@@ -286,6 +276,7 @@ namespace Turnierverwaltung2020
                 { }
 
                 Conn2.Close();
+                ergebnis = true;
             }
             else
             {
@@ -436,6 +427,46 @@ namespace Turnierverwaltung2020
             {
                 ergebnis = false;
             }
+            Conn.Close();
+            return ergebnis;
+        }
+
+        public override bool isInDatabase()
+        {
+            bool ergebnis = false;
+            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            MySqlConnection Conn;
+            
+
+            try
+            {
+                Conn = new MySqlConnection(MyConnectionString);
+                Conn.Open();
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            string sqlstring = "select mannschaften.id,mannschaften.Name,sportarten.Bezeichnung from mannschaften JOIN sportarten WHERE mannschaften.sportart = sportarten.ID;";
+            MySqlCommand command = new MySqlCommand(sqlstring, Conn);
+
+            MySqlDataReader rdr = command.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                string name = rdr.GetValue(1).ToString();
+                string sportart = rdr.GetValue(2).ToString();
+                if (name.Equals(this.Name) && this.Sportart.name.Equals(sportart))
+                {
+                    this.ID = rdr.GetInt32(0);
+                    ergebnis = true;
+                    break;
+                }
+                else
+                { }
+            }
+
+            rdr.Close();
             Conn.Close();
             return ergebnis;
         }
