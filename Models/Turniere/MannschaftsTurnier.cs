@@ -71,24 +71,31 @@ namespace Turnierverwaltung2020
             {
                 return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
             }
-            string SqlString = "select id from sportarten where Bezeichnung = '" + this.Sportart + "' ;";
+            string SqlString = "select turnier.bezeichnung,sportarten.bezeichnung,turnier.id,sportarten.id from turnier join sportarten where turnier.Sportart = sportarten.id;";
             MySqlCommand command = new MySqlCommand(SqlString, Conn);
             MySqlDataReader rdr;
-            try
+
+            rdr = command.ExecuteReader();
+             
+            while(rdr.Read())
             {
-                rdr = command.ExecuteReader();
+                string bez = rdr.GetValue(0).ToString();
+                string sportart = rdr.GetValue(1).ToString();
+                sportartenid = rdr.GetInt32(3);
+                if(this.Bezeichnung.Equals(bez) && this.Sportart.name.Equals(sportart))
+                {
+                    ergebnis = true;
+                    this.ID = rdr.GetInt32(2);
+                    return ergebnis;
+                }
+                else
+                { }
             }
-            catch (Exception)
-            {
-                Conn.Close();
-                return false;
-            }
-            rdr.Read();
-            sportartenid = rdr.GetInt32(0);
             rdr.Close();
 
+
             SqlString = "insert into turnier (ID,Bezeichnung,Sportart,Typ) " +
-            "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 0);";
+            "VALUES (null,'" + this.Bezeichnung + "', " + this.Sportart.id + " , 1);";
 
             command = new MySqlCommand(SqlString, Conn);
             int anzahl = command.ExecuteNonQuery();

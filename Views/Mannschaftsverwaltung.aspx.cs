@@ -46,7 +46,21 @@ namespace Turnierverwaltung2020.Views
                 return;
             }
             else
-            { }
+            {
+                if (!this.Verwalter.AuthentifactionRole)
+                {
+                    this.rbListArt.Visible = false;
+                    this.lblsportart.Visible = false;
+                    this.drpSportart1.Visible = false;
+                    this.tblEingabetabelle.Visible = false;
+                    this.tblEingabetabelle2.Visible = false;
+                    this.btnHinzufuegenAendern.Visible = false;
+                    this.lblAnzeige.Visible = false;
+
+                }
+                else
+                { }
+            }
 
             if (this.IsPostBack)
             {
@@ -744,146 +758,152 @@ namespace Turnierverwaltung2020.Views
             int index = -1;
             string id = ((ImageButton)sender).ID;
 
-            #region Mannschaft
-            if (id.Contains("man"))
+            if (this.Verwalter.AuthentifactionRole && this.Verwalter.UserAuthentificated)
             {
-                if (id.Contains("bearb"))
+
+                #region Mannschaft
+                if (id.Contains("man"))
                 {
-                    this.btnHinzufuegenAendern.Text = "Änderung speichern";
-                    this.txtName.Text = "";
-                    this.lstVorhandeneMitglieder.Items.Clear();
-                    index = Convert.ToInt32(id.Substring(8));
-                    mannschaftsid = this.Verwalter.Mannschaften[index - 1].ID;
-                    this.Verwalter.EditMannschaft = mannschaftsid;
-
-                    //Daten laden
-                    this.txtName.Text = this.Verwalter.Mannschaften[index - 1].Name;
-                    this.drpSportart1.SelectedValue = this.Verwalter.Mannschaften[index - 1].Sportart.name;
-                    foreach (Person pers in this.Verwalter.Mannschaften[index - 1].Mitglieder)
+                    if (id.Contains("bearb"))
                     {
-                        string zeile = "";
+                        this.btnHinzufuegenAendern.Text = "Änderung speichern";
+                        this.txtName.Text = "";
+                        this.lstVorhandeneMitglieder.Items.Clear();
+                        index = Convert.ToInt32(id.Substring(8));
+                        mannschaftsid = this.Verwalter.Mannschaften[index - 1].ID;
+                        this.Verwalter.EditMannschaft = mannschaftsid;
 
-                        zeile = pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString() + ", " + pers.GetType().Name + ", " + pers.Sportart.name;
-
-                        this.lstVorhandeneMitglieder.Items.Add(zeile);
-                        //LoadPersonen();
-                        foreach (ListItem ls in this.lstVorhandenePersonen.Items)
+                        //Daten laden
+                        this.txtName.Text = this.Verwalter.Mannschaften[index - 1].Name;
+                        this.drpSportart1.SelectedValue = this.Verwalter.Mannschaften[index - 1].Sportart.name;
+                        foreach (Person pers in this.Verwalter.Mannschaften[index - 1].Mitglieder)
                         {
-                            if (ls.Text == zeile)
+                            string zeile = "";
+
+                            zeile = pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString() + ", " + pers.GetType().Name + ", " + pers.Sportart.name;
+
+                            this.lstVorhandeneMitglieder.Items.Add(zeile);
+                            //LoadPersonen();
+                            foreach (ListItem ls in this.lstVorhandenePersonen.Items)
                             {
-                                this.lstVorhandenePersonen.Items.Remove(ls);
-                                break;
+                                if (ls.Text == zeile)
+                                {
+                                    this.lstVorhandenePersonen.Items.Remove(ls);
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                            if (this.lstVorhandenePersonen.Items.Count <= 0)
+                            {
+                                this.lstVorhandenePersonen.Items.Add("keine vorhanden");
                             }
                             else
                             { }
                         }
-                        if (this.lstVorhandenePersonen.Items.Count <= 0)
+
+                        if (this.Verwalter.Mannschaften[index - 1].Mitglieder.Count <= 0)
                         {
-                            this.lstVorhandenePersonen.Items.Add("keine vorhanden");
+                            this.lstVorhandeneMitglieder.Items.Add("bisher keine Mitglieder");
                         }
                         else
                         { }
                     }
-
-                    if (this.Verwalter.Mannschaften[index - 1].Mitglieder.Count <= 0)
+                    else if (id.Contains("loesch"))
                     {
-                        this.lstVorhandeneMitglieder.Items.Add("bisher keine Mitglieder");
+                        string num = id.Substring(id.IndexOf("man") + 3);
+                        int index1 = Convert.ToInt32(num);
+                        bool vorhanden = this.Verwalter.IsMannschaftoderGruppeInTurnier(index1 - 1, 0);
+                        if (!vorhanden)
+                        {
+                            this.Verwalter.DeleteMannschaft(index1);
+                            Response.Redirect(Request.RawUrl);
+                        }
+                        else
+                        {
+                            //Meldung
+                            ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Mannschaft ist noch Mitglied in einem Turnier bitte vorher entfernen');", true);
+                        }
                     }
                     else
                     { }
                 }
-                else if (id.Contains("loesch"))
+                #endregion
+                #region Gruppe
+                else if (id.Contains("gr"))
                 {
-                    string num = id.Substring(id.IndexOf("man") + 3);
-                    int index1 = Convert.ToInt32(num);
-                    bool vorhanden = this.Verwalter.IsMannschaftoderGruppeInTurnier(index1 - 1, 0);
-                    if (!vorhanden)
+                    if (id.Contains("bearb"))
                     {
-                        this.Verwalter.DeleteMannschaft(index1);
-                        Response.Redirect(Request.RawUrl);
-                    }
-                    else
-                    {
-                        //Meldung
-                        ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Mannschaft ist noch Mitglied in einem Turnier bitte vorher entfernen');", true);
-                    }
-                }
-                else
-                { }
-            }
-            #endregion
-            #region Gruppe
-            else if (id.Contains("gr"))
-            {
-                if (id.Contains("bearb"))
-                {
-                    this.btnHinzufuegenAendern.Text = "Änderung speichern";
-                    this.txtName.Text = "";
-                    this.lstVorhandeneMitglieder.Items.Clear();
-                    index = Convert.ToInt32(id.Substring(7));
-                    gruppenid = this.Verwalter.Gruppen[index - 1].ID;
-                    this.Verwalter.EditGruppe = gruppenid;
+                        this.btnHinzufuegenAendern.Text = "Änderung speichern";
+                        this.txtName.Text = "";
+                        this.lstVorhandeneMitglieder.Items.Clear();
+                        index = Convert.ToInt32(id.Substring(7));
+                        gruppenid = this.Verwalter.Gruppen[index - 1].ID;
+                        this.Verwalter.EditGruppe = gruppenid;
 
-                    //Daten laden
-                    this.txtName.Text = this.Verwalter.Gruppen[index - 1].Name;
-                    this.drpSportart1.SelectedValue = this.Verwalter.Gruppen[index - 1].Sportart.name;
-                    foreach (Person pers in this.Verwalter.Gruppen[index - 1].Mitglieder)
-                    {
-                        string zeile = "";
-
-                        zeile = pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString() + ", " + pers.GetType().Name + ", " + pers.Sportart.name;
-
-                        this.lstVorhandeneMitglieder.Items.Add(zeile);
-                        //this.LoadPersonen();
-                        foreach (ListItem ls in this.lstVorhandenePersonen.Items)
+                        //Daten laden
+                        this.txtName.Text = this.Verwalter.Gruppen[index - 1].Name;
+                        this.drpSportart1.SelectedValue = this.Verwalter.Gruppen[index - 1].Sportart.name;
+                        foreach (Person pers in this.Verwalter.Gruppen[index - 1].Mitglieder)
                         {
-                            if (ls.Text == zeile)
+                            string zeile = "";
+
+                            zeile = pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString() + ", " + pers.GetType().Name + ", " + pers.Sportart.name;
+
+                            this.lstVorhandeneMitglieder.Items.Add(zeile);
+                            //this.LoadPersonen();
+                            foreach (ListItem ls in this.lstVorhandenePersonen.Items)
                             {
-                                this.lstVorhandenePersonen.Items.Remove(ls);
-                                break;
+                                if (ls.Text == zeile)
+                                {
+                                    this.lstVorhandenePersonen.Items.Remove(ls);
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                            if (this.lstVorhandenePersonen.Items.Count <= 0)
+                            {
+                                this.lstVorhandenePersonen.Items.Add("keine vorhanden");
                             }
                             else
                             { }
                         }
-                        if (this.lstVorhandenePersonen.Items.Count <= 0)
+
+                        if (this.Verwalter.Gruppen[index - 1].Mitglieder.Count <= 0)
                         {
-                            this.lstVorhandenePersonen.Items.Add("keine vorhanden");
+                            this.lstVorhandeneMitglieder.Items.Add("bisher keine Teilnehmer");
                         }
                         else
                         { }
                     }
-
-                    if (this.Verwalter.Gruppen[index - 1].Mitglieder.Count <= 0)
+                    else if (id.Contains("loesch"))
                     {
-                        this.lstVorhandeneMitglieder.Items.Add("bisher keine Teilnehmer");
+                        string num = id.Substring(id.IndexOf("gr") + 2);
+                        int index1 = Convert.ToInt32(num);
+                        bool vorhanden = this.Verwalter.IsMannschaftoderGruppeInTurnier(index1 - 1, 1);
+                        if (!vorhanden)
+                        {
+                            this.Verwalter.DeleteGruppe(index1);
+                            Response.Redirect(Request.RawUrl);
+                        }
+                        else
+                        {
+                            //Meldung
+                            ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Mannschaft oder Gruppe ist noch Mitglied in einem Turnier bitte vorher entfernen');", true);
+                        }
                     }
                     else
                     { }
                 }
-                else if (id.Contains("loesch"))
-                {
-                    string num = id.Substring(id.IndexOf("gr") + 2);
-                    int index1 = Convert.ToInt32(num);
-                    bool vorhanden = this.Verwalter.IsMannschaftoderGruppeInTurnier(index1 - 1, 1);
-                    if (!vorhanden)
-                    {
-                        this.Verwalter.DeleteGruppe(index1);
-                        Response.Redirect(Request.RawUrl);
-                    }
-                    else
-                    {
-                        //Meldung
-                        ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Mannschaft oder Gruppe ist noch Mitglied in einem Turnier bitte vorher entfernen');", true);
-                    }
-                }
+                #endregion
                 else
-                { }
+                {
+                    //Fehler
+                }
             }
-            #endregion
             else
-            {
-                //Fehler
-            }
+            { }
         }
         #endregion
 

@@ -45,7 +45,18 @@ namespace Turnierverwaltung2020.Views
                 return;
             }
             else
-            { }
+            {
+                if (!this.Verwalter.AuthentifactionRole)
+                {
+                    this.rbListArt.Visible = false;
+                    this.drpSportart1.Visible = false;
+                    this.tblNameTurnier.Visible = false;
+                    this.tblEingabetabellegr.Visible = false;
+                    this.btnTurnierHinzufuegen.Visible = false;
+                }
+                else
+                { }
+            }
             if (this.IsPostBack)
             {
 
@@ -230,149 +241,153 @@ namespace Turnierverwaltung2020.Views
         {
             string id = ((ImageButton)sender).ID;
             int index = -1;
-
-            if (id.Contains("man"))//Mannschaften
+            if (this.Verwalter.UserAuthentificated && this.Verwalter.AuthentifactionRole)
             {
-                if (id.Contains("bearb"))
+                if (id.Contains("man"))//Mannschaften
                 {
-                    //Daten des Turniers lesen
-                    this.rbListArt.Items[0].Selected = true;
-                    this.rbListArt.Items[1].Selected = false;
-                    index = Convert.ToInt32(id.Substring(8));
-                    this.Verwalter.IndexEditTurnier = index - 1;
-                    this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
-                    int sportindex = 0;
-                    foreach (sportart sp in this.Verwalter.Sportarten)
+                    if (id.Contains("bearb"))
                     {
-                        if (sp.name == this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Sportart.name)
+                        //Daten des Turniers lesen
+                        this.rbListArt.Items[0].Selected = true;
+                        this.rbListArt.Items[1].Selected = false;
+                        index = Convert.ToInt32(id.Substring(8));
+                        this.Verwalter.IndexEditTurnier = index - 1;
+                        this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
+                        int sportindex = 0;
+                        foreach (sportart sp in this.Verwalter.Sportarten)
                         {
-                            this.drpSportart1.SelectedIndex = sportindex;
-                            break;
+                            if (sp.name == this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Sportart.name)
+                            {
+                                this.drpSportart1.SelectedIndex = sportindex;
+                                break;
+                            }
+                            else
+                            {
+                                sportindex++;
+                            }
+                        }
+                        this.tblEingabetabellegr.Rows[0].Cells[0].Text = "vorhandene Mannschaften";
+                        this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Mannschaften:";
+                        this.lstVorhandeneTeilnehmer.Items.Clear();
+                        if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
+                        {
+                            foreach (Mannschaft man in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                            {
+                                string it = man.ID + ", " + man.Name + ", " + man.Sportart;
+                                this.lstVorhandeneTeilnehmer.Items.Add(it);
+                            }
                         }
                         else
                         {
-                            sportindex++;
+                            this.lstVorhandeneTeilnehmer.Items.Add("bisher keine Mannschaften");
                         }
-                    }
-                    this.tblEingabetabellegr.Rows[0].Cells[0].Text = "vorhandene Mannschaften";
-                    this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Mannschaften:";
-                    this.lstVorhandeneTeilnehmer.Items.Clear();
-                    if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
-                    {
-                        foreach (Mannschaft man in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                        this.lstVerfuegbareTeilnehmer.Items.Clear();
+                        foreach (Mannschaft man in this.Verwalter.Mannschaften)
                         {
-                            string it = man.ID + ", " + man.Name + ", " + man.Sportart;
-                            this.lstVorhandeneTeilnehmer.Items.Add(it);
+                            string item = man.ID + ", " + man.Name + ", " + man.Sportart;
+                            lstVerfuegbareTeilnehmer.Items.Add(item);
                         }
+                        foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
+                        {
+                            if (lstVerfuegbareTeilnehmer.Items.Contains(ls))
+                            {
+                                lstVerfuegbareTeilnehmer.Items.Remove(ls);
+                            }
+                        }
+                        if (lstVerfuegbareTeilnehmer.Items.Count < 1)
+                        {
+                            lstVerfuegbareTeilnehmer.Items.Add("keine weiteren Mannschaften vorhanden");
+                        }
+                        else
+                        { }
+                        this.btnTurnierHinzufuegen.Text = "Turnier ändern";
+                    }
+                    else if (id.Contains("loesch"))
+                    {
+                        //Turnier löschen
+                        index = Convert.ToInt32(id.Substring(9));
+                        this.Verwalter.DeleteTurnier(index - 1);
+                        Response.Redirect(Request.RawUrl);
                     }
                     else
                     {
-                        this.lstVorhandeneTeilnehmer.Items.Add("bisher keine Mannschaften");
-                    }
-                    this.lstVerfuegbareTeilnehmer.Items.Clear();
-                    foreach (Mannschaft man in this.Verwalter.Mannschaften)
-                    {
-                        string item = man.ID + ", " + man.Name + ", " + man.Sportart;
-                        lstVerfuegbareTeilnehmer.Items.Add(item);
-                    }
-                    foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
-                    {
-                        if (lstVerfuegbareTeilnehmer.Items.Contains(ls))
-                        {
-                            lstVerfuegbareTeilnehmer.Items.Remove(ls);
-                        }
-                    }
-                    if (lstVerfuegbareTeilnehmer.Items.Count < 1)
-                    {
-                        lstVerfuegbareTeilnehmer.Items.Add("keine weiteren Mannschaften vorhanden");
-                    }
-                    else
-                    { }
-                    this.btnTurnierHinzufuegen.Text = "Turnier ändern";
-                }
-                else if (id.Contains("loesch"))
-                {
-                    //Turnier löschen
-                    index = Convert.ToInt32(id.Substring(9));
-                    this.Verwalter.DeleteTurnier(index - 1);
-                    Response.Redirect(Request.RawUrl);
-                }
-                else
-                {
 
+                    }
                 }
-            }
-            else //Gruppen
-            {
-                if (id.Contains("bearb"))
+                else //Gruppen
                 {
-                    //Daten der Gruppe lesen
-                    this.rbListArt.Items[0].Selected = false;
-                    this.rbListArt.Items[1].Selected = true;
-                    index = Convert.ToInt32(id.Substring(8));
-                    this.Verwalter.IndexEditTurnier = index - 1;
-                    this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
-                    int sportindex = 0;
-                    foreach (sportart sp in this.Verwalter.Sportarten)
+                    if (id.Contains("bearb"))
                     {
-                        if (sp.name == this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Sportart.name)
+                        //Daten der Gruppe lesen
+                        this.rbListArt.Items[0].Selected = false;
+                        this.rbListArt.Items[1].Selected = true;
+                        index = Convert.ToInt32(id.Substring(8));
+                        this.Verwalter.IndexEditTurnier = index - 1;
+                        this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
+                        int sportindex = 0;
+                        foreach (sportart sp in this.Verwalter.Sportarten)
                         {
-                            this.drpSportart1.SelectedIndex = sportindex;
-                            break;
+                            if (sp.name == this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Sportart.name)
+                            {
+                                this.drpSportart1.SelectedIndex = sportindex;
+                                break;
+                            }
+                            else
+                            {
+                                sportindex++;
+                            }
+                        }
+                        this.tblEingabetabellegr.Rows[0].Cells[0].Text = "vorhandene Gruppen";
+                        this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Gruppen:";
+                        this.lstVorhandeneTeilnehmer.Items.Clear();
+                        if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
+                        {
+                            foreach (Gruppe grp in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                            {
+                                string it = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
+                                this.lstVorhandeneTeilnehmer.Items.Add(it);
+                            }
                         }
                         else
                         {
-                            sportindex++;
+                            this.lstVorhandeneTeilnehmer.Items.Add("bisher keine Teilnehmer");
                         }
-                    }
-                    this.tblEingabetabellegr.Rows[0].Cells[0].Text = "vorhandene Gruppen";
-                    this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Gruppen:";
-                    this.lstVorhandeneTeilnehmer.Items.Clear();
-                    if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
-                    {
-                        foreach (Gruppe grp in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                        this.lstVerfuegbareTeilnehmer.Items.Clear();
+                        foreach (Gruppe grp in this.Verwalter.Gruppen)
                         {
-                            string it = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
-                            this.lstVorhandeneTeilnehmer.Items.Add(it);
+                            string item = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
+                            lstVerfuegbareTeilnehmer.Items.Add(item);
                         }
+                        foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
+                        {
+                            if (lstVerfuegbareTeilnehmer.Items.Contains(ls))
+                            {
+                                lstVerfuegbareTeilnehmer.Items.Remove(ls);
+                            }
+                        }
+                        if (lstVerfuegbareTeilnehmer.Items.Count < 1)
+                        {
+                            lstVerfuegbareTeilnehmer.Items.Add("keine weiteren Teilnehmer vorhanden");
+                        }
+                        else
+                        { }
+                        this.btnTurnierHinzufuegen.Text = "Turnier ändern";
+                    }
+                    else if (id.Contains("loesch"))
+                    {
+                        //Gruppe löschen
+                        index = Convert.ToInt32(id.Substring(9));
+                        this.Verwalter.DeleteTurnier(index - 1);
+                        Response.Redirect(Request.RawUrl);
                     }
                     else
                     {
-                        this.lstVorhandeneTeilnehmer.Items.Add("bisher keine Teilnehmer");
-                    }
-                    this.lstVerfuegbareTeilnehmer.Items.Clear();
-                    foreach (Gruppe grp in this.Verwalter.Gruppen)
-                    {
-                        string item = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
-                        lstVerfuegbareTeilnehmer.Items.Add(item);
-                    }
-                    foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
-                    {
-                        if (lstVerfuegbareTeilnehmer.Items.Contains(ls))
-                        {
-                            lstVerfuegbareTeilnehmer.Items.Remove(ls);
-                        }
-                    }
-                    if (lstVerfuegbareTeilnehmer.Items.Count < 1)
-                    {
-                        lstVerfuegbareTeilnehmer.Items.Add("keine weiteren Teilnehmer vorhanden");
-                    }
-                    else
-                    { }
-                    this.btnTurnierHinzufuegen.Text = "Turnier ändern";
-                }
-                else if (id.Contains("loesch"))
-                {
-                    //Gruppe löschen
-                    index = Convert.ToInt32(id.Substring(9));
-                    this.Verwalter.DeleteTurnier(index - 1);
-                    Response.Redirect(Request.RawUrl);
-                }
-                else
-                {
 
+                    }
                 }
             }
+            else
+            { }
         }
 
         private void LoadSportarten()

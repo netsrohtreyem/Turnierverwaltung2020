@@ -77,7 +77,7 @@ namespace Turnierverwaltung2020
             rdr.Close();
 
             SqlString = "insert into turnier (ID,Bezeichnung,Sportart,Typ) " +
-            "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 1 );";
+            "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 2 );";
 
             command = new MySqlCommand(SqlString, Conn);
             int anzahl = command.ExecuteNonQuery();

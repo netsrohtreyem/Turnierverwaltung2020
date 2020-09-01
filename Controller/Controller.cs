@@ -715,13 +715,13 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Turnier
-        public bool AddTurnier(string Name, string sportart, ListItemCollection items, int typ)
+        public bool AddTurnier(string Name, string sport, ListItemCollection items, int typ)
         {
             bool ergebnis = false;
             sportart toadd = null;
             foreach (sportart spart in this.Sportarten)
             {
-                if (spart.name == sportart)
+                if (spart.name == sport)
                 {
                     toadd = spart;
                     break;
@@ -858,6 +858,16 @@ namespace Turnierverwaltung2020
         public bool AddTurnier(Turnier value)
         {
             bool ergebnis = false;
+            foreach(Turnier trn in this.Turniere)
+            {
+                if(value.Bezeichnung.Equals(trn.Bezeichnung) && value.Sportart.name.Equals(trn.Sportart.name))
+                {
+                    ergebnis = false;
+                    return ergebnis;
+                }
+                else
+                { }
+            }
 
             if (value.AddToDatabase())
             {
@@ -2524,7 +2534,7 @@ namespace Turnierverwaltung2020
                 return false;
             }
 
-            string SqlString = "select * from `accounts` where `Benutzername` = '" + benutzername + "' AND `Passwort` = '" + passwd + "';";
+            string SqlString = "select * from accounts where `Benutzername` = '" + benutzername + "' AND `Passwort` = '" + passwd + "';";
 
             MySqlCommand command = new MySqlCommand(SqlString, conn);
 

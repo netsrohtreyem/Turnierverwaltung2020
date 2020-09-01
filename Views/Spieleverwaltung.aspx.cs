@@ -31,7 +31,12 @@ namespace Turnierverwaltung2020.Views
                 return;
             }
             else
-            { }
+            {
+                btnNeu.Enabled = false;
+                btnAutomatik.Enabled = false;
+                CheckBox1.Enabled = false;
+                CheckBox2.Enabled = false;
+            }
             if (this.IsPostBack)
             {
                 //Hier landen alle postbacks, z.B. ButtonClicks u.s.w.
@@ -405,41 +410,46 @@ namespace Turnierverwaltung2020.Views
             string id = ((ImageButton)sender).ID;
             int spielid = -1;
 
-            if (id.Contains("loeschspiel"))
+            if (this.Verwalter.AuthentifactionRole && this.Verwalter.UserAuthentificated)
             {
-                index = Convert.ToInt32(id.Substring(11));
-                spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
-                this.Verwalter.DeleteSpielFromTurnier(spielid);
-                Response.Redirect(Request.RawUrl);
-            }
-            else if (id.Contains("bearbspiel"))
-            {
-                index = Convert.ToInt32(id.Substring(10));
-                spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
-                Spiel Change = this.Verwalter.SelectedTurnier.getSpiel(spielid);
-                this.Verwalter.EditSpielID = spielid;
-                if (Change != null)
+                if (id.Contains("loeschspiel"))
                 {
-                    this.Verwalter.EditSpiel = true;
-                    this.Teilnehmer1.Text = Change.getMannschaftName1();
-                    this.Teilnehmer2.Text = Change.getMannschaftName2();
-                    if (Change.getErgebniswert1() != "-1")
+                    index = Convert.ToInt32(id.Substring(11));
+                    spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
+                    this.Verwalter.DeleteSpielFromTurnier(spielid);
+                    Response.Redirect(Request.RawUrl);
+                }
+                else if (id.Contains("bearbspiel"))
+                {
+                    index = Convert.ToInt32(id.Substring(10));
+                    spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
+                    Spiel Change = this.Verwalter.SelectedTurnier.getSpiel(spielid);
+                    this.Verwalter.EditSpielID = spielid;
+                    if (Change != null)
                     {
-                        this.Ergebnis1.Text = Change.getErgebniswert1();
+                        this.Verwalter.EditSpiel = true;
+                        this.Teilnehmer1.Text = Change.getMannschaftName1();
+                        this.Teilnehmer2.Text = Change.getMannschaftName2();
+                        if (Change.getErgebniswert1() != "-1")
+                        {
+                            this.Ergebnis1.Text = Change.getErgebniswert1();
+                        }
+                        else
+                        {
+                            this.Ergebnis1.Text = "-";
+                        }
+                        if (Change.getErgebniswert2() != "-1")
+                        {
+                            this.Ergebnis2.Text = Change.getErgebniswert2();
+                        }
+                        else
+                        {
+                            this.Ergebnis2.Text = "-";
+                        }
+                        mpe3.Show();
                     }
                     else
-                    {
-                        this.Ergebnis1.Text = "-";
-                    }
-                    if (Change.getErgebniswert2() != "-1")
-                    {
-                        this.Ergebnis2.Text = Change.getErgebniswert2();
-                    }
-                    else
-                    {
-                        this.Ergebnis2.Text = "-";
-                    }
-                    mpe3.Show();
+                    { }
                 }
                 else
                 { }
