@@ -133,6 +133,8 @@ namespace Turnierverwaltung2020
                     this.txtunentschieden.Visible = false;
                     this.txtSportart.Visible = false;
                     this.btnSportHinzu.Visible = false;
+                    this.lbltitel2.Visible = false;
+                    this.lbltitel3.Visible = false;
                 }
             }
 

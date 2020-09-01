@@ -2,9 +2,13 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h2 style="font-weight: bold">Turnier durchführen</h2>
+    <%--<h2 style="font-weight: bold">Turnier durchführen</h2>--%>
+    <asp:Label ID="lbltitel1" runat="server" Font-Bold="true" Font-Size="XX-Large" Text="Turnier durchführen"></asp:Label>
     <br />
-    <h3>Wählen Sie ein Turnier aus:</h3>
+    <br />
+    <%--<h3>Wählen Sie ein Turnier aus:</h3>--%>
+    <asp:Label ID="lbltitel2" runat="server" Font-Bold="true" Font-Size="Large" Text="Wählen Sie ein Turnier aus:"></asp:Label>
+    <br />
     <br />
     <asp:DropDownList ID="drpListTurniere" runat="server" Font-Size="Medium">
         <asp:ListItem>kein Turnier vorhanden</asp:ListItem>

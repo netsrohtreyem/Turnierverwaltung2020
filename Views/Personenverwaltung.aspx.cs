@@ -54,6 +54,11 @@ namespace Turnierverwaltung2020.Views
                     this.btnBestaetigen.Visible = false;
                     this.tblEingabetabelle.Visible = false;
                     this.btnSichern.Visible = false;
+                    this.lbltitel1.Text = "Verfügbare Personen:";
+                    this.lbltitel2.Visible = false;
+                    this.lbltitel3.Visible = false;
+                    this.lbltitel4.Visible = false;
+                    this.lbltitel5.Visible = false;
                 }
             }
             if (this.IsPostBack)
@@ -1210,189 +1215,191 @@ namespace Turnierverwaltung2020.Views
         }
         protected void Btnicon_Click(object sender, ImageClickEventArgs e)
         {
-            if (!this.Verwalter.AuthentifactionRole)
+            if (this.Verwalter.AuthentifactionRole)
             {
-                return;
-            }
-            else
-            { }
-            int nummer = -1;
-            string typ = "none";
-            string objekt = ((ImageButton)sender).ClientID.Substring(((ImageButton)sender).ClientID.IndexOf("_") + 1);
-            string mannschaft = "";
-            if (objekt.Contains("loesch"))
-            {
-                nummer = Convert.ToInt32(objekt.Substring(6));
-                typ = "delete";
-            }
-            else if (objekt.Contains("bearb"))
-            {
-                nummer = Convert.ToInt32(objekt.Substring(5));
-                typ = "edit";
-            }
-            else
-            {
-                nummer = -1;
-                typ = "none";
-            }
 
-            bool gefunden = false;
-            if (typ != "none" && nummer != -1)
-            {
-                if (typ == "delete")
+                int nummer = -1;
+                string typ = "none";
+                string objekt = ((ImageButton)sender).ClientID.Substring(((ImageButton)sender).ClientID.IndexOf("_") + 1);
+                string mannschaft = "";
+                if (objekt.Contains("loesch"))
                 {
-                    gefunden = this.Verwalter.IsPersonInMannschaftoderGruppe(nummer, ref mannschaft);
-                    if (!gefunden)
-                    {
-                        this.Verwalter.DeletePerson(nummer);
-                        Response.Redirect(Request.RawUrl);
-                    }
-                    else
-                    {
-                        //Meldung
-                        ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + ((Person)this.Verwalter.Personen[nummer - 1]).Vorname + " " +
-                            this.Verwalter.Personen[nummer - 1].Name + " ist noch Mitglied in der Mannschaft oder Gruppe: " + mannschaft + ", bitte vorher entfernen');", true);
-                    }
-                    gefunden = false;
+                    nummer = Convert.ToInt32(objekt.Substring(6));
+                    typ = "delete";
                 }
-                else if (typ == "edit")
+                else if (objekt.Contains("bearb"))
                 {
-                    Teilnehmer zuAendern = this.Verwalter.getPerson(nummer);
-                    foreach (ListItem li in rdbtnList1.Items)
+                    nummer = Convert.ToInt32(objekt.Substring(5));
+                    typ = "edit";
+                }
+                else
+                {
+                    nummer = -1;
+                    typ = "none";
+                }
+
+                bool gefunden = false;
+                if (typ != "none" && nummer != -1)
+                {
+                    if (typ == "delete")
                     {
-                        li.Selected = false;
+                        gefunden = this.Verwalter.IsPersonInMannschaftoderGruppe(nummer, ref mannschaft);
+                        if (!gefunden)
+                        {
+                            this.Verwalter.DeletePerson(nummer);
+                            Response.Redirect(Request.RawUrl);
+                        }
+                        else
+                        {
+                            //Meldung
+                            ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + ((Person)this.Verwalter.Personen[nummer - 1]).Vorname + " " +
+                                this.Verwalter.Personen[nummer - 1].Name + " ist noch Mitglied in der Mannschaft oder Gruppe: " + mannschaft + ", bitte vorher entfernen');", true);
+                        }
+                        gefunden = false;
                     }
-                    if (zuAendern is Fussballspieler)
+                    else if (typ == "edit")
                     {
-                        this.rdbtnList1.Items[0].Selected = true;
-                    }
-                    else if (zuAendern is Handballspieler)
-                    {
-                        this.rdbtnList1.Items[1].Selected = true;
-                    }
-                    else if (zuAendern is Tennisspieler)
-                    {
-                        this.rdbtnList1.Items[2].Selected = true;
-                    }
-                    else if (zuAendern is WeitererSpieler)
-                    {
-                        this.rdbtnList1.Items[3].Selected = true;
-                    }
-                    else if (zuAendern is Physiotherapeut)
-                    {
-                        this.rdbtnList1.Items[4].Selected = true;
-                    }
-                    else if (zuAendern is Trainer)
-                    {
-                        this.rdbtnList1.Items[5].Selected = true;
-                    }
-                    else if (zuAendern is AndereAufgaben)
-                    {
-                        this.rdbtnList1.Items[6].Selected = true;
+                        Teilnehmer zuAendern = this.Verwalter.getPerson(nummer);
+                        foreach (ListItem li in rdbtnList1.Items)
+                        {
+                            li.Selected = false;
+                        }
+                        if (zuAendern is Fussballspieler)
+                        {
+                            this.rdbtnList1.Items[0].Selected = true;
+                        }
+                        else if (zuAendern is Handballspieler)
+                        {
+                            this.rdbtnList1.Items[1].Selected = true;
+                        }
+                        else if (zuAendern is Tennisspieler)
+                        {
+                            this.rdbtnList1.Items[2].Selected = true;
+                        }
+                        else if (zuAendern is WeitererSpieler)
+                        {
+                            this.rdbtnList1.Items[3].Selected = true;
+                        }
+                        else if (zuAendern is Physiotherapeut)
+                        {
+                            this.rdbtnList1.Items[4].Selected = true;
+                        }
+                        else if (zuAendern is Trainer)
+                        {
+                            this.rdbtnList1.Items[5].Selected = true;
+                        }
+                        else if (zuAendern is AndereAufgaben)
+                        {
+                            this.rdbtnList1.Items[6].Selected = true;
+                        }
+                        else
+                        { }
+
+                        this.btnSichern.BackColor = Color.Red;
+                        this.tblEingabetabelle.Enabled = true;
+                        this.btnSichern.Enabled = true;
+
+                        //Vorherige Werte eintragen
+                        txtName.Text = zuAendern.Name;
+                        txtVorname.Text = ((Person)zuAendern).Vorname;
+                        txtGeburtsdatum.Text = ((Person)zuAendern).Geburtsdatum.ToString("yyyy-MM-dd");
+
+                        this.LoadEingabeFelder();
+
+                        if (zuAendern is Fussballspieler)
+                        {
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Fussballspieler)zuAendern).Anzahlspiele.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Fussballspieler)zuAendern).Geschossenentore.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Text = ((Fussballspieler)zuAendern).Position.ToString();
+                        }
+                        else if (zuAendern is Handballspieler)
+                        {
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Handballspieler)zuAendern).Anzahlspiele.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Handballspieler)zuAendern).Geworfenetore.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Text = ((Handballspieler)zuAendern).Einsatzbereich.ToString();
+                        }
+                        else if (zuAendern is Tennisspieler)
+                        {
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Tennisspieler)zuAendern).Anzahlspiele.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Tennisspieler)zuAendern).GewonneneSpiele.ToString();
+                        }
+                        else if (zuAendern is WeitererSpieler)
+                        {
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((WeitererSpieler)zuAendern).Anzahlspiele.ToString();
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((WeitererSpieler)zuAendern).GewonneneSpiele.ToString();
+                            foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Items)
+                            {
+
+                                if (li.Text == ((WeitererSpieler)zuAendern).Sportart.name)
+                                {
+                                    ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).SelectedValue = ((WeitererSpieler)zuAendern).Sportart.name;
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                        }
+                        else if (zuAendern is Physiotherapeut)
+                        {
+
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Physiotherapeut)zuAendern).Anzahljahre.ToString();
+                            foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
+                            {
+
+                                if (li.Text == ((Physiotherapeut)zuAendern).Sportart.name)
+                                {
+                                    ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((Physiotherapeut)zuAendern).Sportart.name;
+                                    gefunden = true;
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                        }
+                        else if (zuAendern is Trainer)
+                        {
+                            gefunden = false;
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Trainer)zuAendern).Anzahlvereine.ToString();
+                            foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
+                            {
+
+                                if (li.Text == ((Trainer)zuAendern).Sportart.name)
+                                {
+                                    ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((Trainer)zuAendern).Sportart.name;
+                                    gefunden = true;
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                        }
+                        else if (zuAendern is AndereAufgaben)
+                        {
+                            gefunden = false;
+                            ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((AndereAufgaben)zuAendern).Einsatz;
+                            foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
+                            {
+
+                                if (li.Text == ((AndereAufgaben)zuAendern).Sportart.name)
+                                {
+                                    ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((AndereAufgaben)zuAendern).Sportart.name;
+                                    gefunden = true;
+                                    break;
+                                }
+                                else
+                                { }
+                            }
+                        }
+                        else
+                        { }
+                        this.Verwalter.EditPerson = true;
+                        this.Verwalter.EditPersonIndex = nummer;
+                        this.Verwalter.EditPersonID = zuAendern.ID;
                     }
                     else
-                    { }
-
-                    this.btnSichern.BackColor = Color.Red;
-                    this.tblEingabetabelle.Enabled = true;
-                    this.btnSichern.Enabled = true;
-
-                    //Vorherige Werte eintragen
-                    txtName.Text = zuAendern.Name;
-                    txtVorname.Text = ((Person)zuAendern).Vorname;
-                    txtGeburtsdatum.Text = ((Person)zuAendern).Geburtsdatum.ToString("yyyy-MM-dd");
-
-                    this.LoadEingabeFelder();
-
-                    if (zuAendern is Fussballspieler)
-                    {
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Fussballspieler)zuAendern).Anzahlspiele.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Fussballspieler)zuAendern).Geschossenentore.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Text = ((Fussballspieler)zuAendern).Position.ToString();
-                    }
-                    else if (zuAendern is Handballspieler)
-                    {
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Handballspieler)zuAendern).Anzahlspiele.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Handballspieler)zuAendern).Geworfenetore.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Text = ((Handballspieler)zuAendern).Einsatzbereich.ToString();
-                    }
-                    else if (zuAendern is Tennisspieler)
-                    {
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Tennisspieler)zuAendern).Anzahlspiele.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((Tennisspieler)zuAendern).GewonneneSpiele.ToString();
-                    }
-                    else if (zuAendern is WeitererSpieler)
-                    {
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((WeitererSpieler)zuAendern).Anzahlspiele.ToString();
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Text = ((WeitererSpieler)zuAendern).GewonneneSpiele.ToString();
-                        foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).Items)
-                        {
-
-                            if (li.Text == ((WeitererSpieler)zuAendern).Sportart.name)
-                            {
-                                ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[5].Controls[0]).SelectedValue = ((WeitererSpieler)zuAendern).Sportart.name;
-                                break;
-                            }
-                            else
-                            { }
-                        }
-                    }
-                    else if (zuAendern is Physiotherapeut)
-                    {
-
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Physiotherapeut)zuAendern).Anzahljahre.ToString();
-                        foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
-                        {
-
-                            if (li.Text == ((Physiotherapeut)zuAendern).Sportart.name)
-                            {
-                                ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((Physiotherapeut)zuAendern).Sportart.name;
-                                gefunden = true;
-                                break;
-                            }
-                            else
-                            { }
-                        }
-                    }
-                    else if (zuAendern is Trainer)
                     {
                         gefunden = false;
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((Trainer)zuAendern).Anzahlvereine.ToString();
-                        foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
-                        {
-
-                            if (li.Text == ((Trainer)zuAendern).Sportart.name)
-                            {
-                                ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((Trainer)zuAendern).Sportart.name;
-                                gefunden = true;
-                                break;
-                            }
-                            else
-                            { }
-                        }
                     }
-                    else if (zuAendern is AndereAufgaben)
-                    {
-                        gefunden = false;
-                        ((TextBox)this.tblEingabetabelle.Rows[1].Cells[1].Controls[0]).Text = ((AndereAufgaben)zuAendern).Einsatz;
-                        foreach (ListItem li in ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).Items)
-                        {
-
-                            if (li.Text == ((AndereAufgaben)zuAendern).Sportart.name)
-                            {
-                                ((DropDownList)this.tblEingabetabelle.Rows[1].Cells[3].Controls[0]).SelectedValue = ((AndereAufgaben)zuAendern).Sportart.name;
-                                gefunden = true;
-                                break;
-                            }
-                            else
-                            { }
-                        }
-                    }
-                    else
-                    { }
-                    this.Verwalter.EditPerson = true;
-                    this.Verwalter.EditPersonIndex = nummer;
-                    this.Verwalter.EditPersonID = zuAendern.ID;
                 }
                 else
                 {
@@ -1400,9 +1407,7 @@ namespace Turnierverwaltung2020.Views
                 }
             }
             else
-            {
-                gefunden = false;
-            }
+            { }
         }
         protected void btnXML_Click(object sender, EventArgs e)
         {
@@ -1443,18 +1448,23 @@ namespace Turnierverwaltung2020.Views
         }
         protected void HeaderClick(object sender, EventArgs e)
         {
-            string ID = "";
-            if (sender is Button)
+            if (this.Verwalter.AuthentifactionRole)
             {
-                ID = ((Button)sender).ID;
+                string ID = "";
+                if (sender is Button)
+                {
+                    ID = ((Button)sender).ID;
+                }
+                else
+                { }
+                ID = ID.Substring(3);
+                //Sortieren
+                this.Verwalter.PersonenSortieren(ID);
+                //Reload
+                Response.Redirect(Request.RawUrl);
             }
             else
             { }
-            ID = ID.Substring(3);
-            //Sortieren
-            this.Verwalter.PersonenSortieren(ID);
-            //Reload
-            Response.Redirect(Request.RawUrl);
         }
         #endregion
     }

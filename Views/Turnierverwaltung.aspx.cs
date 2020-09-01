@@ -53,6 +53,10 @@ namespace Turnierverwaltung2020.Views
                     this.tblNameTurnier.Visible = false;
                     this.tblEingabetabellegr.Visible = false;
                     this.btnTurnierHinzufuegen.Visible = false;
+                    lbltitel1.Text = "verfügbare Turniere";
+                    lbltitel2.Visible = false;
+                    lbltitel3.Visible = false;
+                    lbltitel4.Visible = false;
                 }
                 else
                 { }

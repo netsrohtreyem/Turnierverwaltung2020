@@ -32,10 +32,18 @@ namespace Turnierverwaltung2020.Views
             }
             else
             {
-                btnNeu.Enabled = false;
-                btnAutomatik.Enabled = false;
-                CheckBox1.Enabled = false;
-                CheckBox2.Enabled = false;
+                if (!this.Verwalter.AuthentifactionRole)
+                {
+                    btnNeu.Visible = false;
+                    btnAutomatik.Visible = false;
+                    CheckBox1.Visible = false;
+                    CheckBox2.Visible = false;
+                    lbltitel1.Text = "Turnier Spiele:";
+                    lblTitelTable.Visible = true;
+                    tblSpiele.Visible = true;
+                }
+                else
+                { }
             }
             if (this.IsPostBack)
             {
@@ -100,22 +108,26 @@ namespace Turnierverwaltung2020.Views
 
             if (this.Verwalter.SelectedTurnier != null)
             {
-                this.lblTitelTable.Visible = true;
-                this.tblSpiele.Visible = true;
-                this.btnAutomatik.Visible = true;
-                this.btnNeu.Visible = true;
-                this.lblspieltag.Visible = true;
-                this.drplistSpieltag.Visible = true;
-                this.btnspieltagauswaehlen.Visible = true;
-                this.CheckBox1.Visible = true;
-                this.CheckBox2.Visible = true;
-                if (this.Verwalter.SelectedTurnierSpieltag < 0)
+                if (this.Verwalter.AuthentifactionRole)
                 {
-                    this.Verwalter.SelectedTurnierSpieltag = 0;
+                    this.lblTitelTable.Visible = true;
+                    this.tblSpiele.Visible = true;
+                    this.btnAutomatik.Visible = true;
+                    this.btnNeu.Visible = true;
+                    this.CheckBox1.Visible = true;
+                    this.CheckBox2.Visible = true;
+                    if (this.Verwalter.SelectedTurnierSpieltag < 0)
+                    {
+                        this.Verwalter.SelectedTurnierSpieltag = 0;
+                    }
+                    else
+                    { }
                 }
                 else
                 { }
-
+                this.lblspieltag.Visible = true;
+                this.drplistSpieltag.Visible = true;
+                this.btnspieltagauswaehlen.Visible = true;
                 if (this.Verwalter.SelectedTurnier is MannschaftsTurnier)
                 {
                     this.lblTitelTable.Text = "Vorhandene Spiele des " + this.Verwalter.SelectedTurnier.Sportart.name + " - Turniers '" +

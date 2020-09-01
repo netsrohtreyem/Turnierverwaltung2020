@@ -1,8 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Site.Master" AutoEventWireup="true" CodeBehind="Mannschaftsverwaltung.aspx.cs" Inherits="Turnierverwaltung2020.Views.Mannschaftsverwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h1 style="font-weight: bold">Mannschaft- oder Einzelverwaltung</h1>
-    <h2 style="font-weight: bold">Hinzufügen oder Bearbeiten einer Turnier Mannschaft oder einer Einzel - Gruppe</h2>
-    <p style="font-weight: bold; font-size: large;">Auswählen ob eine Mannschaft oder eine Turniergruppe angelegt oder geändert werden soll</p>
+    <%--<h1 style="font-weight: bold">Mannschaft- oder Einzelverwaltung</h1>--%>
+    <asp:Label ID="lbltitel1" runat="server" Font-Bold="true" Font-Size="XX-Large" Text="Mannschaft- oder Einzelverwaltung"></asp:Label>
+    <br />
+    <br />
+    <%--<h2 style="font-weight: bold">Hinzufügen oder Bearbeiten einer Turnier Mannschaft oder einer Einzel - Gruppe</h2>--%>
+    <asp:Label ID="lbltitel2" runat="server" Font-Bold="true" Font-Size="X-Large" Text="Hinzufügen oder Bearbeiten einer Turnier Mannschaft oder einer Einzel - Gruppe"></asp:Label>
+    <br />
+    <br />
+    <%--<p style="font-weight: bold; font-size: large;">Auswählen ob eine Mannschaft oder eine Turniergruppe angelegt oder geändert werden soll</p>--%>
+    <asp:Label ID="lbltitel3" runat="server" Font-Bold="true" Font-Size="Large" Text="Auswählen ob eine Mannschaft oder eine Turniergruppe angelegt oder geändert werden soll"></asp:Label>
+    <br />
+    <br />
     <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Large">
         <asp:ListItem Selected="True" Text ="Mannschaft"></asp:ListItem>
         <asp:ListItem>Gruppen</asp:ListItem>

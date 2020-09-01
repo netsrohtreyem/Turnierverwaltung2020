@@ -29,7 +29,7 @@ namespace Turnierverwaltung2020
         protected void logout(object sender, EventArgs e)
         {
             this.Verwalter.UserAuthentificated = false;
-            Response.Redirect(Request.RawUrl);
+            this.Response.Redirect(@"~\Default.aspx");
         }
     }
 }

@@ -49,14 +49,15 @@ namespace Turnierverwaltung2020.Views
             {
                 if (!this.Verwalter.AuthentifactionRole)
                 {
-                    this.rbListArt.Visible = false;
                     this.lblsportart.Visible = false;
                     this.drpSportart1.Visible = false;
                     this.tblEingabetabelle.Visible = false;
                     this.tblEingabetabelle2.Visible = false;
                     this.btnHinzufuegenAendern.Visible = false;
                     this.lblAnzeige.Visible = false;
-
+                    this.lbltitel1.Text = "Verfügbare Mannschaften bzw. Gruppen";
+                    this.lbltitel2.Visible = false;
+                    this.lbltitel3.Text = "Mannschaften oder Gruppen anzeigen";
                 }
                 else
                 { }

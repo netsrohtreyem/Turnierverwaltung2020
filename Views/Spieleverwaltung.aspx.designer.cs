@@ -7,13 +7,29 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung2020.Views
-{
-
-
-    public partial class Spieleverwaltung
-    {
-
+namespace Turnierverwaltung2020.Views {
+    
+    
+    public partial class Spieleverwaltung {
+        
+        /// <summary>
+        /// lbltitel1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbltitel1;
+        
+        /// <summary>
+        /// lbltitel2-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbltitel2;
+        
         /// <summary>
         /// drpListTurniere-Steuerelement
         /// </summary>
@@ -22,7 +38,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpListTurniere;
-
+        
         /// <summary>
         /// btnTurnierAuswahl-Steuerelement
         /// </summary>
@@ -31,7 +47,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnTurnierAuswahl;
-
+        
         /// <summary>
         /// lblspieltag-Steuerelement
         /// </summary>
@@ -40,7 +56,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblspieltag;
-
+        
         /// <summary>
         /// drplistSpieltag-Steuerelement
         /// </summary>
@@ -49,7 +65,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drplistSpieltag;
-
+        
         /// <summary>
         /// btnspieltagauswaehlen-Steuerelement
         /// </summary>
@@ -58,7 +74,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnspieltagauswaehlen;
-
+        
         /// <summary>
         /// btnNeu-Steuerelement
         /// </summary>
@@ -67,7 +83,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNeu;
-
+        
         /// <summary>
         /// btnAutomatik-Steuerelement
         /// </summary>
@@ -76,7 +92,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAutomatik;
-
+        
         /// <summary>
         /// CheckBox1-Steuerelement
         /// </summary>
@@ -85,7 +101,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
-
+        
         /// <summary>
         /// CheckBox2-Steuerelement
         /// </summary>
@@ -94,7 +110,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox CheckBox2;
-
+        
         /// <summary>
         /// lblTitelTable-Steuerelement
         /// </summary>
@@ -103,7 +119,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitelTable;
-
+        
         /// <summary>
         /// tblSpiele-Steuerelement
         /// </summary>
@@ -112,7 +128,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table tblSpiele;
-
+        
         /// <summary>
         /// lbldummy-Steuerelement
         /// </summary>
@@ -121,7 +137,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbldummy;
-
+        
         /// <summary>
         /// mpe-Steuerelement
         /// </summary>
@@ -130,7 +146,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpe;
-
+        
         /// <summary>
         /// pnlpopup-Steuerelement
         /// </summary>
@@ -139,7 +155,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlpopup;
-
+        
         /// <summary>
         /// txtnumber-Steuerelement
         /// </summary>
@@ -148,7 +164,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtnumber;
-
+        
         /// <summary>
         /// NumericUpDownExtender1-Steuerelement
         /// </summary>
@@ -157,7 +173,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::AjaxControlToolkit.NumericUpDownExtender NumericUpDownExtender1;
-
+        
         /// <summary>
         /// drplstMannschaft1-Steuerelement
         /// </summary>
@@ -166,7 +182,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drplstMannschaft1;
-
+        
         /// <summary>
         /// drplstMannschaft2-Steuerelement
         /// </summary>
@@ -175,7 +191,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drplstMannschaft2;
-
+        
         /// <summary>
         /// btnOkay-Steuerelement
         /// </summary>
@@ -184,7 +200,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnOkay;
-
+        
         /// <summary>
         /// lbldummy2-Steuerelement
         /// </summary>
@@ -193,7 +209,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbldummy2;
-
+        
         /// <summary>
         /// mpe2-Steuerelement
         /// </summary>
@@ -202,7 +218,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpe2;
-
+        
         /// <summary>
         /// pnlpopup2-Steuerelement
         /// </summary>
@@ -211,7 +227,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlpopup2;
-
+        
         /// <summary>
         /// drplstGruppe1-Steuerelement
         /// </summary>
@@ -220,7 +236,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drplstGruppe1;
-
+        
         /// <summary>
         /// drplstGruppe2-Steuerelement
         /// </summary>
@@ -229,7 +245,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drplstGruppe2;
-
+        
         /// <summary>
         /// btnOkay2-Steuerelement
         /// </summary>
@@ -238,7 +254,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnOkay2;
-
+        
         /// <summary>
         /// lbldummy3-Steuerelement
         /// </summary>
@@ -247,7 +263,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbldummy3;
-
+        
         /// <summary>
         /// mpe3-Steuerelement
         /// </summary>
@@ -256,7 +272,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpe3;
-
+        
         /// <summary>
         /// pnlpopup3-Steuerelement
         /// </summary>
@@ -265,7 +281,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlpopup3;
-
+        
         /// <summary>
         /// Teilnehmer1-Steuerelement
         /// </summary>
@@ -274,7 +290,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Teilnehmer1;
-
+        
         /// <summary>
         /// lblteil-Steuerelement
         /// </summary>
@@ -283,7 +299,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblteil;
-
+        
         /// <summary>
         /// Teilnehmer2-Steuerelement
         /// </summary>
@@ -292,7 +308,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Teilnehmer2;
-
+        
         /// <summary>
         /// Ergebnis1-Steuerelement
         /// </summary>
@@ -301,7 +317,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Ergebnis1;
-
+        
         /// <summary>
         /// lblerg-Steuerelement
         /// </summary>
@@ -310,7 +326,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblerg;
-
+        
         /// <summary>
         /// Ergebnis2-Steuerelement
         /// </summary>
@@ -319,7 +335,7 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Ergebnis2;
-
+        
         /// <summary>
         /// btnOkay3-Steuerelement
         /// </summary>

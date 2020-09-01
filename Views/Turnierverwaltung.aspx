@@ -1,14 +1,27 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Site.Master" AutoEventWireup="true" CodeBehind="Turnierverwaltung.aspx.cs" Inherits="Turnierverwaltung2020.Views.Turnierverwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h1 style="font-weight: bold">Turnierverwaltung</h1>
-    <h2 style="font-weight: bold">Hinzufügen bzw Bearbeiten eines Turniers:</h2>
-    <p style="font-weight: bold; font-size: large;">Art des Turniers auswählen/ändern</p>
+    <%--<h1 style="font-weight: bold">Turnierverwaltung</h1>--%>
+    <asp:Label ID="lbltitel1" runat="server" Font-Bold="true" Font-Size="XX-Large" Text="Turnierverwaltung"></asp:Label>
+    <br />
+    <br />
+    <%--<h2 style="font-weight: bold">Hinzufügen bzw Bearbeiten eines Turniers:</h2>--%>
+    <asp:Label ID="lbltitel2" runat="server" Font-Bold="true" Font-Size="X-Large" Text="Hinzufügen bzw Bearbeiten eines Turniers:"></asp:Label>
+    <br />
+    <br />
+    <%--<p style="font-weight: bold; font-size: large;">Art des Turniers auswählen/ändern</p>--%>
+    <asp:Label ID="lbltitel3" runat="server" Font-Bold="true" Font-Size="Large" Text="Art des Turniers auswählen/ändern"></asp:Label>
+    <br />
+    <br />
     <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Medium">
         <asp:ListItem Selected="True">Mannschaft</asp:ListItem>
         <asp:ListItem>Gruppen</asp:ListItem>
     </asp:RadioButtonList>
-    <h4 style="font-weight: bold">&nbsp;</h4>
-    <h4 style="font-weight: bold">Eine Sportart für das Turnier auswählen bzw. ändern:</h4>
+    <br />
+    <br />
+    <%--<h4 style="font-weight: bold">Eine Sportart für das Turnier auswählen bzw. ändern:</h4>--%>
+    <asp:Label ID="lbltitel4" runat="server" Font-Bold="true" Font-Size="Large" Text="Eine Sportart für das Turnier auswählen bzw. ändern:"></asp:Label>
+    <br />
+    <br />
     <asp:DropDownList ID="drpSportart1" runat="server" AutoPostBack="false" Font-Bold="True" Font-Size="Medium"></asp:DropDownList>
     <br />
     <br />
@@ -56,8 +69,8 @@
     <br />
     <hr />
     <br />
-        <asp:Label ID="lblTurnierAnzeige" runat="server" Font-Bold="True" Font-Size="X-Large" Text="Vorhandene Turniere:" Visible="true"></asp:Label>
-        <asp:Table ID="tblTurnierAnzeige" runat="server" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" CellPadding="1" CellSpacing="5" Font-Bold="True" Font-Size="Medium" GridLines="Both" HorizontalAlign="Center" Visible="true" Width="100%">
+    <asp:Label ID="lblTurnierAnzeige" runat="server" Font-Bold="True" Font-Size="X-Large" Text="Vorhandene Turniere:" Visible="true"></asp:Label>
+    <asp:Table ID="tblTurnierAnzeige" runat="server" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" CellPadding="1" CellSpacing="5" Font-Bold="True" Font-Size="Medium" GridLines="Both" HorizontalAlign="Center" Visible="true" Width="100%">
             <asp:TableHeaderRow BackColor="#66FFFF" BorderColor="Black" BorderStyle="Solid" BorderWidth="1px" Font-Bold="True" Font-Size="Medium" HorizontalAlign="Center" VerticalAlign="Middle">
                 <asp:TableHeaderCell HorizontalAlign="Center" Width="5%"></asp:TableHeaderCell>
                 <asp:TableHeaderCell Width="30%"></asp:TableHeaderCell>
