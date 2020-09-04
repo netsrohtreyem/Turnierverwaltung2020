@@ -160,6 +160,12 @@ namespace Turnierverwaltung2020
         #region DB Functions
         public override bool AddToDatabase(List<int> Mitgliederliste)
         {
+            if (isInDatabase())
+            {
+                return true;
+            }
+            else
+            { }
             MySqlConnection Conn = new MySqlConnection();
             string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
             bool ergebnis = false;

@@ -14,10 +14,6 @@ namespace Turnierverwaltung2020
 
         public Controller Verwalter { get => _Verwalter; set => _Verwalter = value; }
 
-        protected void Page_Init(object sender, EventArgs e)
-        {
-
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session.Count > 0)
@@ -29,11 +25,11 @@ namespace Turnierverwaltung2020
                 //Standardvorgaben
                 Verwalter = new Controller();
                 this.Session["Verwalter"] = Verwalter;
+                Verwalter.loadData();
                 #region Testdaten
                 #region Sportarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
-                this.Verwalter.Sportarten.Clear();
                 this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Handball", true, false, 2, 2, 1);
                 neu.id = 2;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,41 @@ namespace Turnierverwaltung2020
         }
         public abstract string GetListData();
         public abstract void ChangeValues(Person edit);
+        public override bool isInDatabase()
+        {
+            MySqlConnection Conn = new MySqlConnection();
+            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            bool ergebnis = true;
+            try
+            {
+                Conn = new MySqlConnection();
+                Conn.ConnectionString = MyConnectionString;
+                Conn.Open();
+            }
+            catch (MySqlException)
+            {
+                return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
+            }
+
+            string SqlString = "select personen.Name,personen.Vorname,personen.Geburtsdatum,sportarten.bezeichnung from personen join sportarten where personen.Name = '"
+                + this.Name + "' and personen.Vorname = '"
+                + this.Vorname + "' and personen.Geburtsdatum = '"
+                + this.Geburtsdatum.ToShortDateString() + "' and sportarten.bezeichnung = '"
+                + this.Sportart.name + "';";
+
+            MySqlCommand command = new MySqlCommand(SqlString, Conn);
+            MySqlDataReader rdr = command.ExecuteReader();
+            if (rdr.HasRows)
+            {
+                ergebnis = true;
+            }
+            else
+            {
+                ergebnis = false;
+            }
+            Conn.Close();
+            return ergebnis;
+        }
         #endregion
     }
 }

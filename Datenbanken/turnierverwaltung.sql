@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Erstellungszeit: 01. Sep 2020 um 11:17
+-- Erstellungszeit: 04. Sep 2020 um 12:36
 -- Server-Version: 10.1.37-MariaDB
 -- PHP-Version: 7.2.12
 
@@ -41,6 +41,11 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
 
 --
+-- TRUNCATE Tabelle vor dem Einfügen `accounts`
+--
+
+TRUNCATE TABLE `accounts`;
+--
 -- Daten für Tabelle `accounts`
 --
 
@@ -63,6 +68,11 @@ CREATE TABLE IF NOT EXISTS `andereaufgaben` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `andereaufgaben`
+--
+
+TRUNCATE TABLE `andereaufgaben`;
 -- --------------------------------------------------------
 
 --
@@ -78,7 +88,19 @@ CREATE TABLE IF NOT EXISTS `fussballspieler` (
   `person` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `person` (`person`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+--
+-- TRUNCATE Tabelle vor dem Einfügen `fussballspieler`
+--
+
+TRUNCATE TABLE `fussballspieler`;
+--
+-- Daten für Tabelle `fussballspieler`
+--
+
+INSERT INTO `fussballspieler` (`ID`, `geschossenetore`, `anzahlspiele`, `position`, `person`) VALUES
+(5, 498, 348, 'Stürmer', 7);
 
 -- --------------------------------------------------------
 
@@ -95,6 +117,11 @@ CREATE TABLE IF NOT EXISTS `gruppen` (
   KEY `sportart` (`sportart`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `gruppen`
+--
+
+TRUNCATE TABLE `gruppen`;
 -- --------------------------------------------------------
 
 --
@@ -111,6 +138,11 @@ CREATE TABLE IF NOT EXISTS `gruppenmitglieder` (
   KEY `Gruppe` (`Gruppe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `gruppenmitglieder`
+--
+
+TRUNCATE TABLE `gruppenmitglieder`;
 -- --------------------------------------------------------
 
 --
@@ -128,6 +160,11 @@ CREATE TABLE IF NOT EXISTS `handballspieler` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `handballspieler`
+--
+
+TRUNCATE TABLE `handballspieler`;
 -- --------------------------------------------------------
 
 --
@@ -150,6 +187,11 @@ CREATE TABLE IF NOT EXISTS `mannschaften` (
   KEY `sportart` (`sportart`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `mannschaften`
+--
+
+TRUNCATE TABLE `mannschaften`;
 --
 -- Daten für Tabelle `mannschaften`
 --
@@ -188,7 +230,19 @@ CREATE TABLE IF NOT EXISTS `mannschaftsmitglieder` (
   PRIMARY KEY (`ID`),
   KEY `Mannschaft` (`Mannschaft`),
   KEY `Person` (`Person`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- TRUNCATE Tabelle vor dem Einfügen `mannschaftsmitglieder`
+--
+
+TRUNCATE TABLE `mannschaftsmitglieder`;
+--
+-- Daten für Tabelle `mannschaftsmitglieder`
+--
+
+INSERT INTO `mannschaftsmitglieder` (`ID`, `Person`, `Mannschaft`) VALUES
+(2, 7, 16);
 
 -- --------------------------------------------------------
 
@@ -208,15 +262,21 @@ CREATE TABLE IF NOT EXISTS `personen` (
   PRIMARY KEY (`ID`),
   KEY `Sportart` (`Sportart`),
   KEY `typ` (`typ`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `personen`
+--
+
+TRUNCATE TABLE `personen`;
 --
 -- Daten für Tabelle `personen`
 --
 
 INSERT INTO `personen` (`ID`, `Name`, `Vorname`, `Geburtsdatum`, `Sportart`, `Details`, `typ`) VALUES
 (1, 'user', 'user', '1.1.2000', 1, NULL, 8),
-(2, 'admin', 'admin', '1.1.2000', 1, NULL, 8);
+(2, 'admin', 'admin', '1.1.2000', 1, NULL, 8),
+(7, 'Müller', 'Gerd', '03.12.1945', 1, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -231,6 +291,11 @@ CREATE TABLE IF NOT EXISTS `personentypen` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `personentypen`
+--
+
+TRUNCATE TABLE `personentypen`;
 --
 -- Daten für Tabelle `personentypen`
 --
@@ -260,23 +325,11 @@ CREATE TABLE IF NOT EXISTS `physiotherapeut` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Tabellenstruktur für Tabelle `ranking`
+-- TRUNCATE Tabelle vor dem Einfügen `physiotherapeut`
 --
 
-DROP TABLE IF EXISTS `ranking`;
-CREATE TABLE IF NOT EXISTS `ranking` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Turnier` int(11) NOT NULL,
-  `AnzahlTeilnehmer` int(11) NOT NULL,
-  `MaxSpiele` int(11) NOT NULL,
-  `AnzahlSpiele` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `Turnier` (`Turnier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+TRUNCATE TABLE `physiotherapeut`;
 -- --------------------------------------------------------
 
 --
@@ -296,6 +349,11 @@ CREATE TABLE IF NOT EXISTS `spiele` (
   KEY `Turnier` (`Turnier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `spiele`
+--
+
+TRUNCATE TABLE `spiele`;
 -- --------------------------------------------------------
 
 --
@@ -309,6 +367,11 @@ CREATE TABLE IF NOT EXISTS `sportarten` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `sportarten`
+--
+
+TRUNCATE TABLE `sportarten`;
 --
 -- Daten für Tabelle `sportarten`
 --
@@ -335,6 +398,11 @@ CREATE TABLE IF NOT EXISTS `tennisspieler` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `tennisspieler`
+--
+
+TRUNCATE TABLE `tennisspieler`;
 -- --------------------------------------------------------
 
 --
@@ -350,6 +418,11 @@ CREATE TABLE IF NOT EXISTS `trainer` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `trainer`
+--
+
+TRUNCATE TABLE `trainer`;
 -- --------------------------------------------------------
 
 --
@@ -367,6 +440,11 @@ CREATE TABLE IF NOT EXISTS `turnier` (
   KEY `Typ` (`Typ`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `turnier`
+--
+
+TRUNCATE TABLE `turnier`;
 --
 -- Daten für Tabelle `turnier`
 --
@@ -392,6 +470,11 @@ CREATE TABLE IF NOT EXISTS `turnierteilnehmer` (
   KEY `Turnier` (`Turnier`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `turnierteilnehmer`
+--
+
+TRUNCATE TABLE `turnierteilnehmer`;
 --
 -- Daten für Tabelle `turnierteilnehmer`
 --
@@ -430,6 +513,11 @@ CREATE TABLE IF NOT EXISTS `turniertyp` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
 
 --
+-- TRUNCATE Tabelle vor dem Einfügen `turniertyp`
+--
+
+TRUNCATE TABLE `turniertyp`;
+--
 -- Daten für Tabelle `turniertyp`
 --
 
@@ -453,6 +541,11 @@ CREATE TABLE IF NOT EXISTS `weitererspieler` (
   KEY `person` (`person`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- TRUNCATE Tabelle vor dem Einfügen `weitererspieler`
+--
+
+TRUNCATE TABLE `weitererspieler`;
 --
 -- Constraints der exportierten Tabellen
 --
@@ -519,12 +612,6 @@ ALTER TABLE `personen`
 --
 ALTER TABLE `physiotherapeut`
   ADD CONSTRAINT `physiotherapeut_ibfk_1` FOREIGN KEY (`person`) REFERENCES `personen` (`ID`);
-
---
--- Constraints der Tabelle `ranking`
---
-ALTER TABLE `ranking`
-  ADD CONSTRAINT `ranking_ibfk_1` FOREIGN KEY (`Turnier`) REFERENCES `turnier` (`ID`);
 
 --
 -- Constraints der Tabelle `spiele`

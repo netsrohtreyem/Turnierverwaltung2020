@@ -62,7 +62,7 @@ namespace Turnierverwaltung2020
         #region Worker
         public void Add(Person value)
         {
-            this.Mitglieder.Add(value);
+            this.Mitglieder.Add(value);           
         }
         public void Delete(Person value)
         {

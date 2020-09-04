@@ -135,12 +135,16 @@ namespace Turnierverwaltung2020
             int id = addSportArtDB(value);
 
             value.id = id;
-            this.Sportarten.Add(value);
-        }
 
+            if (!IsSportartVorhanden(value))
+            {
+                this.Sportarten.Add(value);
+            }
+            else
+            { }
+        }
         public bool DeleteSportart(string name)
         {
-            int id = -1;
             bool ergebnis = false;
             sportart loesch = null;
             foreach (sportart art in this.Sportarten)
@@ -148,6 +152,7 @@ namespace Turnierverwaltung2020
                 if (name == art.name)
                 {
                     loesch = art;
+                    loesch.id = art.id;
                     break;
                 }
                 else
@@ -195,7 +200,7 @@ namespace Turnierverwaltung2020
                     else
                     { }
                 }
-                if (deleteSportartDB(id))
+                if (deleteSportartDB(loesch.id))
                 {
                     ergebnis = (this.Sportarten.Remove(loesch));
                     return ergebnis;
@@ -210,6 +215,23 @@ namespace Turnierverwaltung2020
                 ergebnis = false;
                 return ergebnis;
             }
+        }
+        public bool IsSportartVorhanden(sportart value)
+        {
+            bool ergebnis = false;
+
+            foreach(sportart art in this.Sportarten)
+            {
+                if(art.name.Equals(value.name))
+                {
+                    ergebnis = true;
+                    break;
+                }
+                else
+                { }
+            }
+
+            return ergebnis;
         }
         #endregion
 
@@ -382,6 +404,7 @@ namespace Turnierverwaltung2020
             {
                 ergebnis = true;
             }
+
             if(value.isInDatabase())
             {
                 ergebnis = true;
@@ -2582,33 +2605,37 @@ namespace Turnierverwaltung2020
                 Conn.ConnectionString = this.MyConnectionString;
                 Conn.Open();
                 this.DB_Status = true;
-                this.Dbwarnung = true;
             }
             catch (MySqlException)
             {
                 this.DB_Status = false;
                 return;
             }
-            //TODO vorhanden ID´s mit -1 zur Datenbank synchen
+
             #region sportarten
-            Sportarten.Clear();
             SqlString = "select * from sportarten";
             MySqlCommand command = new MySqlCommand(SqlString, Conn);
 
             MySqlDataReader rdr = command.ExecuteReader();
-            while (rdr.Read())
+
+            if (rdr.HasRows)
             {
-                sportart neus = new sportart();
-                neus.id = Convert.ToInt32(rdr.GetValue(0).ToString());
-                neus.name = rdr.GetValue(1).ToString();
-                this.Sportarten.Add(neus);
+                Sportarten.Clear();
+                while (rdr.Read())
+                {
+                    sportart neus = new sportart();
+                    neus.id = Convert.ToInt32(rdr.GetValue(0).ToString());
+                    neus.name = rdr.GetValue(1).ToString();
+                    this.Sportarten.Add(neus);
+                }
             }
+            else
+            { }
             rdr.Close();
             //Conn.Close();
             #endregion
 
             #region Personen
-            this.Personen.Clear();
             SqlString = "select personen.id,personen.name,personen.vorname,personen.geburtsdatum,sportarten.bezeichnung," +
                         "personentypen.bezeichnung,personen.details from personen left join sportarten on sportarten.id = personen.sportart " +
                         "left join personentypen on personentypen.id = personen.typ;";
@@ -2616,6 +2643,13 @@ namespace Turnierverwaltung2020
             command = new MySqlCommand(SqlString, Conn);
 
             rdr = command.ExecuteReader();
+
+            if(rdr.HasRows)
+            {
+                this.Personen.Clear();
+            }
+            else
+            { }
 
             while (rdr.Read())
             {
@@ -2625,23 +2659,40 @@ namespace Turnierverwaltung2020
                 string vorname = rdr.GetValue(2).ToString();
                 DateTime geburtsdatum = DateTime.Parse(rdr.GetValue(3).ToString());
                 string spart = rdr.GetValue(4).ToString();
-                sportart sportart = null;
-                foreach (sportart spa in this.Sportarten)
+                string typ = rdr.GetValue(5).ToString();
+
+                int detailid = -1;
+                try
                 {
-                    if (spa.name == spart)
+                    detailid = rdr.GetInt32(6); 
+                }
+                catch(Exception)
+                {
+                    detailid = -1;//Accountdaten
+                }
+
+                sportart sportart = null;
+
+                foreach(sportart art in this.Sportarten)
+                {
+                    if(art.name.Equals(spart))
                     {
-                        sportart = spa;
-                        break;
+                        sportart = art;
                     }
                     else
                     { }
                 }
-                string typ = rdr.GetValue(5).ToString();
-                int detailid = rdr.GetInt32(6); //TODO evtl. Fehler bei null
-
+            
                 switch (typ)
                 {
                     case "Fussballspieler":
+                        if(detailid == -1)//Acountdaten
+                        {
+                            break;
+                        }
+                        else
+                        { }
+
                         string newsqlstring = "select anzahlspiele, geschossenetore, position from fussballspieler where id = " + detailid + ";";
                         int anzspiele = -1;
                         int geschtore = -1;
@@ -2791,8 +2842,7 @@ namespace Turnierverwaltung2020
             Conn.Close();
             #endregion
 
-            #region Mannschaften
-            this.Mannschaften.Clear();
+            #region Mannschaften            
             try
             {
                 Conn = new MySqlConnection();
@@ -2813,6 +2863,12 @@ namespace Turnierverwaltung2020
             command = new MySqlCommand(SqlString, Conn);
 
             rdr = command.ExecuteReader();
+            if(rdr.HasRows)
+            {
+                this.Mannschaften.Clear();
+            }
+            else
+            { }
 
             while (rdr.Read())
             {
@@ -2886,8 +2942,7 @@ namespace Turnierverwaltung2020
             Conn.Close();
             #endregion
 
-            #region Gruppen
-            this.Gruppen.Clear();
+            #region Gruppen            
             try
             {
                 Conn = new MySqlConnection();
@@ -2906,6 +2961,13 @@ namespace Turnierverwaltung2020
             command = new MySqlCommand(SqlString, Conn);
 
             rdr = command.ExecuteReader();
+
+            if(rdr.HasRows)
+            {
+                this.Gruppen.Clear();
+            }
+            else
+            { }
 
             while (rdr.Read())
             {
@@ -2986,6 +3048,12 @@ namespace Turnierverwaltung2020
             command = new MySqlCommand(SqlString, Conn);
 
             rdr = command.ExecuteReader();
+            if(rdr.HasRows)
+            {
+                this.Turniere.Clear();
+            }
+            else
+            { }
 
             while (rdr.Read())
             {
@@ -3016,34 +3084,52 @@ namespace Turnierverwaltung2020
                 {
                     return;
                 }
-                if (typ == 0)
+
+                if (typ == 1)
                 {
                     neu = new MannschaftsTurnier(name, sportart, new List<Mannschaft>());
                     neu.ID = id;
                 }
-                else
+                else if(typ == 2)
                 {
                     neu = new GruppenTurnier(name, sportart, new List<Gruppe>());
                     neu.ID = id;
                 }
-
+                else
+                {
+                    //Fehler!!
+                }
                 string SqlString2 = "select * " +
                     "from turnierteilnehmer " +
                     "where turnierteilnehmer.turnier = '" + id + "';";
                 MySqlCommand command2 = new MySqlCommand(SqlString2, Conn2);
                 MySqlDataReader rdr2 = command2.ExecuteReader();
+                
                 //Alle Teilnehmer des Turniers auslesen
                 while (rdr2.Read())
                 {
                     int teilid = -1;
-                    if (typ == 0)
+                    if (typ == 1)
                     {
                         teilid = rdr2.GetInt32(1);
                         foreach (Mannschaft man in this.Mannschaften)
                         {
                             if (man.ID == teilid)
                             {
-                                ((MannschaftsTurnier)neu).Teilnehmer.Add(man);
+                                ((MannschaftsTurnier)neu).addTeilnehmer(man);
+                            }
+                            else
+                            { }
+                        }
+                    }
+                    else if(typ == 2)
+                    {
+                        teilid = rdr2.GetInt32(2);
+                        foreach (Gruppe grp in this.Gruppen)
+                        {
+                            if (grp.ID == teilid)
+                            {
+                                ((GruppenTurnier)neu).addTeilnehmer(grp);
                             }
                             else
                             { }
@@ -3051,16 +3137,7 @@ namespace Turnierverwaltung2020
                     }
                     else
                     {
-                        teilid = rdr2.GetInt32(2);
-                        foreach (Gruppe grp in this.Gruppen)
-                        {
-                            if (grp.ID == teilid)
-                            {
-                                ((GruppenTurnier)neu).getTeilnemer().Add(grp);
-                            }
-                            else
-                            { }
-                        }
+                        //Fehler
                     }
                 }
                 rdr2.Close();
@@ -3106,6 +3183,7 @@ namespace Turnierverwaltung2020
                     else
                     { }
                 }
+                rdr.Close();
 
                 //Wenn nicht, hinzufügen
                 SqlString = "insert into sportarten (Bezeichnung) values ('" + value.name + "');";
