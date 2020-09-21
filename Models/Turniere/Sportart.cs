@@ -567,6 +567,10 @@ namespace Turnierverwaltung2020
                     {
                         Mitgliedertauschen(index2, index2 + 1, teilnehmer);
                     }
+                    else if(pluspunkte1 == pluspunkte2 && minuspunkte1 == minuspunkte2 && diff1 == diff2 && teilnehmer[index2].TorePlus < teilnehmer[index2+1].TorePlus)
+                    {
+                        Mitgliedertauschen(index2, index2 + 1, teilnehmer);
+                    }
                     else
                     {
                         //nicht tauschen

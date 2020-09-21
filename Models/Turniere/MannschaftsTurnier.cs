@@ -286,7 +286,28 @@ namespace Turnierverwaltung2020
             else
             { }
         }
-
+        public override void addSpiel(Spiel neu)
+        {
+            if (neu.AddToDatabase())
+            {
+                if (neu.ID == -1)
+                {
+                    neu.ID = this.Spiele.Count + 1;
+                }
+                else
+                {
+                }
+                this.Spiele.Add(neu);
+                if (MaxSpieltag < ((Mannschaftsspiel)neu).Spieltag)
+                {
+                    MaxSpieltag = ((Mannschaftsspiel)neu).Spieltag;
+                }
+                else
+                { }
+            }
+            else
+            { }
+        }
         public override string getSpieleBezeichnung()
         {
             return "Spieltag";

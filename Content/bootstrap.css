@@ -5979,9 +5979,9 @@ button.close {
   overflow-y: auto;
 }
 .modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 10px;
+    position: relative;
+    width: auto;
+    margin: 10px;
 }
 .modal-content {
   position: relative;
@@ -6050,7 +6050,7 @@ button.close {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 600px;
+    width: 1024px;
     margin: 30px auto;
   }
   .modal-content {
@@ -6186,7 +6186,7 @@ button.close {
   left: 0;
   z-index: 1060;
   display: none;
-  max-width: 276px;
+  max-width: 800px;
   padding: 1px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;

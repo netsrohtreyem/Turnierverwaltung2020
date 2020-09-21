@@ -133,6 +133,7 @@
                 <div class="PopupHeader" id="PopupHeader3">
                     <p style="font-family: Arial, Helvetica, Sans-Serif; font-size: medium; font-weight: bold">Spiele Daten ändern</p>
                 </div>
+
                 <div class="PopupBody">
                     <p style="font-size: medium; font-weight: bold; font-family: Arial">Geben Sie die Daten des Spiels ein:</p>
                     <br />

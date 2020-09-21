@@ -70,22 +70,7 @@ namespace Turnierverwaltung2020
         public abstract void addTeilnehmer(object items);
         public abstract string GetTypus();
         public abstract void addSpiel(int number, object Teilnehmer1, object Teilnehmer2);
-        public void addSpiel(Spiel value)
-        {
-            value.Turnier = this;
-            if (value.AddToDatabase())
-            {
-                if (value.ID == -1)
-                {
-                    value.ID = this.Spiele.Count + 1;
-                }
-                else
-                { }
-                this.Spiele.Add(value);
-            }
-            else
-            { }
-        }
+        public abstract void addSpiel(Spiel value);
         public abstract string getTeilnehmerbezeichnung();
         public abstract Teilnehmer getGruppe(int v);
         public abstract int Get_MaxRunden();

@@ -281,7 +281,23 @@ namespace Turnierverwaltung2020
 
             }
         }
+        public override void addSpiel(Spiel neu)
+        {
+            if (neu.AddToDatabase())
+            {
+                if (neu.ID == -1)
+                {
+                    neu.ID = this.Spiele.Count + 1;
+                }
+                else
+                { }
+                this.Spiele.Add(neu);
+            }
+            else
+            {
 
+            }
+        }
         public override string getSpieleBezeichnung()
         {
             return "SpielNr.";
@@ -364,6 +380,8 @@ namespace Turnierverwaltung2020
         {
             return this.Gruppen[gruppe - 1].getRanking(this.Spiele);
         }
+
+
         #endregion
     }
 }
