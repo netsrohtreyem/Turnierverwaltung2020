@@ -44,6 +44,17 @@ body {
     height: 200px;
 }
 
+.ModalExt3Window {
+    background-color: white;
+    border-width: 3px;
+    border-style: solid;
+    border-color: black;
+    padding-top: 10px;
+    padding-left: 10px;
+    min-width: 540px;
+    width: 400px;
+    height: 140px;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

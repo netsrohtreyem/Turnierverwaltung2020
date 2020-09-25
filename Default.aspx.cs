@@ -102,6 +102,54 @@ namespace Turnierverwaltung2020
                 testneu.addTeilnehmer(man18);
 
                 this.Verwalter.AddTurnier(testneu);
+                this.Verwalter.SelectedTurnier = testneu;
+                //Spieltag1
+                Spiel neuesSpiel = new Mannschaftsspiel(testneu, man15, man16, 1);
+                neuesSpiel.setErgebniswert1("8");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man7, man4, 1);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("1");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man5, man2, 1);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("4");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man10, man9, 1);
+                neuesSpiel.setErgebniswert1("2");
+                neuesSpiel.setErgebniswert2("3");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man17, man8, 1);
+                neuesSpiel.setErgebniswert1("2");
+                neuesSpiel.setErgebniswert2("3");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man3, man1, 1);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("3");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man6, man14, 1);
+                neuesSpiel.setErgebniswert1("3");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man11, man13, 1);
+                neuesSpiel.setErgebniswert1("3");
+                neuesSpiel.setErgebniswert2("1");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+
+                neuesSpiel = new Mannschaftsspiel(testneu, man18, man12, 1);
+                neuesSpiel.setErgebniswert1("0");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                this.Verwalter.SelectedTurnierSpieltag = 1;
+
                 #endregion
             }
 

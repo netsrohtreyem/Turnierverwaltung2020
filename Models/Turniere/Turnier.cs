@@ -93,6 +93,9 @@ namespace Turnierverwaltung2020
             }
         }
         public abstract bool isSpielVorhanden(Spiel search);
+        public abstract bool isSpielVorhandenHin(Spiel search);
+        public abstract bool isSpielVorhandenRueck(Spiel search);
+        public abstract bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag);
         public List<Spiel> Get_Spiele()
         {
             return this.Spiele;

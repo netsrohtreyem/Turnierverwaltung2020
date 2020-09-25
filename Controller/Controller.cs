@@ -1082,6 +1082,34 @@ namespace Turnierverwaltung2020
             else
             { }
         }
+        public void AddSpielToMannschaftsTurnier(Spiel neu)
+        {
+            if (SelectedTurnier.isSpielVorhanden(neu))
+            {
+                return;
+            }
+            else
+            { }
+
+            if (neu.AddToDatabase())
+            {
+                if (neu.ID == -1)
+                {
+                    neu.ID = ((MannschaftsTurnier)SelectedTurnier).Spiele.Count + 1;
+                }
+                else
+                { }
+                SelectedTurnier.addSpiel(neu);
+            }
+            else
+            { }
+            if (SelectedTurnierSpieltag == 0)
+            {
+                SelectedTurnierSpieltag = 1;
+            }
+            else
+            { }
+        }
         public void AddSpielToGruppenTurnier(int grpid, string teilnehmer1, string teilnehmer2)
         {
             Person pers1 = null;
@@ -1161,19 +1189,11 @@ namespace Turnierverwaltung2020
             else
             { }
         }
-        private bool IsSpielVorhanden(Spiel search)
-        {
-            if (SelectedTurnier.isSpielVorhanden(search))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+
         public void SpieltageAutomatik(bool hinundrueck)
         {
+            this.SelectedTurnier.Spiele.Clear();
+            this.SelectedTurnierSpieltag = 0;
             if (this.SelectedTurnier is MannschaftsTurnier)
             {
                 this.SelectedTurnier.ClearSpiele(-1);
@@ -1197,147 +1217,83 @@ namespace Turnierverwaltung2020
                 bool ok = false;
                 Spiel neu = null;
 
-                //HinRunde
-                for (int index1 = 1; index1 <= (anzahlTeilnehmer / 2 * anzahlspieltage / 2); index1++)
+                //Hinrunde
+                for (int spieltag = 1; spieltag <= anzahlspieltage / 2; spieltag++)
                 {
-                    do
+                    List<string> MannschaftenamSpieltag = new List<string>();
+                    System.Diagnostics.Debug.WriteLine("Spieltag: " + spieltag);
+                    for (int spielnr = 1; spielnr <= anzahlTeilnehmer / 2; spielnr++)
                     {
-                        man1 = Zufallszahl.Next(anzahlTeilnehmer);
-                        man2 = Zufallszahl.Next(anzahlTeilnehmer);
-                        if (man1 != man2)
+                        do
                         {
-                            ok = true;
-                        }
-                        else
-                        {
-                            ok = false;
-                            continue;
-                        }
-
-                        neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                   ((Mannschaft)this.SelectedTurnier.getTeilnemer()[man1]),
-                                                   ((Mannschaft)this.SelectedTurnier.getTeilnemer()[man2]),
-                                                   0);
-
-                        if (IsSpielVorhanden(neu, neueSpielehin) || IsMannschaftsKombiVorhanden(neu, neueSpielehin))
-                        {
-                            ok = false;
-                        }
-                        else
-                        {
-                            ok = true;
-                        }
-                    } while (!ok);
-                    neueSpielehin.Add(neu);
+                            man1 = Zufallszahl.Next(anzahlTeilnehmer);
+                            man2 = Zufallszahl.Next(anzahlTeilnehmer);
+                            if (man1 == man2)
+                            {
+                                ok = false;
+                            }
+                            else
+                            {
+                                neu = new Mannschaftsspiel(this.SelectedTurnier,
+                                                           ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man1]),
+                                                           ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man2]), spieltag);
+                                if (this.SelectedTurnier.isSpielVorhandenHin(neu))
+                                {
+                                    ok = false;
+                                }
+                                else
+                                {
+                                    if (MannschaftenamSpieltag.Contains(neu.getMannschaftName1()) ||
+                                       MannschaftenamSpieltag.Contains(neu.getMannschaftName2()))
+                                    {
+                                        ok = false;
+                                    }
+                                    else
+                                    {
+                                        this.AddSpielToMannschaftsTurnier(neu);
+                                        MannschaftenamSpieltag.Add(neu.getMannschaftName1());
+                                        MannschaftenamSpieltag.Add(neu.getMannschaftName2());
+                                        System.Diagnostics.Debug.WriteLine(neu.getMannschaftName1() + " : " + neu.getMannschaftName2());
+                                        ok = true;
+                                    }
+                                }
+                            }
+                        } while (!ok);
+                    }
                 }
-
-                //Rückrunde
-                for (int index1 = 1; index1 <= (anzahlTeilnehmer / 2 * anzahlspieltage / 2); index1++)
-                {
-                    do
-                    {
-                        man1 = Zufallszahl.Next(anzahlTeilnehmer);
-                        man2 = Zufallszahl.Next(anzahlTeilnehmer);
-                        if (man1 != man2)
-                        {
-                            ok = true;
-                        }
-                        else
-                        {
-                            ok = false;
-                            continue;
-                        }
-                        neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                   ((Mannschaft)this.SelectedTurnier.getTeilnemer()[man1]),
-                                                   ((Mannschaft)this.SelectedTurnier.getTeilnemer()[man2]),
-                                                   0);
-
-                        if (IsSpielVorhanden(neu, neueSpielehin) || IsMannschaftsKombiVorhanden(neu, neueSpielerueck) ||
-                            IsSpielVorhanden(neu, neueSpielerueck))
-                        {
-                            ok = false;
-                        }
-                        else
-                        {
-                            ok = true;
-                        }
-                    } while (!ok);
-                    neueSpielerueck.Add(neu);
-                }
-
-                //Spieltage erstellen ohne Heim- bzw. Auswärtskontrolle
                 if (hinundrueck)
                 {
-                    //Hinrunde
-                    for (int spieltag = 1; spieltag <= (anzahlTeilnehmer - 1); spieltag++)
+                    //Rueckrunde
+                    for (int spieltag = (anzahlspieltage / 2 + 1); spieltag <= anzahlspieltage; spieltag++)
                     {
-                        int index = 0;
-                        while (neueSpielehin.Count > 0 && index < neueSpielehin.Count)
+                        for (int spielnr = 1; spielnr <= anzahlTeilnehmer / 2; spielnr++)
                         {
-                            if (SindMannschaftenAmSpieltagVorhanden(neueSpielehin[index], this.SelectedTurnier.Get_Spiele(), spieltag) ||
-                                IsSpielVorhanden(neueSpielehin[index]))
+                            do
                             {
-                                index++;
-                            }
-                            else
-                            {
-                                ((Mannschaftsspiel)neueSpielehin[index]).Spieltag = spieltag;
-                                this.SelectedTurnier.addSpiel(neueSpielehin[index]);
-                                neueSpielehin.RemoveAt(index);
-                                index = 0;
-                            }
+                                man1 = Zufallszahl.Next(anzahlTeilnehmer);
+                                man2 = Zufallszahl.Next(anzahlTeilnehmer);
+                                if (man1 == man2)
+                                {
+                                    ok = false;
+                                }
+                                else
+                                {
+                                    neu = new Mannschaftsspiel(this.SelectedTurnier,
+                                                               ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man1]),
+                                                               ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man2]), spieltag);
+                                    if (this.SelectedTurnier.isSpielVorhandenRueck(neu))
+                                    {
+                                        ok = false;
+                                    }
+                                    else
+                                    {
+                                        this.AddSpielToMannschaftsTurnier(neu);
+                                        ok = true;
+                                    }
+                                }
+                            } while (!ok);
                         }
-                        this.SelectedTurnier.SetMaxSpieltag(this.SelectedTurnier.Get_MaxRunden() + 1);
                     }
-                    //Rückrunde
-                    for (int spieltag = (anzahlTeilnehmer - 1) + 1; spieltag <= (anzahlTeilnehmer - 1) * 2; spieltag++)
-                    {
-                        int index = 0;
-                        while (neueSpielerueck.Count > 0 && index < neueSpielerueck.Count)
-                        {
-                            if (SindMannschaftenAmSpieltagVorhanden(neueSpielerueck[index], this.SelectedTurnier.Get_Spiele(), spieltag) ||
-                                IsSpielVorhanden(neueSpielerueck[index]))
-                            {
-                                index++;
-                            }
-                            else
-                            {
-                                ((Mannschaftsspiel)neueSpielerueck[index]).Spieltag = spieltag;
-                                this.SelectedTurnier.addSpiel(neueSpielerueck[index]);
-                                neueSpielerueck.RemoveAt(index);
-                                index = 0;
-                            }
-                        }
-                        this.SelectedTurnier.SetMaxSpieltag(this.SelectedTurnier.Get_MaxRunden() + 1);
-                    }
-                }
-                else
-                {
-                    //nur Hinrunde
-                    for (int spieltag = 1; spieltag <= (anzahlTeilnehmer - 1); spieltag++)
-                    {
-                        int index = 0;
-                        while (neueSpielehin.Count > 0 && index < neueSpielehin.Count)
-                        {
-                            if (SindMannschaftenAmSpieltagVorhanden(neueSpielehin[index], this.SelectedTurnier.Get_Spiele(), spieltag) ||
-                                IsSpielVorhanden(neueSpielehin[index]))
-                            {
-                                index++;
-                            }
-                            else
-                            {
-                                ((Mannschaftsspiel)neueSpielehin[index]).Spieltag = spieltag;
-                                this.SelectedTurnier.addSpiel(neueSpielehin[index]);
-                                neueSpielehin.RemoveAt(index);
-                                index = 0;
-                            }
-                        }
-                        this.SelectedTurnier.SetMaxSpieltag(this.SelectedTurnier.Get_MaxRunden() + 1);
-                    }
-                }
-                if (this.SelectedTurnier.Get_Spiele().Count > 0)
-                {
-                    this.SelectedTurnierSpieltag = 1;
                 }
                 else
                 { }
@@ -1452,31 +1408,15 @@ namespace Turnierverwaltung2020
             else
             { }
         }
-        private bool SindMannschaftenAmSpieltagVorhanden(Spiel spiel, List<Spiel> spiele, int spieltag)
-        {
-            foreach (Mannschaftsspiel sp in spiele)
-            {
-                if ((sp.Spieltag == spieltag) &&
-                   ((sp.getMannschaftName1() == spiel.getMannschaftName1()) ||
-                    (sp.getMannschaftName1() == spiel.getMannschaftName2()) ||
-                    (sp.getMannschaftName2() == spiel.getMannschaftName1()) ||
-                    (sp.getMannschaftName2() == spiel.getMannschaftName2())))
-                {
-                    return true;
-                }
-                else
-                { }
-            }
-            return false;
-        }
+
         private bool IsMannschaftsKombiVorhanden(Spiel neu, List<Spiel> value)
         {
             bool ergebnis = false;
 
             foreach (Spiel sp in value)
             {
-                if ((sp.getMannschaftName1() == neu.getMannschaftName2() &&
-                    sp.getMannschaftName2() == neu.getMannschaftName1()))
+                if ((sp.getMannschaftName1().Equals(neu.getMannschaftName2()) &&
+                    sp.getMannschaftName2().Equals(neu.getMannschaftName1())))
                 {
                     ergebnis = true;
                     break;
@@ -1495,8 +1435,8 @@ namespace Turnierverwaltung2020
 
             foreach (Spiel sp in value)
             {
-                if ((sp.getMannschaftName1() == neu.getMannschaftName1() &&
-                    sp.getMannschaftName2() == neu.getMannschaftName2()))
+                if ((sp.getMannschaftName1().Equals(neu.getMannschaftName1()) &&
+                    sp.getMannschaftName2().Equals(neu.getMannschaftName2())))
                 {
                     ergebnis = true;
                     break;

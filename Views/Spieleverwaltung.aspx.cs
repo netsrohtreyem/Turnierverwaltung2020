@@ -608,8 +608,7 @@ namespace Turnierverwaltung2020.Views
             this.Verwalter.EditSpielID = -1;
             Response.Redirect(Request.RawUrl);
         }
-
-        protected void btnAutomatik_Click(object sender, EventArgs e)
+        protected void btnSpeichern4_Click(object sender, EventArgs e)
         {
             bool hinundrueck = false;
 
@@ -630,6 +629,11 @@ namespace Turnierverwaltung2020.Views
 
             //reload
             Response.Redirect(Request.RawUrl);
+        }
+
+        protected void btnAutomatik_Click(object sender, EventArgs e)
+        {
+            this.mpe4.Show();
         }
 
         protected void btnspieltagauswaehlen_Click(object sender, EventArgs e)

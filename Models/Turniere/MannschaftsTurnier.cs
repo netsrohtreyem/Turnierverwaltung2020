@@ -334,8 +334,7 @@ namespace Turnierverwaltung2020
             foreach (Spiel sp in this.Spiele)
             {
                 if (search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
-                    search.getMannschaftName2().Equals(sp.getMannschaftName2()) &&
-                    search.Get_Spieltag() == sp.Get_Spieltag())
+                    search.getMannschaftName2().Equals(sp.getMannschaftName2()))
                 {
                     return true;
                 }
@@ -344,7 +343,56 @@ namespace Turnierverwaltung2020
             }
             return false;
         }
-
+        public override bool isSpielVorhandenHin(Spiel search)
+        {
+            foreach (Spiel sp in this.Spiele)
+            {
+                if((search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
+                   search.getMannschaftName2().Equals(sp.getMannschaftName2())) ||
+                   (search.getMannschaftName1().Equals(sp.getMannschaftName2()) &&
+                   search.getMannschaftName2().Equals(sp.getMannschaftName1())))
+                {
+                    return true;
+                }
+                else
+                { }
+            }
+            return false;
+        }
+        public override bool isSpielVorhandenRueck(Spiel search)
+        {
+            foreach (Spiel sp in this.Spiele)
+            {
+                if ((search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
+                    search.getMannschaftName2().Equals(sp.getMannschaftName2())))
+                {
+                    return true;
+                }
+                else
+                { }
+            }
+            return false;
+        }
+        public override bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag)
+        {
+            bool ergebnis = false;
+            foreach(Spiel sp in this.Spiele)
+            {
+                if(sp.Get_Spieltag() == tag)
+                {
+                    if(sp.getMannschaftName1().Equals(search.Name) || sp.getMannschaftName2().Equals(search.Name))
+                    {
+                        ergebnis = true;
+                        break;
+                    }
+                    else
+                    { }
+                }
+                else
+                { }
+            }
+            return ergebnis;
+        }
         public override int getSelectedGruppe()
         {
             return -1;

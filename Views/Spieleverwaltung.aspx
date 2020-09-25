@@ -22,7 +22,7 @@
     <asp:Button ID="btnNeu" runat="server" Text="Ein neues Spiel anlegen" Visible="false" OnClick="btnNeu_Click"/>
     <br />
     <br />
-    <asp:Button ID="btnAutomatik" runat="server" Text ="automatisch alle Spiele erzeugen" Visible="false" OnClick="btnAutomatik_Click" />
+    <asp:Button ID="btnAutomatik" runat="server" Text ="automatisch alle Spiele erzeugen" Enabled="false" Visible="false" OnClick="btnAutomatik_Click" />
      &nbsp;&nbsp;
     <asp:CheckBox ID="CheckBox1" runat="server" Checked="True" Text="Hin- und Rückspiele" OnCheckedChanged="CheckBox1_CheckedChanged" Visible="False" AutoPostBack="True" />
      &nbsp;&nbsp;
@@ -160,6 +160,33 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input id="btnCancel3" type="button" tabindex="3" value="Abbrechen" style="font-family: Arial, Helvetica, Sans-Serif; font-size: small; font-weight: bold" />
+		        </div>
+        </div>
+    </asp:panel>
+
+        
+    <asp:Label ID="lbldummy4" runat="server" style="display: none"/> 
+    <ajaxToolkit:ModalPopupExtender ID="mpe4" runat="server"  
+                                    TargetControlID ="lbldummy4" 
+                                    PopupControlID="pnlpopup4" 
+                                    CancelControlID="btnCancel4" 
+                                    BackgroundCssClass="modalBackground" 
+                                    DropShadow="true" />
+
+    <asp:panel id="pnlpopup4" style="display: none" runat="server">
+	    <div class="ModalExt3Window">
+                <div class="PopupHeader" id="PopupHeader4">
+                    <p style="font-family: Arial, Helvetica, Sans-Serif; font-size: medium; font-weight: bold">Achtung Hinweis!!</p>
+                </div>
+                <div class="PopupBody">
+                    <p style="font-size: medium; font-weight: bold; font-family: Arial">Wenn Sie fortfahren werden alle vorhandenen Spiele gelöscht!</p>                    
+                </div>
+            
+                <div class="Controls">
+                    <asp:Button ID="btnOkay4" runat="server" Text="Ok Weiter" OnClick="btnSpeichern4_Click" Font-Bold="True" Font-Size="Small" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input id="btnCancel4" type="button" value="Abbrechen" style="font-family: Arial, Helvetica, Sans-Serif; font-size: small; font-weight: bold" />
 		        </div>
         </div>
     </asp:panel>

@@ -327,6 +327,21 @@ namespace Turnierverwaltung2020
             }
             return false;
         }
+        public override bool isSpielVorhandenHin(Spiel search)
+        {
+            return true;
+        }
+        public override bool isSpielVorhandenRueck(Spiel search)
+        {
+            return true;
+        }
+        public override bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag)
+        {
+            bool ergebnis = false;
+
+
+            return ergebnis;
+        }
         public override int Get_MaxRunden()
         {
             return AnzahlGruppen;
