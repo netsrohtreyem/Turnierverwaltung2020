@@ -335,13 +335,6 @@ namespace Turnierverwaltung2020
         {
             return true;
         }
-        public override bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag)
-        {
-            bool ergebnis = false;
-
-
-            return ergebnis;
-        }
         public override int Get_MaxRunden()
         {
             return AnzahlGruppen;
@@ -394,6 +387,11 @@ namespace Turnierverwaltung2020
         public override Ranking GetRanking(int gruppe)
         {
             return this.Gruppen[gruppe - 1].getRanking(this.Spiele);
+        }
+
+        public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
+        {
+            throw new NotImplementedException();
         }
 
 

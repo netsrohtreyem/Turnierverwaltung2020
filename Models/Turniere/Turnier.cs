@@ -95,7 +95,6 @@ namespace Turnierverwaltung2020
         public abstract bool isSpielVorhanden(Spiel search);
         public abstract bool isSpielVorhandenHin(Spiel search);
         public abstract bool isSpielVorhandenRueck(Spiel search);
-        public abstract bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag);
         public List<Spiel> Get_Spiele()
         {
             return this.Spiele;
@@ -122,6 +121,7 @@ namespace Turnierverwaltung2020
         public abstract int getAnzahlPersonenteilnehmer(int value);
         public abstract void ChangeSpiel(int id, string name1, string name2, string ergebnis1, string ergebnis2);
         public abstract Ranking GetRanking(int value);
+        public abstract bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag);
         #endregion
     }
 }

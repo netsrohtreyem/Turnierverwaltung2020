@@ -373,26 +373,7 @@ namespace Turnierverwaltung2020
             }
             return false;
         }
-        public override bool isMannschaftamSpieltagVorhanden(Mannschaft search, int tag)
-        {
-            bool ergebnis = false;
-            foreach(Spiel sp in this.Spiele)
-            {
-                if(sp.Get_Spieltag() == tag)
-                {
-                    if(sp.getMannschaftName1().Equals(search.Name) || sp.getMannschaftName2().Equals(search.Name))
-                    {
-                        ergebnis = true;
-                        break;
-                    }
-                    else
-                    { }
-                }
-                else
-                { }
-            }
-            return ergebnis;
-        }
+
         public override int getSelectedGruppe()
         {
             return -1;
@@ -458,6 +439,42 @@ namespace Turnierverwaltung2020
         {
             MakeRanking();
             return this.Tabelle;
+        }
+
+        public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
+        {
+            bool ergebnis = false;
+            foreach(Spiel sp in this.Spiele)
+            {
+                if(sp.Get_Spieltag() == spieltag && teilnehmer2 != 0)
+                {
+                    if(liste[teilnehmer1-1].Name == sp.getMannschaftName1() ||
+                       liste[teilnehmer1-1].Name == sp.getMannschaftName2() ||
+                       liste[teilnehmer2-1].Name == sp.getMannschaftName1() ||
+                       liste[teilnehmer2-1].Name == sp.getMannschaftName2())
+                    {
+                        ergebnis = true;
+                        break;
+                    }
+                    else
+                    { }
+                }
+                else if(sp.Get_Spieltag() == spieltag)
+                {
+                    if (liste[teilnehmer1 - 1].Name == sp.getMannschaftName1() ||
+                        liste[teilnehmer1 - 1].Name == sp.getMannschaftName2())
+                    {
+                        ergebnis = true;
+                        break;
+                    }
+                    else
+                    { }
+                }
+                else
+                { }
+            }
+
+            return ergebnis;
         }
         #endregion
     }

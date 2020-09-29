@@ -1200,103 +1200,119 @@ namespace Turnierverwaltung2020
                 this.SelectedTurnierSpieltag = 0;
                 int anzahlspieltage = (this.SelectedTurnier.getAnzahlTeilnehmer() - 1) * 2;
                 int anzahlTeilnehmer = this.SelectedTurnier.getAnzahlTeilnehmer();
-                List<Spiel> neueSpielehin = new List<Spiel>();
-                List<Spiel> neueSpielerueck = new List<Spiel>();
                 Random Zufallszahl = new Random(DateTime.Now.GetHashCode());
+                List<Teilnehmer> OrgListe = new List<Teilnehmer>(this.SelectedTurnier.getTeilnemer());
+
+                List<Mannschaft> Liste = new List<Mannschaft>();
                 Zufallszahl.Next();
-                int man1 = -1;
-                int man2 = -1;
                 if (anzahlTeilnehmer < 2)
                 {
                     return;
                 }
                 else
                 { }
+                //Zufällige Mannschaftsliste erzeugen
+                for(int index = 0;index < anzahlTeilnehmer;index++)
+                {
+                    int nummer = Zufallszahl.Next(OrgListe.Count);
+                    Liste.Add((Mannschaft)OrgListe[nummer]);
+                    OrgListe.RemoveAt(nummer);
+                }
+
                 this.SelectedTurnierSpieltag = 1;
                 this.SelectedTurnier.SetMaxSpieltag(0);
                 bool ok = false;
                 Spiel neu = null;
 
-                //Hinrunde
-                for (int spieltag = 1; spieltag <= anzahlspieltage / 2; spieltag++)
+                if(hinundrueck)//hin und Rück
                 {
-                    List<string> MannschaftenamSpieltag = new List<string>();
-                    System.Diagnostics.Debug.WriteLine("Spieltag: " + spieltag);
-                    for (int spielnr = 1; spielnr <= anzahlTeilnehmer / 2; spielnr++)
+                    //Hin
+                    for(int spieltag = 1;spieltag <= anzahlspieltage/2;spieltag++)
                     {
-                        do
+                        for (int teilnehmer1 = 1; teilnehmer1 <= anzahlTeilnehmer; teilnehmer1++)
                         {
-                            man1 = Zufallszahl.Next(anzahlTeilnehmer);
-                            man2 = Zufallszahl.Next(anzahlTeilnehmer);
-                            if (man1 == man2)
+                            bool gefunden = false;
+                            for (int teilnehmer2 = 2; teilnehmer2 <= (anzahlTeilnehmer-1); teilnehmer2++)
                             {
-                                ok = false;
+                                if ((((teilnehmer1 + teilnehmer2) % (anzahlTeilnehmer - 1)) == spieltag ||
+                                    ((((teilnehmer1 + teilnehmer2) % (anzahlTeilnehmer - 1)) == 0) && spieltag == anzahlspieltage/2)) && 
+                                    !(teilnehmer1 == teilnehmer2) &&
+                                    !this.SelectedTurnier.SindMannschaftenAmSpieltagVorhanden(teilnehmer1,teilnehmer2,Liste,spieltag))
+                                {
+                                    neu = new Mannschaftsspiel(this.SelectedTurnier, Liste[teilnehmer1 - 1], Liste[teilnehmer2 - 1], spieltag);
+                                    gefunden = true;
+                                    this.SelectedTurnier.addSpiel(neu);
+                                    break;
+                                }
+                                else
+                                {
+                                    gefunden = false;
+                                }
+                            }
+                            if(!gefunden &&
+                               !this.SelectedTurnier.SindMannschaftenAmSpieltagVorhanden(teilnehmer1, 0, Liste, spieltag))
+                            {
+                                neu = new Mannschaftsspiel(this.SelectedTurnier, Liste[teilnehmer1 - 1], Liste[anzahlTeilnehmer - 1], spieltag);
+                                gefunden = true;
+                                this.SelectedTurnier.addSpiel(neu);
                             }
                             else
-                            {
-                                neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                           ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man1]),
-                                                           ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man2]), spieltag);
-                                if (this.SelectedTurnier.isSpielVorhandenHin(neu))
-                                {
-                                    ok = false;
-                                }
-                                else
-                                {
-                                    if (MannschaftenamSpieltag.Contains(neu.getMannschaftName1()) ||
-                                       MannschaftenamSpieltag.Contains(neu.getMannschaftName2()))
-                                    {
-                                        ok = false;
-                                    }
-                                    else
-                                    {
-                                        this.AddSpielToMannschaftsTurnier(neu);
-                                        MannschaftenamSpieltag.Add(neu.getMannschaftName1());
-                                        MannschaftenamSpieltag.Add(neu.getMannschaftName2());
-                                        System.Diagnostics.Debug.WriteLine(neu.getMannschaftName1() + " : " + neu.getMannschaftName2());
-                                        ok = true;
-                                    }
-                                }
-                            }
-                        } while (!ok);
+                            { }
+                        }
                     }
-                }
-                if (hinundrueck)
-                {
-                    //Rueckrunde
-                    for (int spieltag = (anzahlspieltage / 2 + 1); spieltag <= anzahlspieltage; spieltag++)
+                    //Rueck
+                    List<Spiel> SpieleListe = new List<Spiel>(this.SelectedTurnier.Get_Spiele());
+                    int nummer = Zufallszahl.Next(SpieleListe.Count);
+                    for (int spieltag = 18; spieltag <= anzahlspieltage; spieltag++)
                     {
-                        for (int spielnr = 1; spielnr <= anzahlTeilnehmer / 2; spielnr++)
+                        for (int spiel = 1; spiel < anzahlTeilnehmer / 2; spiel++)
                         {
-                            do
-                            {
-                                man1 = Zufallszahl.Next(anzahlTeilnehmer);
-                                man2 = Zufallszahl.Next(anzahlTeilnehmer);
-                                if (man1 == man2)
-                                {
-                                    ok = false;
-                                }
-                                else
-                                {
-                                    neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                               ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man1]),
-                                                               ((Mannschaft)((MannschaftsTurnier)this.SelectedTurnier).Teilnehmer[man2]), spieltag);
-                                    if (this.SelectedTurnier.isSpielVorhandenRueck(neu))
-                                    {
-                                        ok = false;
-                                    }
-                                    else
-                                    {
-                                        this.AddSpielToMannschaftsTurnier(neu);
-                                        ok = true;
-                                    }
-                                }
-                            } while (!ok);
+                            neu = new Mannschaftsspiel(this.SelectedTurnier,
+                                                       ((Mannschaft)SpieleListe[nummer].getTeilnehmer2()),
+                                                       ((Mannschaft)SpieleListe[nummer].getTeilnehmer1()),
+                                                       spieltag);
+                            this.SelectedTurnier.addSpiel(neu);
+                            SpieleListe.RemoveAt(nummer);
+                            nummer = Zufallszahl.Next(SpieleListe.Count);
                         }
                     }
                 }
-                else
-                { }
+                else //nur Hin
+                {
+                    for (int spieltag = 1; spieltag <= anzahlspieltage / 2; spieltag++)
+                    {
+                        for (int teilnehmer1 = 1; teilnehmer1 <= anzahlTeilnehmer; teilnehmer1++)
+                        {
+                            bool gefunden = false;
+                            for (int teilnehmer2 = 2; teilnehmer2 <= (anzahlTeilnehmer - 1); teilnehmer2++)
+                            {
+                                if ((((teilnehmer1 + teilnehmer2) % (anzahlTeilnehmer - 1)) == spieltag ||
+                                    ((teilnehmer1 + teilnehmer2) % (anzahlTeilnehmer - 1)) == 0) &&
+                                    !(teilnehmer1 == teilnehmer2) &&
+                                    !this.SelectedTurnier.SindMannschaftenAmSpieltagVorhanden(teilnehmer1, teilnehmer2, Liste, spieltag))
+                                {
+                                    neu = new Mannschaftsspiel(this.SelectedTurnier, Liste[teilnehmer1 - 1], Liste[teilnehmer2 - 1], spieltag);
+                                    gefunden = true;
+                                    this.SelectedTurnier.addSpiel(neu);
+                                    break;
+                                }
+                                else
+                                {
+                                    gefunden = false;
+                                }
+                            }
+                            if (!gefunden &&
+                               !this.SelectedTurnier.SindMannschaftenAmSpieltagVorhanden(teilnehmer1, 0, Liste, spieltag))
+                            {
+                                neu = new Mannschaftsspiel(this.SelectedTurnier, Liste[teilnehmer1 - 1], Liste[anzahlTeilnehmer - 1], spieltag);
+                                gefunden = true;
+                                this.SelectedTurnier.addSpiel(neu);
+                            }
+                            else
+                            { }
+                        }
+                    }
+                }
             }
             else if (this.SelectedTurnier is GruppenTurnier) //Gruppen Turnier, Vorrunde
             {
