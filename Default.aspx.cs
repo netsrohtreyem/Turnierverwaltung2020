@@ -149,7 +149,7 @@ namespace Turnierverwaltung2020
                 neuesSpiel.setErgebniswert2("0");
                 this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
                 this.Verwalter.SelectedTurnierSpieltag = 1;
-
+                this.Verwalter.SelectedTurnierIndex = 1;
                 #endregion
             }
 

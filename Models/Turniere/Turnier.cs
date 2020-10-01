@@ -93,8 +93,6 @@ namespace Turnierverwaltung2020
             }
         }
         public abstract bool isSpielVorhanden(Spiel search);
-        public abstract bool isSpielVorhandenHin(Spiel search);
-        public abstract bool isSpielVorhandenRueck(Spiel search);
         public List<Spiel> Get_Spiele()
         {
             return this.Spiele;

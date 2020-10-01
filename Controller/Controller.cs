@@ -1189,7 +1189,6 @@ namespace Turnierverwaltung2020
             else
             { }
         }
-
         public void SpieltageAutomatik(bool hinundrueck)
         {
             this.SelectedTurnier.Spiele.Clear();
@@ -1262,18 +1261,16 @@ namespace Turnierverwaltung2020
                     }
                     //Rueck
                     List<Spiel> SpieleListe = new List<Spiel>(this.SelectedTurnier.Get_Spiele());
-                    int nummer = Zufallszahl.Next(SpieleListe.Count);
                     for (int spieltag = 18; spieltag <= anzahlspieltage; spieltag++)
                     {
-                        for (int spiel = 1; spiel < anzahlTeilnehmer / 2; spiel++)
+                        for (int spiel = 1; spiel <= anzahlTeilnehmer / 2; spiel++)
                         {
                             neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                       ((Mannschaft)SpieleListe[nummer].getTeilnehmer2()),
-                                                       ((Mannschaft)SpieleListe[nummer].getTeilnehmer1()),
+                                                       ((Mannschaft)SpieleListe[0].getTeilnehmer2()),
+                                                       ((Mannschaft)SpieleListe[0].getTeilnehmer1()),
                                                        spieltag);
                             this.SelectedTurnier.addSpiel(neu);
-                            SpieleListe.RemoveAt(nummer);
-                            nummer = Zufallszahl.Next(SpieleListe.Count);
+                            SpieleListe.RemoveAt(0);
                         }
                     }
                 }
@@ -1424,7 +1421,6 @@ namespace Turnierverwaltung2020
             else
             { }
         }
-
         private bool IsMannschaftsKombiVorhanden(Spiel neu, List<Spiel> value)
         {
             bool ergebnis = false;

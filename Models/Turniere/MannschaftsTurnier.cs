@@ -129,7 +129,6 @@ namespace Turnierverwaltung2020
             Conn.Close();
             return ergebnis;
         }
-
         public override bool DeleteFromDB()
         {
             bool ergebnis = false;
@@ -175,7 +174,6 @@ namespace Turnierverwaltung2020
 
             return ergebnis;
         }
-
         public override bool ChangeInDB()
         {
             bool ergebnis = false;
@@ -235,34 +233,28 @@ namespace Turnierverwaltung2020
 
             return ergebnis;
         }
-
         public override int getAnzahlTeilnehmer()
         {
             return this.Teilnehmer.Count;
         }
-
         public override List<Teilnehmer> getTeilnemer()
         {
             return this.Teilnehmer;
 
         }
-
         public override void clearTeilnehmer()
         {
             this.Teilnehmer.Clear();
         }
-
         public override void addTeilnehmer(object value)
         {
             this.Teilnehmer.Add((Mannschaft)value);
             this.AnzahlTeilnehmer++;
         }
-
         public override string GetTypus()
         {
             return "Mannschaften";
         }
-
         public override void addSpiel(int spieltag, object mannschaft1, object mannschaft2)
         {
             Spiel neu = new Mannschaftsspiel(this, ((Mannschaft)mannschaft1), ((Mannschaft)mannschaft1), spieltag);
@@ -312,23 +304,18 @@ namespace Turnierverwaltung2020
         {
             return "Spieltag";
         }
-
         public override string getTeilnehmerbezeichnung()
         {
             return "Mannschaft";
         }
-
         public override Teilnehmer getGruppe(int v)
         {
             return null;
         }
-
         public override int Get_MaxRunden()
         {
             return MaxSpieltag;
         }
-
-
         public override bool isSpielVorhanden(Spiel search)
         {
             foreach (Spiel sp in this.Spiele)
@@ -343,52 +330,18 @@ namespace Turnierverwaltung2020
             }
             return false;
         }
-        public override bool isSpielVorhandenHin(Spiel search)
-        {
-            foreach (Spiel sp in this.Spiele)
-            {
-                if((search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
-                   search.getMannschaftName2().Equals(sp.getMannschaftName2())) ||
-                   (search.getMannschaftName1().Equals(sp.getMannschaftName2()) &&
-                   search.getMannschaftName2().Equals(sp.getMannschaftName1())))
-                {
-                    return true;
-                }
-                else
-                { }
-            }
-            return false;
-        }
-        public override bool isSpielVorhandenRueck(Spiel search)
-        {
-            foreach (Spiel sp in this.Spiele)
-            {
-                if ((search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
-                    search.getMannschaftName2().Equals(sp.getMannschaftName2())))
-                {
-                    return true;
-                }
-                else
-                { }
-            }
-            return false;
-        }
-
         public override int getSelectedGruppe()
         {
             return -1;
         }
-
         public override void ClearSpiele(int value)
         {
             this.Spiele.Clear();
             this.MaxSpieltag = 0;
         }
-
         public override void setSelectedGruppe(int v)
         {
         }
-
         public override void SetMaxSpieltag(int v)
         {
             this.MaxSpieltag = v;
@@ -411,7 +364,6 @@ namespace Turnierverwaltung2020
             }
             return ergebnis;
         }
-
         public override void ChangeSpiel(int id, string name1, string name2, string ergebnis1, string ergebnis2)
         {
             foreach (Spiel sp in this.Spiele)
@@ -425,7 +377,6 @@ namespace Turnierverwaltung2020
                 { }
             }
         }
-
         public void MakeRanking()
         {
             //Tabelle erstellen
@@ -433,14 +384,11 @@ namespace Turnierverwaltung2020
 
             this.Sportart.setTabelle(this.Tabelle, this.Teilnehmer, this.Spiele);
         }
-
-
         public override Ranking GetRanking(int value)
         {
             MakeRanking();
             return this.Tabelle;
         }
-
         public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
         {
             bool ergebnis = false;
