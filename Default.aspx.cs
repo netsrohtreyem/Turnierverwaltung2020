@@ -55,10 +55,12 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddPerson((Person)teilnehmer2);
                 Teilnehmer teilnehmer3 = new Fussballspieler("Hitz", "Marvin", new DateTime(1987, 9, 18), 96, "Torwart", 0, this.Verwalter.Sportarten[0]);
                 this.Verwalter.AddPerson((Person)teilnehmer3);
-                Teilnehmer teilnehmer4 = new WeitererSpieler("Lustig", "Peter", new DateTime(1974, 12, 4),this.Verwalter.Sportarten[3],123,12);
+                Teilnehmer teilnehmer4 = new Fussballspieler("Haaland", "Erling", new DateTime(200, 7, 21), 43, "Torwart", 31, this.Verwalter.Sportarten[0]);
                 this.Verwalter.AddPerson((Person)teilnehmer4);
-                Teilnehmer teilnehmer5 = new WeitererSpieler("Bärig", "Bernd", new DateTime(1978, 4, 6), this.Verwalter.Sportarten[3],245, 46);
+                Teilnehmer teilnehmer5 = new WeitererSpieler("Lustig", "Peter", new DateTime(1974, 12, 4),this.Verwalter.Sportarten[3],123,12);
                 this.Verwalter.AddPerson((Person)teilnehmer5);
+                Teilnehmer teilnehmer6 = new WeitererSpieler("Bärig", "Bernd", new DateTime(1978, 4, 6), this.Verwalter.Sportarten[3],245, 46);
+                this.Verwalter.AddPerson((Person)teilnehmer6);
                 #endregion
 
                 #region Mannschaften
@@ -107,8 +109,8 @@ namespace Turnierverwaltung2020
 
                 #region Gruppen
                 Gruppe neuegruppe = new Gruppe("Testgruppe1", this.Verwalter.Sportarten[3]);
-                neuegruppe.Add((Person)this.Verwalter.getPerson(4));
                 neuegruppe.Add((Person)this.Verwalter.getPerson(5));
+                neuegruppe.Add((Person)this.Verwalter.getPerson(6));
                 this.Verwalter.AddGruppe(neuegruppe, null);
                 #endregion
 
