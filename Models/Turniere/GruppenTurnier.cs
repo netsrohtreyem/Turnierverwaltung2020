@@ -34,6 +34,11 @@ namespace Turnierverwaltung2020
             this.Gruppen = new List<Teilnehmer>(Teiln);
             this.AnzahlTeilnehmer = this.Gruppen.Count;
         }
+        public GruppenTurnier(string bez, sportart sport) : base(bez, sport)
+        {
+            this.Gruppen = new List<Teilnehmer>();
+            this.AnzahlTeilnehmer = this.Gruppen.Count;
+        }
         public GruppenTurnier(GruppenTurnier value) : base(value)
         {
             this.Gruppen = new List<Teilnehmer>(value.Gruppen);

@@ -541,6 +541,15 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             List<int> Mitgliederliste = new List<int>();
+            if(mitgliedervalue == null)
+            {
+                mitgliedervalue = new ListItemCollection();
+                ListItem neuerEintrag = new ListItem("bisher keine Teilnehmer");
+                mitgliedervalue.Add(neuerEintrag);
+            }
+            else
+            { }
+
             if (mitgliedervalue[0].Text != "bisher keine Teilnehmer")
             {
                 foreach (ListItem li in mitgliedervalue)

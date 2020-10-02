@@ -32,6 +32,7 @@ namespace Turnierverwaltung2020
 
                 #region Testdaten
                 //Standart setzen
+                #region Sortarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
                 this.Verwalter.Sportarten.Clear();
@@ -42,8 +43,25 @@ namespace Turnierverwaltung2020
                 neu = new sportart("Tennis", true, true, 0, 0, 0);
                 neu.id = 3;
                 this.Verwalter.Sportarten.Add(neu);
+                neu = new sportart("Tischtennis", false, true, 1, 1, 0);
+                neu.id = 4;
+                this.Verwalter.Sportarten.Add(neu);
+                #endregion
 
+                #region Personen
+                Teilnehmer teilnehmer1 = new Fussballspieler("Müller", "Thomas", new DateTime(1989, 9, 13), 123, "Mittelfeld", 23, this.Verwalter.Sportarten[0]);
+                this.Verwalter.AddPerson((Person)teilnehmer1);
+                Teilnehmer teilnehmer2 = new Fussballspieler("Lewandowski", "Robert", new DateTime(1988, 8, 21), 220, "Stürmer", 95, this.Verwalter.Sportarten[0]);
+                this.Verwalter.AddPerson((Person)teilnehmer2);
+                Teilnehmer teilnehmer3 = new Fussballspieler("Hitz", "Marvin", new DateTime(1987, 9, 18), 96, "Torwart", 0, this.Verwalter.Sportarten[0]);
+                this.Verwalter.AddPerson((Person)teilnehmer3);
+                Teilnehmer teilnehmer4 = new WeitererSpieler("Lustig", "Peter", new DateTime(1974, 12, 4),this.Verwalter.Sportarten[3],123,12);
+                this.Verwalter.AddPerson((Person)teilnehmer4);
+                Teilnehmer teilnehmer5 = new WeitererSpieler("Bärig", "Bernd", new DateTime(1978, 4, 6), this.Verwalter.Sportarten[3],245, 46);
+                this.Verwalter.AddPerson((Person)teilnehmer5);
+                #endregion
 
+                #region Mannschaften
                 Mannschaft man1 = new Mannschaft("FC Augsburg", this.Verwalter.Sportarten[0]);
                 Mannschaft man2 = new Mannschaft("Hertha BSC", this.Verwalter.Sportarten[0]);
                 Mannschaft man3 = new Mannschaft("Union Berlin", this.Verwalter.Sportarten[0]);
@@ -62,6 +80,11 @@ namespace Turnierverwaltung2020
                 Mannschaft man16 = new Mannschaft("FC Schalke 04", this.Verwalter.Sportarten[0]);
                 Mannschaft man17 = new Mannschaft("VFB Stuttgart", this.Verwalter.Sportarten[0]);
                 Mannschaft man18 = new Mannschaft("VFL Wolfsburg", this.Verwalter.Sportarten[0]);
+
+                man15.Add((Person)this.Verwalter.getPerson(1));
+                man15.Add((Person)this.Verwalter.getPerson(2));
+                man6.Add((Person)this.Verwalter.getPerson(3));
+                man6.Add((Person)this.Verwalter.getPerson(4));
                 this.Verwalter.AddMannschaft(man1);
                 this.Verwalter.AddMannschaft(man2);
                 this.Verwalter.AddMannschaft(man3);
@@ -80,8 +103,16 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddMannschaft(man16);
                 this.Verwalter.AddMannschaft(man17);
                 this.Verwalter.AddMannschaft(man18);
+                #endregion
 
-                #region Teilnehmer
+                #region Gruppen
+                Gruppe neuegruppe = new Gruppe("Testgruppe1", this.Verwalter.Sportarten[3]);
+                neuegruppe.Add((Person)this.Verwalter.getPerson(4));
+                neuegruppe.Add((Person)this.Verwalter.getPerson(5));
+                this.Verwalter.AddGruppe(neuegruppe, null);
+                #endregion
+
+                #region Turniere
                 Turnier testneu = new MannschaftsTurnier("Fussball Bundesliga 2020/21", this.Verwalter.Sportarten[0]);
                 testneu.addTeilnehmer(man1);
                 testneu.addTeilnehmer(man2);
@@ -104,6 +135,10 @@ namespace Turnierverwaltung2020
                 
                 this.Verwalter.AddTurnier(testneu);
                 this.Verwalter.SelectedTurnier = testneu;
+
+                testneu = new GruppenTurnier("Tischtennisturnier 2021", this.Verwalter.Sportarten[3]);
+                testneu.addTeilnehmer(neuegruppe);
+                this.Verwalter.AddTurnier(testneu);
                 #endregion
 
                 #region Spieltag1

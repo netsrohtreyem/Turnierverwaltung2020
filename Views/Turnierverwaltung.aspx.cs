@@ -574,8 +574,6 @@ namespace Turnierverwaltung2020.Views
             else
             { }
         }
-
-
         #endregion
     }
 }
