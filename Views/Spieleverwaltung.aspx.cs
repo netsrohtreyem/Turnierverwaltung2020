@@ -143,7 +143,7 @@ namespace Turnierverwaltung2020.Views
             #region Headersetzen zum anclicken
             //ID
             Button newButton = new Button();
-            newButton.Text = "ID";
+            newButton.Text = "Spiel-Nr.";
             newButton.Width = Unit.Percentage(90);
             newButton.BackColor = this.tblSpiele.Rows[0].BackColor;
             newButton.BorderStyle = BorderStyle.None;
@@ -215,16 +215,18 @@ namespace Turnierverwaltung2020.Views
             {
                 if (this.Verwalter.SelectedTurnier is MannschaftsTurnier)
                 {
+                    int spielindex = 1;
                     foreach (Spiel spiel in this.Verwalter.SelectedTurnier.Get_Spiele())
-                    {
+                    {                        
                         if (spiel.Get_Spieltag() == this.Verwalter.SelectedTurnierSpieltag)
                         {
                             neueRow = new TableRow();
                             //ID
                             neueCell = new TableCell();
-                            neueCell.Text = spiel.ID.ToString();
+                            neueCell.Text = spielindex.ToString();
                             neueCell.HorizontalAlign = HorizontalAlign.Center;
                             neueRow.Cells.Add(neueCell);
+                            spielindex++;
                             //Mannschaft1
                             neueCell = new TableCell();
                             neueCell.Text = spiel.getMannschaftName1();

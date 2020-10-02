@@ -66,7 +66,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-               <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Views/Contact">&copy; 2020 Thorsten Meyer&nbsp;&nbsp;Stand: 02.08.2020 V1.0&nbsp;&nbsp;</asp:HyperLink>
+               <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Views/Contact">&copy; 2020 Thorsten Meyer&nbsp;&nbsp;Stand: 02.10.2020 V1.1&nbsp;&nbsp;</asp:HyperLink>
             </footer>
         </div>
 
