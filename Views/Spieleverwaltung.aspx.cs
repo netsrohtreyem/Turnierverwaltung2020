@@ -405,15 +405,16 @@ namespace Turnierverwaltung2020.Views
             {
                 index = Convert.ToInt32(id.Substring(11));
                 spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
-                this.Verwalter.DeleteSpielFromTurnier(spielid);
+                Spiel Delete = this.Verwalter.SelectedTurnier.getSpiel(spielid, this.Verwalter.SelectedTurnierSpieltag);
+                this.Verwalter.DeleteSpielFromTurnier(Delete.ID);
                 Response.Redirect(Request.RawUrl);
             }
             else if (id.Contains("bearbspiel"))
             {
                 index = Convert.ToInt32(id.Substring(10));
-                spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);
-                Spiel Change = this.Verwalter.SelectedTurnier.getSpiel(spielid);
-                this.Verwalter.EditSpielID = spielid;
+                spielid = Convert.ToInt32(this.tblSpiele.Rows[index].Cells[0].Text);                
+                Spiel Change = this.Verwalter.SelectedTurnier.getSpiel(spielid,this.Verwalter.SelectedTurnierSpieltag);
+                this.Verwalter.EditSpielID = Change.ID;
                 if (Change != null)
                 {
                     this.Verwalter.EditSpiel = true;

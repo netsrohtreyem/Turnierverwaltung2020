@@ -136,12 +136,9 @@ namespace Turnierverwaltung2020
                 testneu.addTeilnehmer(man18);
                 
                 this.Verwalter.AddTurnier(testneu);
-                this.Verwalter.SelectedTurnier = testneu;
-
-                testneu = new GruppenTurnier("Tischtennisturnier 2021", this.Verwalter.Sportarten[3]);
-                testneu.addTeilnehmer(neuegruppe);
-                this.Verwalter.AddTurnier(testneu);
-                #endregion
+                this.Verwalter.SelectedTurnierSpieltag = 1;
+                this.Verwalter.SelectedTurnierIndex = 1;
+                this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[0];
 
                 #region Spieltag1
                 Spiel neuesSpiel = new Mannschaftsspiel(testneu, man15, man16, 1);
@@ -230,8 +227,19 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
                 #endregion
 
+
+
+                testneu = new GruppenTurnier("Tischtennisturnier 2021", this.Verwalter.Sportarten[3]);
+                testneu.addTeilnehmer(neuegruppe);
+                this.Verwalter.AddTurnier(testneu);
+
+
                 this.Verwalter.SelectedTurnierSpieltag = 1;
                 this.Verwalter.SelectedTurnierIndex = 1;
+                this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[0];
+                #endregion
+
+
                 #endregion
             }
 
