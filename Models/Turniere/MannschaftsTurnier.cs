@@ -424,6 +424,30 @@ namespace Turnierverwaltung2020
 
             return ergebnis;
         }
+
+        public override Spiel getSpiel(int spielid, int spieltag)
+        {
+            Spiel ergebnis = null;
+            foreach (Spiel sp in this.Spiele)
+            {
+                if (sp.Get_Spieltag() == spieltag)
+                {
+                    spielid--;
+                    if (spielid <= 0)
+                    {
+                        ergebnis = sp;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                { }
+            }
+            return ergebnis;
+        }
         #endregion
     }
 }

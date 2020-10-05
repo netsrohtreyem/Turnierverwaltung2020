@@ -115,29 +115,8 @@ namespace Turnierverwaltung2020
             }
             return ergebnis;
         }
-        public Spiel getSpiel(int spielid,int spieltag)
-        {
-            Spiel ergebnis = null;
-            foreach (Spiel sp in this.Spiele)
-            {
-                if (sp.Get_Spieltag() == spieltag)
-                {
-                    spielid--;
-                    if(spielid <= 0)
-                    {
-                        ergebnis = sp;
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else
-                { }
-            }
-            return ergebnis;
-        }
+        public abstract Spiel getSpiel(int spielid, int spieltag);
+        
         public abstract void SetMaxSpieltag(int v);
         public abstract int getAnzahlPersonenteilnehmer(int value);
         public abstract void ChangeSpiel(int id, string name1, string name2, string ergebnis1, string ergebnis2);

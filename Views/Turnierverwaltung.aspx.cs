@@ -254,7 +254,7 @@ namespace Turnierverwaltung2020.Views
                     {
                         foreach (Mannschaft man in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
                         {
-                            string it = man.ID + ", " + man.Name + ", " + man.Sportart;
+                            string it = man.ID + ", " + man.Name + ", " + man.Sportart.name;
                             this.lstVorhandeneTeilnehmer.Items.Add(it);
                         }
                     }
@@ -265,7 +265,7 @@ namespace Turnierverwaltung2020.Views
                     this.lstVerfuegbareTeilnehmer.Items.Clear();
                     foreach (Mannschaft man in this.Verwalter.Mannschaften)
                     {
-                        string item = man.ID + ", " + man.Name + ", " + man.Sportart;
+                        string item = man.ID + ", " + man.Name + ", " + man.Sportart.name;
                         lstVerfuegbareTeilnehmer.Items.Add(item);
                     }
                     foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
@@ -325,7 +325,7 @@ namespace Turnierverwaltung2020.Views
                     {
                         foreach (Gruppe grp in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
                         {
-                            string it = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
+                            string it = grp.ID + ", " + grp.Name + ", " + grp.Sportart.name;
                             this.lstVorhandeneTeilnehmer.Items.Add(it);
                         }
                     }
@@ -336,7 +336,7 @@ namespace Turnierverwaltung2020.Views
                     this.lstVerfuegbareTeilnehmer.Items.Clear();
                     foreach (Gruppe grp in this.Verwalter.Gruppen)
                     {
-                        string item = grp.ID + ", " + grp.Name + ", " + grp.Sportart;
+                        string item = grp.ID + ", " + grp.Name + ", " + grp.Sportart.name;
                         lstVerfuegbareTeilnehmer.Items.Add(item);
                     }
                     foreach (ListItem ls in lstVorhandeneTeilnehmer.Items)
@@ -405,7 +405,7 @@ namespace Turnierverwaltung2020.Views
                 this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Mannschaften:";
                 foreach (Mannschaft man in this.Verwalter.Mannschaften)
                 {
-                    this.lstVerfuegbareTeilnehmer.Items.Add(man.ID + ", " + man.Name + ", " + man.Sportart);
+                    this.lstVerfuegbareTeilnehmer.Items.Add(man.ID + ", " + man.Name + ", " + man.Sportart.name);
                 }
             }
             else //Gruppe
@@ -416,7 +416,7 @@ namespace Turnierverwaltung2020.Views
                 this.tblEingabetabellegr.Rows[0].Cells[2].Text = "verfügbare Gruppen:";
                 foreach (Gruppe grp in this.Verwalter.Gruppen)
                 {
-                    this.lstVerfuegbareTeilnehmer.Items.Add(grp.ID + ", " + grp.Name + ", " + grp.Sportart);
+                    this.lstVerfuegbareTeilnehmer.Items.Add(grp.ID + ", " + grp.Name + ", " + grp.Sportart.name);
                 }
             }
         }

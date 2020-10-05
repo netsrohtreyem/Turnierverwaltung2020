@@ -1200,8 +1200,6 @@ namespace Turnierverwaltung2020
         }
         public void SpieltageAutomatik(bool hinundrueck)
         {
-            this.SelectedTurnier.Spiele.Clear();
-            this.SelectedTurnierSpieltag = 0;
             if (this.SelectedTurnier is MannschaftsTurnier)
             {
                 this.SelectedTurnier.ClearSpiele(-1);

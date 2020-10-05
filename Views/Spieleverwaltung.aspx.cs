@@ -10,10 +10,15 @@ namespace Turnierverwaltung2020.Views
 {
     public partial class Spieleverwaltung : System.Web.UI.Page
     {
+        #region Eigenschaften
         private Controller _verwalter;
+        #endregion
 
+        #region Accessoren/Modifier
         public Controller Verwalter { get => _verwalter; set => _verwalter = value; }
+        #endregion
 
+        #region PAGE
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session.Count > 0)
@@ -132,7 +137,9 @@ namespace Turnierverwaltung2020.Views
 
             }
         }
+        #endregion
 
+        #region Worker
         //Spieletabelle eines Spieltages füllen
         private void LoadSpiele()
         {
@@ -303,6 +310,7 @@ namespace Turnierverwaltung2020.Views
                 }
                 else if (this.Verwalter.SelectedTurnier is GruppenTurnier)
                 {
+                    int spielindex = 1;
                     foreach (Spiel spiel in this.Verwalter.SelectedTurnier.Get_Spiele())
                     {
                         if (spiel.getGruppe() == this.Verwalter.SelectedTurnierGruppe)
@@ -310,9 +318,10 @@ namespace Turnierverwaltung2020.Views
                             neueRow = new TableRow();
                             //ID
                             neueCell = new TableCell();
-                            neueCell.Text = spiel.ID.ToString();
+                            neueCell.Text = spielindex.ToString();
                             neueCell.HorizontalAlign = HorizontalAlign.Center;
                             neueRow.Cells.Add(neueCell);
+                            spielindex++;
                             //Teilnehmer1
                             neueCell = new TableCell();
                             neueCell.Text = spiel.getMannschaftName1();
@@ -678,5 +687,6 @@ namespace Turnierverwaltung2020.Views
                 this.Verwalter.hinundrueck = true;
             }
         }
+        #endregion
     }
 }

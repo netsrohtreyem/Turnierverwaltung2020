@@ -391,7 +391,29 @@ namespace Turnierverwaltung2020
             throw new NotImplementedException();
         }
 
-
+        public override Spiel getSpiel(int spielid, int selectedgruppe)
+        {
+            Spiel ergebnis = null;
+            foreach (Spiel sp in this.Spiele)
+            {
+                if (sp.getGruppe() == selectedgruppe)
+                {
+                    spielid--;
+                    if (spielid <= 0)
+                    {
+                        ergebnis = sp;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                { }
+            }
+            return ergebnis;
+        }
         #endregion
     }
 }

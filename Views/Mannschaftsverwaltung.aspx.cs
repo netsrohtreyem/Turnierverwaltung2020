@@ -26,11 +26,9 @@ namespace Turnierverwaltung2020.Views
         #endregion
 
         #region PAGEWorker
-        protected void Page_Init(object sender, EventArgs e)
-        {
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
+            #region Session
             if (this.Session.Count > 0)
             {
                 this.Verwalter = (Controller)this.Session["Verwalter"];
@@ -40,6 +38,9 @@ namespace Turnierverwaltung2020.Views
                 this.Response.Redirect(@"~\Default.aspx");
                 return;
             }
+            #endregion
+
+            #region postback
             if (this.IsPostBack)
             {
                 //Hier landen alle postbacks, z.B. ButtonClicks u.s.w.
@@ -66,6 +67,8 @@ namespace Turnierverwaltung2020.Views
                 this.LoadPersonen();
                 this.LoadSportarten();
             }
+            #endregion
+
             if (this.Verwalter.MannschaftOderGruppe)
             {
                 rbListArt.Items[0].Selected = true;
