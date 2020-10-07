@@ -115,6 +115,7 @@ namespace Turnierverwaltung2020
                 #endregion
 
                 #region Turniere
+                #region Bundesliga 2020
                 Turnier testneu = new MannschaftsTurnier("Fussball Bundesliga 2020/21", this.Verwalter.Sportarten[0]);
                 testneu.addTeilnehmer(man1);
                 testneu.addTeilnehmer(man2);
@@ -227,6 +228,45 @@ namespace Turnierverwaltung2020
                 this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
                 #endregion
 
+                #region Spieltag3
+                neuesSpiel = new Mannschaftsspiel(testneu, man3, man13, 3);
+                neuesSpiel.setErgebniswert1("4");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man17, man12, 3);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("1");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man10, man14, 3);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("3");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man7, man9, 3);
+                neuesSpiel.setErgebniswert1("2");
+                neuesSpiel.setErgebniswert2("1");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man6, man8, 3);
+                neuesSpiel.setErgebniswert1("4");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man5, man4, 3);
+                neuesSpiel.setErgebniswert1("1");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man18, man1, 3);
+                neuesSpiel.setErgebniswert1("0");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man15, man2, 3);
+                neuesSpiel.setErgebniswert1("4");
+                neuesSpiel.setErgebniswert2("3");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                neuesSpiel = new Mannschaftsspiel(testneu, man11, man16, 3);
+                neuesSpiel.setErgebniswert1("4");
+                neuesSpiel.setErgebniswert2("0");
+                this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
+                #endregion
+                #endregion
 
 
                 testneu = new GruppenTurnier("Tischtennisturnier 2021", this.Verwalter.Sportarten[3]);
