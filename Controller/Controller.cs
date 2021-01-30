@@ -49,6 +49,7 @@ namespace Turnierverwaltung2020
         private bool _hinundrueck;
         private bool _editSpiel;
         private int _editSpielID;
+        private string _selectedSportart;
         #endregion
 
         #region Accessoren/Modifier
@@ -86,6 +87,7 @@ namespace Turnierverwaltung2020
         public bool hinundrueck { get => _hinundrueck; set => _hinundrueck = value; }
         public bool EditSpiel { get => _editSpiel; set => _editSpiel = value; }
         public int EditSpielID { get => _editSpielID; set => _editSpielID = value; }
+        public string SelectedSportart { get => _selectedSportart; set => _selectedSportart = value; }
         #endregion
 
         #region Konstruktoren
@@ -101,8 +103,11 @@ namespace Turnierverwaltung2020
             MannschaftOderGruppe = true;
             MannschaftsAnzeige = true;
             Sortdirection = true;
-            MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
-            Database = "turnierverwaltung";
+            //MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            //MyConnectionString = "server=sql7.freemysqlhosting.net;database=sql7389547;uid=sql7389547;password=xG2ri62Vjn";
+            MyConnectionString = Properties.Settings.Default.Connectionstring;
+            //Database = "turnierverwaltung";
+            Database = "sql7389547";
             DB_Status = false;
             Dbwarnung = false;
             SelectedTurnier = null;
@@ -123,9 +128,9 @@ namespace Turnierverwaltung2020
         #region Sportart
         public void AddSportArt(sportart value)
         {
-            int id = addSportArtDB(value);
+            addSportArtDB(value);
 
-            value.id = id;
+
             this.Sportarten.Add(value);
         }
 
@@ -139,6 +144,7 @@ namespace Turnierverwaltung2020
                 if (name == art.name)
                 {
                     loesch = art;
+                    id = loesch.id;
                     break;
                 }
                 else
@@ -201,6 +207,134 @@ namespace Turnierverwaltung2020
                 ergebnis = false;
                 return ergebnis;
             }
+        }
+
+        public void SportartAktualisieren(string bez, string lost, string sieg, string unent, bool typ)
+        {
+            foreach(sportart sp in this.Sportarten)
+            {
+                if(sp.name.Equals(bez))
+                {
+                    sp.MinupunkteproSpiel = Convert.ToInt32(lost);
+                    sp.PluspunkteproSpiel = Convert.ToInt32(sieg);
+                    sp.UnentschiedenpunkteproSpiel = Convert.ToInt32(unent);
+                    sp.Mannschaft = typ;
+                    sp.Einzel = !typ;
+                    ChangeSportartDB(sp);
+                }
+            }
+        }
+        private void addSportArtDB(sportart value)
+        {
+            if (value.IsOK())
+            {
+                try
+                {
+                    Conn = new MySqlConnection();
+                    Conn.ConnectionString = this.MyConnectionString;
+                    Conn.Open();
+                }
+                catch (MySqlException)
+                {
+                    return;
+                }
+                string mannschaftsart = "0";
+                if (value.Mannschaft)
+                {
+                    mannschaftsart = "1";
+                }
+                else
+                { }
+                SqlString = "INSERT INTO `sportarten` (`ID`, `Bezeichnung`, `Mannschaft`, `Siegpunkte`, `Unentschieden`, `Verlorenpunkte`) VALUES (NULL, '" + value.name + "', '" + mannschaftsart + "', '" + value.PluspunkteproSpiel.ToString() + "', '" + value.UnentschiedenpunkteproSpiel.ToString() + "', '" + value.MinupunkteproSpiel.ToString() + "')";
+                MySqlCommand command = new MySqlCommand(SqlString, Conn);
+
+                int anzahl = command.ExecuteNonQuery();
+
+                if (anzahl > 0)
+                {
+                    value.id = (int)command.LastInsertedId;
+                }
+                else
+                {
+                }
+
+                Conn.Close();
+            }
+            else
+            { }
+        }
+        private bool deleteSportartDB(int id)
+        {
+            if (id > -1)
+            {
+                try
+                {
+                    Conn = new MySqlConnection();
+                    Conn.ConnectionString = this.MyConnectionString;
+                    Conn.Open();
+                }
+                catch (MySqlException)
+                {
+                    return true;
+                }
+
+                SqlString = "delete from sportarten where id = " + id;
+                MySqlCommand command = new MySqlCommand(SqlString, Conn);
+
+                int anz = -1;
+
+                try
+                {
+                    anz = command.ExecuteNonQuery();
+                    if (anz > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private void ChangeSportartDB(sportart value)
+        {
+            if (value.IsOK())
+            {
+                try
+                {
+                    Conn = new MySqlConnection();
+                    Conn.ConnectionString = this.MyConnectionString;
+                    Conn.Open();
+                }
+                catch (MySqlException)
+                {
+                    return;
+                }
+                string mannschaftart = "0";
+                if (value.Mannschaft)
+                {
+                    mannschaftart = "1";
+                }
+                else
+                { }
+                SqlString = "UPDATE `sportarten` SET `Bezeichnung` = '" + value.name + "', `Mannschaft` = '" + mannschaftart + "', `Siegpunkte` = '" + value.PluspunkteproSpiel.ToString() + "', `Unentschieden` = '" + value.UnentschiedenpunkteproSpiel.ToString() + "', `Verlorenpunkte` = '" + value.MinupunkteproSpiel.ToString() + "' WHERE `sportarten`.`ID` = '" + value.id + "';";
+                MySqlCommand command = new MySqlCommand(SqlString, Conn);
+
+                int anzahl = command.ExecuteNonQuery();
+
+                Conn.Close();
+            }
+            else
+            { }
         }
         #endregion
 
@@ -591,6 +725,7 @@ namespace Turnierverwaltung2020
 
             return ergebnis;
         }
+
         public bool AddGruppe(Gruppe value)
         {
             bool ergebnis = false;
@@ -1030,7 +1165,7 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Spiele
-        public void AddSpielToMannschaftsTurnier(int number, string mannschaft1, string mannschaft2)
+        public void AddSpielToMannschaftsTurnier(int number, string mannschaft1, string mannschaft2,string tore1,string tore2)
         {
             Mannschaft man1 = null;
             Mannschaft man2 = null;
@@ -1070,7 +1205,10 @@ namespace Turnierverwaltung2020
                 return;
             }
             else
-            { }
+            {
+                neu.setErgebniswert1(tore1);
+                neu.setErgebniswert2(tore2);
+            }
 
             if (neu.AddToDatabase())
             {
@@ -1227,7 +1365,7 @@ namespace Turnierverwaltung2020
 
                 this.SelectedTurnierSpieltag = 1;
                 this.SelectedTurnier.SetMaxSpieltag(0);
-                bool ok = false;
+                //bool ok = false;
                 Spiel neu = null;
 
                 if(hinundrueck)//hin und Rück
@@ -2476,10 +2614,13 @@ namespace Turnierverwaltung2020
                 sportart neus = new sportart();
                 neus.id = Convert.ToInt32(rdr.GetValue(0).ToString());
                 neus.name = rdr.GetValue(1).ToString();
-                this.Sportarten.Add(neus);
+                neus.Mannschaft = rdr.GetBoolean(2);
+                neus.PluspunkteproSpiel = rdr.GetInt32(3);
+                neus.UnentschiedenpunkteproSpiel = rdr.GetInt32(4);
+                neus.MinupunkteproSpiel = rdr.GetInt32(5);
+                Sportarten.Add(neus);
             }
             rdr.Close();
-            //Conn.Close();
             #endregion
 
             #region Personen
@@ -2512,7 +2653,14 @@ namespace Turnierverwaltung2020
                     { }
                 }
                 string typ = rdr.GetValue(5).ToString();
-                int detailid = rdr.GetInt32(6); //TODO evtl. Fehler bei null
+                string detailidstring = rdr.GetValue(6).ToString();
+                int detailid = -1;
+                if (detailidstring != "")
+                {
+                    detailid = rdr.GetInt32(6);
+                }
+                else
+                { }
 
                 switch (typ)
                 {
@@ -2891,7 +3039,7 @@ namespace Turnierverwaltung2020
                 {
                     return;
                 }
-                if (typ == 0)
+                if (typ == 1)
                 {
                     neu = new MannschaftsTurnier(name, sportart, new List<Mannschaft>());
                     neu.ID = id;
@@ -2911,9 +3059,15 @@ namespace Turnierverwaltung2020
                 while (rdr2.Read())
                 {
                     int teilid = -1;
-                    if (typ == 0)
+                    if (typ == 1)
                     {
-                        teilid = rdr2.GetInt32(1);
+                        if (rdr2.GetValue(1).ToString() != "")
+                        {
+                            teilid = rdr2.GetInt32(1);
+                        }
+                        else
+                        {                        
+                        }
                         foreach (Mannschaft man in this.Mannschaften)
                         {
                             if (man.ID == teilid)
@@ -2926,7 +3080,12 @@ namespace Turnierverwaltung2020
                     }
                     else
                     {
-                        teilid = rdr2.GetInt32(2);
+                        if (rdr2.GetValue(2).ToString() != "")
+                        {
+                            teilid = rdr2.GetInt32(2);
+                        }
+                        else
+                        { }
                         foreach (Gruppe grp in this.Gruppen)
                         {
                             if (grp.ID == teilid)
@@ -2945,90 +3104,6 @@ namespace Turnierverwaltung2020
             rdr.Close();
             Conn.Close();
             #endregion
-        }
-        private int addSportArtDB(sportart value)
-        {
-            int id = -1;
-            if (value.IsOK())
-            {
-                try
-                {
-                    Conn = new MySqlConnection();
-                    Conn.ConnectionString = this.MyConnectionString;
-                    Conn.Open();
-                }
-                catch (MySqlException)
-                {
-                    return -1;
-                }
-                SqlString = "insert into sportarten (Bezeichnung) values ('" + value + "');";
-                MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-                int anzahl = command.ExecuteNonQuery();
-
-                if (anzahl > 0)
-                {
-                    SqlString = "select ID from sportarten where Bezeichnung = '" + value + "';";
-                    command = new MySqlCommand(SqlString, Conn);
-                    MySqlDataReader rdr = command.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        id = Convert.ToInt32(rdr.GetValue(0).ToString());
-                        break;
-                    }
-                    rdr.Close();
-                }
-                else
-                {
-                }
-
-                Conn.Close();
-            }
-            else
-            { }
-            return id;
-        }
-        private bool deleteSportartDB(int id)
-        {
-            if (id > -1)
-            {
-                try
-                {
-                    Conn = new MySqlConnection();
-                    Conn.ConnectionString = this.MyConnectionString;
-                    Conn.Open();
-                }
-                catch (MySqlException)
-                {
-                    return true;
-                }
-
-                SqlString = "delete from sportarten where id = " + id;
-                MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-                int anz = -1;
-
-                try
-                {
-                    anz = command.ExecuteNonQuery();
-                    if (anz > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return true;
-            }
         }
         #endregion
         #endregion

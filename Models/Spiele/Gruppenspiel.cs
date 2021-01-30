@@ -56,16 +56,19 @@ namespace Turnierverwaltung2020
         #region Worker
         public override bool AddToDatabase()
         {
+            //Todo
             return true;
         }
 
         public override bool DeleteFromDB()
         {
+            //Todo
             return true;
         }
 
         public override bool ChangeInDB()
         {
+            //Todo
             return true;
         }
 

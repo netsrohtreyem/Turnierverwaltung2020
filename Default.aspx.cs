@@ -22,17 +22,15 @@ namespace Turnierverwaltung2020
         {
             if (this.Session.Count > 0)
             {
-                Verwalter = (Controller)this.Session["Verwalter"];
-                //Verwalter.loadData();
+                Verwalter = (Controller)this.Session["Verwalter"];                
             }
             else
             {
                 Verwalter = new Controller();
                 this.Session["Verwalter"] = Verwalter;
-
                 #region Testdaten
                 //Standart setzen
-                #region Sortarten
+                /*#region Sportarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
                 this.Verwalter.Sportarten.Clear();
@@ -278,31 +276,49 @@ namespace Turnierverwaltung2020
                 this.Verwalter.SelectedTurnierIndex = 1;
                 this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[0];
                 #endregion
-
+                */
 
                 #endregion
             }
-
+            Verwalter.loadData();
 
             if (this.IsPostBack)
             {
-
+                //this.Verwalter.SelectedSportart = this.drpdwList1.SelectedValue;
+ 
             }
             else
             {
                 LoadSportarten();
             }
+            if (this.Verwalter.SelectedSportart != null)
+            {
+                this.drpdwList1.SelectedValue = this.Verwalter.SelectedSportart;
+            }
+            else
+            {
+
+            }
+
+            if (this.CheckBox1.Checked)
+            {
+                this.CheckBox2.Checked = false;
+            }
+            else
+            {
+                this.CheckBox2.Checked = true;
+            }           
         }
 
         protected void btnSportHinzu_Click(object sender, EventArgs e)
         {
             sportart neu = new sportart();
-            if (this.txtSportart.Text != "")
+            if (this.txtname.Text != "")
             {
                 bool vorhanden = false;
                 foreach (ListItem ls in this.drpdwList1.Items)
                 {
-                    if (ls.Text == this.txtSportart.Text)
+                    if (ls.Text == this.txtname.Text)
                     {
                         vorhanden = true;
                         break;
@@ -312,7 +328,7 @@ namespace Turnierverwaltung2020
                 }
                 if (!vorhanden)
                 {
-                    neu.name = this.txtSportart.Text;
+                    neu.name = this.txtname.Text;
                     neu.Mannschaft = this.CheckBox1.Checked;
                     neu.Einzel = this.CheckBox2.Checked;
                     if (txtsieg.Text != "")
@@ -347,7 +363,6 @@ namespace Turnierverwaltung2020
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Angaben sind fehlerhaft!');", true);
                     }
-                    this.txtSportart.Text = "";
                     Response.Redirect(Request.RawUrl);
                 }
                 else
@@ -362,6 +377,7 @@ namespace Turnierverwaltung2020
         private void LoadSportarten()
         {
             this.drpdwList1.Items.Clear();
+            this.drpdwList1.Items.Add("Sportart wählen");
             if (Verwalter.Sportarten.Count > 0)
             {
                 foreach (sportart art in Verwalter.Sportarten)
@@ -378,15 +394,100 @@ namespace Turnierverwaltung2020
         protected void btnloeschen_Click(object sender, EventArgs e)
         {
             string name = this.drpdwList1.SelectedValue;
-            bool erfolg = this.Verwalter.DeleteSportart(name);
-            if (!erfolg)
+            if(name != "Sportart wählen")
+                {
+                bool erfolg = this.Verwalter.DeleteSportart(name);
+                if (!erfolg)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Sportart konnte nicht gelöscht werden, sie wird noch verwendet!');", true);
+                }
+                else
+                {
+                    Response.Redirect(Request.RawUrl);
+                }
+            }
+            else
+            { }
+        }
+
+        //Änderungen speichern
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            if(this.txtlost.Text!="" &&
+                this.txtsieg.Text != "" &&
+                this.txtname.Text != "" &&
+                this.txtunentschieden.Text != "" )
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Die Sportart konnte nicht gelöscht werden, sie wird noch verwendet!');", true);
+                if (CheckBox1.Checked)
+                {
+                    this.Verwalter.SportartAktualisieren(this.txtname.Text,
+                                                         this.txtlost.Text,
+                                                         this.txtsieg.Text,
+                                                         this.txtunentschieden.Text,true);
+                }
+                else
+                {
+                    this.Verwalter.SportartAktualisieren(this.txtname.Text,
+                                                         this.txtlost.Text,
+                                                         this.txtsieg.Text,
+                                                         this.txtunentschieden.Text, false);
+
+                }
+            }
+            else
+            { }
+        }
+
+        //Sportart auswählen
+        protected void drpdwList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (drpdwList1.SelectedValue != "Sportart wählen")
+            {
+                foreach (sportart sp in this.Verwalter.Sportarten)
+                {
+                    if (sp.name.Equals(drpdwList1.SelectedValue))
+                    {
+                        this.txtname.Text = sp.name;
+                        this.txtlost.Text = sp.MinupunkteproSpiel.ToString();
+                        this.txtsieg.Text = sp.PluspunkteproSpiel.ToString();
+                        this.txtunentschieden.Text = sp.UnentschiedenpunkteproSpiel.ToString();
+                        if (sp.Mannschaft)
+                        {
+                            this.CheckBox1.Checked = true;
+                            this.CheckBox2.Checked = false;
+                        }
+                        else
+                        {
+                            this.CheckBox1.Checked = false;
+                            this.CheckBox2.Checked = true;
+                        }
+                        break;
+                    }
+                    else
+                    {
+
+                    }
+                }
             }
             else
             {
-                Response.Redirect(Request.RawUrl);
+                this.txtname.Text = "";
+                this.txtlost.Text = "";
+                this.txtsieg.Text = "";
+                this.txtunentschieden.Text = "";
             }
+        }
+
+        protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.CheckBox1.Checked = true;
+            this.CheckBox2.Checked = false;
+        }
+
+        protected void CheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            this.CheckBox1.Checked = false;
+            this.CheckBox2.Checked = true;
         }
     }
 }

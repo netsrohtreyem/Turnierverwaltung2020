@@ -58,7 +58,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
             int sportartenid = -1;
 
             try
@@ -69,9 +69,9 @@ namespace Turnierverwaltung2020
             }
             catch (MySqlException)
             {
-                return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
+                return false;
             }
-            string SqlString = "select id from sportarten where Bezeichnung = '" + this.Sportart + "' ;";
+            string SqlString = "select id from sportarten where Bezeichnung = '" + this.Sportart.name + "' ;";
             MySqlCommand command = new MySqlCommand(SqlString, Conn);
             MySqlDataReader rdr;
             try
@@ -83,49 +83,57 @@ namespace Turnierverwaltung2020
                 Conn.Close();
                 return false;
             }
-            rdr.Read();
-            sportartenid = rdr.GetInt32(0);
-            rdr.Close();
-
-            SqlString = "insert into turnier (ID,Bezeichnung,Sportart,Typ) " +
-            "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 0);";
-
-            command = new MySqlCommand(SqlString, Conn);
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl > 0)
+            if (rdr.HasRows)
             {
-                int turnierid = (int)command.LastInsertedId;
-                this.ID = turnierid;
-                foreach (Mannschaft man in this.Teilnehmer)
+                rdr.Read();
+                sportartenid = rdr.GetInt32(0);
+            }
+            else
+            { }
+            rdr.Close();
+            if (sportartenid > -1)
+            {
+                SqlString = "insert into turnier (ID,Bezeichnung,Sportart,Typ) " +
+                "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 1);";
+
+                command = new MySqlCommand(SqlString, Conn);
+                int anzahl = command.ExecuteNonQuery();
+
+                if (anzahl > 0)
                 {
-                    SqlString = "insert into turnierteilnehmer (ID,Mannschaft,Gruppe,Turnier) " +
-                    "VALUES (null,'" + man.ID + "', null, '" + turnierid + "');";
-                    command = new MySqlCommand(SqlString, Conn);
-                    try
+                    int turnierid = (int)command.LastInsertedId;
+                    this.ID = turnierid;
+                    foreach (Mannschaft man in this.Teilnehmer)
                     {
-                        anzahl = command.ExecuteNonQuery();
+                        SqlString = "insert into turnierteilnehmer (ID,Mannschaft,Gruppe,Turnier) " +
+                        "VALUES (null,'" + man.ID + "', null, '" + turnierid + "');";
+                        command = new MySqlCommand(SqlString, Conn);
+                        try
+                        {
+                            anzahl = command.ExecuteNonQuery();
+                        }
+                        catch (Exception)
+                        {
+                            Conn.Close();
+                            return false;
+                        }
+                        if (anzahl > 0)
+                        {
+                            ergebnis = true;
+                        }
+                        else
+                        {
+                            ergebnis = true;
+                        }
                     }
-                    catch (Exception)
-                    {
-                        Conn.Close();
-                        return false;
-                    }
-                    if (anzahl > 0)
-                    {
-                        ergebnis = true;
-                    }
-                    else
-                    {
-                        ergebnis = true;
-                    }
+                }
+                else
+                {
+                    ergebnis = false;
                 }
             }
             else
-            {
-                ergebnis = false;
-            }
-
+            { }
             Conn.Close();
             return ergebnis;
         }
@@ -133,7 +141,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
 
             try
             {
@@ -178,7 +186,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
 
             try
             {
@@ -193,8 +201,8 @@ namespace Turnierverwaltung2020
 
             string SqlString = "update turnier " +
                                "set Bezeichnung = '" + this.Bezeichnung + "' , " +
-                               "Sportart = (select id from sportarten where bezeichnung = '" + this.Sportart + "') , " +
-                               "Typ = '0' " +
+                               "Sportart = (select id from sportarten where bezeichnung = '" + this.Sportart.name + "') , " +
+                               "Typ = '1' " +
                                "where ID = '" + this.ID + "';";
             MySqlCommand command = new MySqlCommand(SqlString, Conn);
 

@@ -16,11 +16,11 @@
         </asp:TableRow>
     </asp:Table>
  <h3>Verfügare Sportarten:</h3>
-    <asp:DropDownList ID="drpdwList1" runat="server" Font-Bold="True" Font-Size="Large"></asp:DropDownList> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="btnloeschen" runat="server" Text="markierte löschen" OnClick="btnloeschen_Click" Font-Bold="True" Font-Size="Medium" />
+    <asp:DropDownList ID="drpdwList1" runat="server" Font-Bold="True" Font-Size="Large" AutoPostBack="True" OnSelectedIndexChanged="drpdwList1_SelectedIndexChanged"></asp:DropDownList> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="btnloeschen" runat="server" Text="markierte löschen" OnClick="btnloeschen_Click" Font-Bold="True" Font-Size="Medium" />
  <h3>Sportart hinzufügen:</h3>
-    <asp:CheckBox ID="CheckBox1" runat="server" Text="Mannschafts - Sport" Checked="true" />
+    <asp:CheckBox ID="CheckBox1" runat="server" Text="Mannschafts - Sport" Checked="true" AutoPostBack="True" OnCheckedChanged="CheckBox1_CheckedChanged" />
     &nbsp;&nbsp;&nbsp;
-    <asp:CheckBox ID="CheckBox2" runat="server" Text="Einzel - Sport"/>
+    <asp:CheckBox ID="CheckBox2" runat="server" Text="Einzel - Sport" AutoPostBack="True" OnCheckedChanged="CheckBox2_CheckedChanged"/>
     <br />
     <br />
     <asp:Label ID="lblsieg" runat="server" Font-Bold="True" Font-Size="Medium">Plus - Punkte bei Sieg:</asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; <asp:TextBox ID="txtsieg" runat="server" Font-Bold="True" Font-Size="Medium" type="number" min="0" Height="25px" Width="50px" ></asp:TextBox>
@@ -35,8 +35,12 @@
     <ajaxToolkit:FilteredTextBoxExtender runat="server" TargetControlID="txtunentschieden" FilterType="Numbers" />
     <br />
  <br />
- <asp:Label ID="lblbezeichnung" runat="server" Font-Bold="True" Font-Size="Medium">Bezeichnung:</asp:Label>&nbsp;<asp:TextBox ID="txtSportart" runat="server" Font-Size="Medium" AutoCompleteType="Disabled"></asp:TextBox>
-    &nbsp;&nbsp;&nbsp;
+ <asp:Label ID="lblbezeichnung" runat="server" Font-Bold="True" Font-Size="Medium">Bezeichnung:</asp:Label>&nbsp;&nbsp; &nbsp;<asp:TextBox ID="txtname" runat="server"></asp:TextBox>
+    &nbsp;&nbsp;
+    <br />
+    <br />
+    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Änderungen speichern" Font-Bold="True" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
  <asp:Button ID="btnSportHinzu" runat="server" Text="hinzufügen" Font-Bold="True" Font-Size="Medium" OnClick="btnSportHinzu_Click"/>
     <br />
     </asp:Content>

@@ -236,7 +236,7 @@ namespace Turnierverwaltung2020.Views
                     }
                     if (this.Verwalter.NeuesMitglied.Sportart == null)
                     {
-                        this.Verwalter.AddSportArt(new sportart("Tennis", true, true, 0, 0, 0));
+                        this.Verwalter.AddSportArt(new sportart("Tennis", true, true, 1, 1, 0));
                     }
                     else
                     { }

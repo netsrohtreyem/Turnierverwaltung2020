@@ -55,6 +55,9 @@ namespace Turnierverwaltung2020.Views
         private void LoadTurniere()
         {
             int index = 1;
+            TableHeaderRow header = (TableHeaderRow)this.tblTurnierAnzeige.Rows[0];
+            this.tblTurnierAnzeige.Rows.Clear();
+            this.tblTurnierAnzeige.Rows.Add(header);
 
             #region Headersetzen zum anclicken
             //ID

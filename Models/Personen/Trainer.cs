@@ -161,7 +161,7 @@ namespace Turnierverwaltung2020
         public override bool AddToDatabase(List<int> Mitgliederliste)
         {
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
             bool ergebnis = false;
             int sportartenid = -1;
             int typid = -1;
@@ -267,7 +267,7 @@ namespace Turnierverwaltung2020
         public override bool DeleteFromDatabase()
         {
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
             int persid = -1;
             if (ID > -1)
             {
@@ -351,7 +351,7 @@ namespace Turnierverwaltung2020
         public override bool ChangeInDatabase(string name, sportart spart, List<int> Mitgliederliste)
         {
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
             bool ergebnis = false;
 
             try

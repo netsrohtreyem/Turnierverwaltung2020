@@ -52,7 +52,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
             int sportartenid = -1;
 
             try
@@ -128,7 +128,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
 
             try
             {
@@ -174,7 +174,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
             MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
+            string MyConnectionString = Properties.Settings.Default.Connectionstring;
 
             try
             {
@@ -383,7 +383,14 @@ namespace Turnierverwaltung2020
 
         public override Ranking GetRanking(int gruppe)
         {
-            return this.Gruppen[gruppe - 1].getRanking(this.Spiele);
+            if (gruppe > 0 && this.Gruppen.Count > 0)
+            {
+                return this.Gruppen[gruppe - 1].getRanking(this.Spiele);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)

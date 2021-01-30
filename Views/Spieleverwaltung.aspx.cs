@@ -563,7 +563,7 @@ namespace Turnierverwaltung2020.Views
             {
                 if (!this.Verwalter.EditSpiel)
                 {
-                    this.Verwalter.AddSpielToMannschaftsTurnier(number, mannschaft1, mannschaft2);
+                    this.Verwalter.AddSpielToMannschaftsTurnier(number, mannschaft1, mannschaft2,txttore1.Text,txttore2.Text);
                 }
                 else
                 {

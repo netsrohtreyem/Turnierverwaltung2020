@@ -72,10 +72,12 @@
                     <p style="font-family: Arial, Helvetica, Sans-Serif; font-size: small; font-weight: bold">Mannschaft1:</p>
                     <asp:DropDownList ID="drplstMannschaft1" runat="server" Font-Bold="True" Font-Size="Small"></asp:DropDownList>
                     <br />
+                    Tore:<asp:TextBox ID="txttore1" runat="server"></asp:TextBox>
                     <br />
                     <p style="font-family: Arial, Helvetica, Sans-Serif; font-size: small; font-weight: bold">Mannschaft2:</p>
                     <asp:DropDownList ID="drplstMannschaft2" runat="server" Font-Bold="True" Font-Size="Small"></asp:DropDownList>
                     <br />
+                    Tore:<asp:TextBox ID="txttore2" runat="server"></asp:TextBox>
                     <br />
                 </div>
             
