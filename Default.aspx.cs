@@ -14,10 +14,6 @@ namespace Turnierverwaltung2020
 
         public Controller Verwalter { get => _Verwalter; set => _Verwalter = value; }
 
-        protected void Page_Init(object sender, EventArgs e)
-        {
-
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session.Count > 0)
@@ -33,8 +29,7 @@ namespace Turnierverwaltung2020
                 }
                 else
                 {
-                    Verwalter = new Controller();
-                    this.Session["Verwalter"] = Verwalter;
+                    Response.Redirect("http://www.google.com");
                 }
                 #region Testdaten
                 //Standart setzen
@@ -290,7 +285,7 @@ namespace Turnierverwaltung2020
             }
             if (this.IsPostBack)
             {
-                //this.Verwalter.SelectedSportart = this.drpdwList1.SelectedValue;
+
  
             }
             else

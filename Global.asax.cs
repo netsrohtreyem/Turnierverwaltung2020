@@ -29,7 +29,7 @@ namespace Turnierverwaltung2020
         {
             foreach(Controller verw in VerwalterListe)
             {
-                if(verw.HTTPSession.Equals(HttpContext.Current.Session))
+                if(verw.HTTPSession.Equals(HttpContext.Current.Session.SessionID))
                 {
                     return verw;
                 }
@@ -56,23 +56,28 @@ namespace Turnierverwaltung2020
         }
         protected void Session_OnEnd(Object sender, EventArgs e)
         {
-            bool fertig = false;
-            do
+
+            foreach (Controller c in VerwalterListe)
             {
-                foreach (Controller c in VerwalterListe)
+                if (c.HTTPSession.Equals(Session.SessionID))
                 {
-                    if (c.HTTPSession.Equals(Session.SessionID))
-                    {
-                        VerwalterListe.Remove(c);
-                        fertig = false;
-                        break;
-                    }
-                    else
-                    {
-                        fertig = true;
-                    }
+                    VerwalterListe.Remove(c);
+                    break;
                 }
-            } while (!fertig);
+                else
+                {
+                }
+            }
+            foreach (HttpSessionState state in SessionListe)
+            {
+                if (state.SessionID.Equals(Session.SessionID))
+                {
+                    SessionListe.Remove(state);
+                    break;
+                }
+                else
+                { }
+            }
         }
     }
 }

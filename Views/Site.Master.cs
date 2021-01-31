@@ -16,6 +16,7 @@ namespace Turnierverwaltung2020
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            System.Configuration.ConfigurationManager.AppSettings["SessionWarning"] = "5";
             if (this.Session.Count > 0)
             {
                 Verwalter = (Controller)this.Session["Verwalter"];
