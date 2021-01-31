@@ -11,17 +11,68 @@ namespace Turnierverwaltung2020
 {
     public class Global : HttpApplication
     {
-        static private Controller _Verwalter;
-
-        static public Controller Verwalter { get => _Verwalter; set => _Verwalter = value; }
+        private static List<Controller> _Verwalterliste;
+        private static List<HttpSessionState> _Sessionliste;
+        public static List<Controller> VerwalterListe { get => _Verwalterliste; set => _Verwalterliste = value; }
+        public static List<HttpSessionState> SessionListe { get => _Sessionliste; set => _Sessionliste = value; }
 
         void Application_Start(object sender, EventArgs e)
         {
             // Code, der beim Anwendungsstart ausgeführt wird
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            VerwalterListe = new List<Controller>();
+            SessionListe = new List<HttpSessionState>();
+        }
 
+        public static Controller getVerwalter()
+        {
+            foreach(Controller verw in VerwalterListe)
+            {
+                if(verw.HTTPSession.Equals(HttpContext.Current.Session))
+                {
+                    return verw;
+                }
+                else
+                { }
+            }
+            return null;
+        }
 
+        protected void Session_OnStart(Object sender, EventArgs e)
+        {
+            if (!SessionListe.Contains(HttpContext.Current.Session))
+            {
+                string session = HttpContext.Current.Session.SessionID;
+                Controller neu = new Controller();
+                neu.HTTPSession = session;
+                VerwalterListe.Add(neu);
+                SessionListe.Add(HttpContext.Current.Session);
+            }
+            else
+            {
+
+            }
+        }
+        protected void Session_OnEnd(Object sender, EventArgs e)
+        {
+            bool fertig = false;
+            do
+            {
+                foreach (Controller c in VerwalterListe)
+                {
+                    if (c.HTTPSession.Equals(Session.SessionID))
+                    {
+                        VerwalterListe.Remove(c);
+                        fertig = false;
+                        break;
+                    }
+                    else
+                    {
+                        fertig = true;
+                    }
+                }
+            } while (!fertig);
         }
     }
 }

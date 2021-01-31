@@ -25,8 +25,7 @@ namespace Turnierverwaltung2020.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("server=sql7.freemysqlhosting.net;database=sql7389547;uid=sql7389547;password=xG2r" +
-            "i62Vjn")]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=;database=;uid=;password=")]
         public string Connectionstring {
             get {
                 return ((string)(this["Connectionstring"]));

@@ -26,8 +26,16 @@ namespace Turnierverwaltung2020
             }
             else
             {
-                Verwalter = new Controller();
-                this.Session["Verwalter"] = Verwalter;
+                Verwalter = Global.getVerwalter();
+                if (Verwalter != null)
+                {
+                    this.Session["Verwalter"] = Verwalter;
+                }
+                else
+                {
+                    Verwalter = new Controller();
+                    this.Session["Verwalter"] = Verwalter;
+                }
                 #region Testdaten
                 //Standart setzen
                 /*#region Sportarten
@@ -280,8 +288,6 @@ namespace Turnierverwaltung2020
 
                 #endregion
             }
-            Verwalter.loadData();
-
             if (this.IsPostBack)
             {
                 //this.Verwalter.SelectedSportart = this.drpdwList1.SelectedValue;

@@ -15,6 +15,7 @@ namespace Turnierverwaltung2020
     public class Controller
     {
         #region Eigenschaften
+        private string _HTTPSession;
         private List<Turnier> _Turniere;
         private List<Mannschaft> _Mannschaften;
         private List<Gruppe> _gruppen;
@@ -33,9 +34,6 @@ namespace Turnierverwaltung2020
         private string _myConnectionString;
         private MySqlConnection _conn;
         private string _sqlString;
-        private bool _DB_Status;
-        private string _database;
-        private bool _dbwarnung;
         private int _indexEditTurnier;
         private int _idEditTurnier;
         private Turnier _selectedTurnier;
@@ -71,9 +69,6 @@ namespace Turnierverwaltung2020
         public string SqlString { get => _sqlString; set => _sqlString = value; }
         public int EditPersonID { get => _EditPersonID; set => _EditPersonID = value; }
         public List<Turnier> Turniere { get => _Turniere; set => _Turniere = value; }
-        public bool DB_Status { get => _DB_Status; set => _DB_Status = value; }
-        public string Database { get => _database; set => _database = value; }
-        public bool Dbwarnung { get => _dbwarnung; set => _dbwarnung = value; }
         public int IndexEditTurnier { get => _indexEditTurnier; set => _indexEditTurnier = value; }
         public int IdEditTurnier { get => _idEditTurnier; set => _idEditTurnier = value; }
         public Turnier SelectedTurnier { get => _selectedTurnier; set => _selectedTurnier = value; }
@@ -88,6 +83,7 @@ namespace Turnierverwaltung2020
         public bool EditSpiel { get => _editSpiel; set => _editSpiel = value; }
         public int EditSpielID { get => _editSpielID; set => _editSpielID = value; }
         public string SelectedSportart { get => _selectedSportart; set => _selectedSportart = value; }
+        public string HTTPSession { get => _HTTPSession; set => _HTTPSession = value; }
         #endregion
 
         #region Konstruktoren
@@ -103,13 +99,7 @@ namespace Turnierverwaltung2020
             MannschaftOderGruppe = true;
             MannschaftsAnzeige = true;
             Sortdirection = true;
-            //MyConnectionString = "server=127.0.0.1;database=turnierverwaltung;uid=user;password=user";
-            //MyConnectionString = "server=sql7.freemysqlhosting.net;database=sql7389547;uid=sql7389547;password=xG2ri62Vjn";
             MyConnectionString = Properties.Settings.Default.Connectionstring;
-            //Database = "turnierverwaltung";
-            Database = "sql7389547";
-            DB_Status = false;
-            Dbwarnung = false;
             SelectedTurnier = null;
             MaxGruppen = 0;
             MaxMannschaften = 0;
@@ -128,9 +118,6 @@ namespace Turnierverwaltung2020
         #region Sportart
         public void AddSportArt(sportart value)
         {
-            addSportArtDB(value);
-
-
             this.Sportarten.Add(value);
         }
 
@@ -192,21 +179,14 @@ namespace Turnierverwaltung2020
                     else
                     { }
                 }
-                if (deleteSportartDB(id))
-                {
-                    ergebnis = (this.Sportarten.Remove(loesch));
-                    return ergebnis;
-                }
-                else
-                {
-                    return false;
-                }
+                ergebnis = this.Sportarten.Remove(loesch);
             }
             else
             {
                 ergebnis = false;
-                return ergebnis;
+                
             }
+            return ergebnis;
         }
 
         public void SportartAktualisieren(string bez, string lost, string sieg, string unent, bool typ)
@@ -220,162 +200,28 @@ namespace Turnierverwaltung2020
                     sp.UnentschiedenpunkteproSpiel = Convert.ToInt32(unent);
                     sp.Mannschaft = typ;
                     sp.Einzel = !typ;
-                    ChangeSportartDB(sp);
-                }
-            }
-        }
-        private void addSportArtDB(sportart value)
-        {
-            if (value.IsOK())
-            {
-                try
-                {
-                    Conn = new MySqlConnection();
-                    Conn.ConnectionString = this.MyConnectionString;
-                    Conn.Open();
-                }
-                catch (MySqlException)
-                {
-                    return;
-                }
-                string mannschaftsart = "0";
-                if (value.Mannschaft)
-                {
-                    mannschaftsart = "1";
                 }
                 else
                 { }
-                SqlString = "INSERT INTO `sportarten` (`ID`, `Bezeichnung`, `Mannschaft`, `Siegpunkte`, `Unentschieden`, `Verlorenpunkte`) VALUES (NULL, '" + value.name + "', '" + mannschaftsart + "', '" + value.PluspunkteproSpiel.ToString() + "', '" + value.UnentschiedenpunkteproSpiel.ToString() + "', '" + value.MinupunkteproSpiel.ToString() + "')";
-                MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-                int anzahl = command.ExecuteNonQuery();
-
-                if (anzahl > 0)
-                {
-                    value.id = (int)command.LastInsertedId;
-                }
-                else
-                {
-                }
-
-                Conn.Close();
             }
-            else
-            { }
-        }
-        private bool deleteSportartDB(int id)
-        {
-            if (id > -1)
-            {
-                try
-                {
-                    Conn = new MySqlConnection();
-                    Conn.ConnectionString = this.MyConnectionString;
-                    Conn.Open();
-                }
-                catch (MySqlException)
-                {
-                    return true;
-                }
-
-                SqlString = "delete from sportarten where id = " + id;
-                MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-                int anz = -1;
-
-                try
-                {
-                    anz = command.ExecuteNonQuery();
-                    if (anz > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-        private void ChangeSportartDB(sportart value)
-        {
-            if (value.IsOK())
-            {
-                try
-                {
-                    Conn = new MySqlConnection();
-                    Conn.ConnectionString = this.MyConnectionString;
-                    Conn.Open();
-                }
-                catch (MySqlException)
-                {
-                    return;
-                }
-                string mannschaftart = "0";
-                if (value.Mannschaft)
-                {
-                    mannschaftart = "1";
-                }
-                else
-                { }
-                SqlString = "UPDATE `sportarten` SET `Bezeichnung` = '" + value.name + "', `Mannschaft` = '" + mannschaftart + "', `Siegpunkte` = '" + value.PluspunkteproSpiel.ToString() + "', `Unentschieden` = '" + value.UnentschiedenpunkteproSpiel.ToString() + "', `Verlorenpunkte` = '" + value.MinupunkteproSpiel.ToString() + "' WHERE `sportarten`.`ID` = '" + value.id + "';";
-                MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-                int anzahl = command.ExecuteNonQuery();
-
-                Conn.Close();
-            }
-            else
-            { }
         }
         #endregion
 
         #region Person
         public bool AddPerson(Person value)
         {
-            bool ergebnis = false;
+            bool ergebnis = true;
 
-            ergebnis = value.AddToDatabase(null);
+            this.Personen.Add(value);
 
-            if (ergebnis)
-            {
-                if (value.ID != -1)
-                {
-                    this.Personen.Add(value);
-                    this.MaxPersonen++;
-                }
-                else
-                {
-                    value.ID = this.MaxPersonen + 1;
-                    this.Personen.Add(value);
-                    this.MaxPersonen++;
-                }
-            }
-            else
-            { }
             return ergebnis;
         }
         public bool DeletePerson(int nummer)
         {
             if (nummer > 0 && nummer <= this.Personen.Count)
             {
-                if ((this.Personen[nummer - 1]).DeleteFromDatabase())
-                {
-                    this.Personen.RemoveAt(nummer - 1);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                this.Personen.RemoveAt(nummer - 1);
+                return true;
             }
             else
             {
@@ -387,18 +233,11 @@ namespace Turnierverwaltung2020
             if (IsPersonVorhanden(EditPersonID) ||
                 (EditPersonID == -1 && IsPersonVorhanden(this.Personen[EditPersonIndex - 1].ID)))
             {
-                if (edit.ChangeInDatabase(null, null, null))
-                {
-                    ((Person)this.Personen[EditPersonIndex - 1]).ChangeValues(edit);
-                    this.EditPerson = false;
-                    this.EditPersonIndex = -1;
-                    this.EditPersonID = -1;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                ((Person)this.Personen[EditPersonIndex - 1]).ChangeValues(edit);
+                this.EditPerson = false;
+                this.EditPersonIndex = -1;
+                this.EditPersonID = -1;
+                return true;
             }
             else
             {
@@ -507,7 +346,7 @@ namespace Turnierverwaltung2020
             {
                 ergebnis = true;
             }
-            if (value.AddToDatabase(new List<int>()) && ergebnis)
+            if (ergebnis)
             {
                 if (value.ID == -1)
                 {
@@ -518,7 +357,6 @@ namespace Turnierverwaltung2020
                 else
                 {
                     this.Mannschaften.Add(value);
-                    this.MaxMannschaften++;
                 }
                 ergebnis = true;
             }
@@ -544,36 +382,33 @@ namespace Turnierverwaltung2020
             else
             { }
 
-            if (value.AddToDatabase(Mitgliederliste))
-            {
-                if (value.ID == -1)
-                {
-                    value.ID = this.MaxMannschaften + 1;
-                }
-                else
-                {
 
-                }
-                foreach (Person pers in this.Personen)
-                {
-                    foreach (int persid in Mitgliederliste)
-                    {
-                        if (pers.ID == persid)
-                        {
-                            value.Mitglieder.Add(pers);
-                        }
-                        else
-                        { }
-                    }
-                }
+            if (value.ID == -1)
+            {
+                value.ID = this.MaxMannschaften + 1;
                 this.Mannschaften.Add(value);
+
                 this.MaxMannschaften++;
-                ergebnis = true;
             }
             else
             {
-                ergebnis = false;
+                this.Mannschaften.Add(value);
+
             }
+            foreach (Person pers in this.Personen)
+            {
+                foreach (int persid in Mitgliederliste)
+                {
+                    if (pers.ID == persid)
+                    {
+                        value.Mitglieder.Add(pers);
+                    }
+                    else
+                    { }
+                }
+            }
+                               
+            ergebnis = true;
 
             return ergebnis;
         }
@@ -607,31 +442,28 @@ namespace Turnierverwaltung2020
             {
                 if (man.ID == EditMannschaft)
                 {
-                    if (man.ChangeInDatabase(name, tochange, MitgliederIDs))
-                    {
                         man.Mitglieder.Clear();
 
-                        foreach (int index in MitgliederIDs)
-                        {
-                            foreach (Person pers in Personen)
-                            {
-                                if (pers.ID == index)
-                                {
-                                    man.Mitglieder.Add(pers);
-                                }
-                                else
-                                { }
-                            }
-                        }
-                        man.Name = name;
-                        man.Sportart = tochange;
-
-                        ergebnis = true;
-                    }
-                    else
+                    foreach (int index in MitgliederIDs)
                     {
-                        ergebnis = false;
+                        foreach (Person pers in Personen)
+                        {
+                            if (pers.ID == index)
+                            {
+                                man.Mitglieder.Add(pers);
+                            }
+                            else
+                            { }
+                        }
                     }
+                        
+                    man.Name = name;
+                        
+                    man.Sportart = tochange;
+
+                        
+                    ergebnis = true;
+
                     break;
                 }
                 else
@@ -644,15 +476,10 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
 
-            if (Mannschaften[index - 1].DeleteFromDatabase())
-            {
-                this.Mannschaften.RemoveAt(index - 1);
-                ergebnis = true;
-            }
-            else
-            {
-                ergebnis = false;
-            }
+            this.Mannschaften.RemoveAt(index - 1);
+            ergebnis = true;
+
+
             return ergebnis;
         }
         public bool IsMannschVorhanden(string neu, sportart spart)
@@ -694,59 +521,46 @@ namespace Turnierverwaltung2020
             }
             else
             { }
-            if (value.AddToDatabase(Mitgliederliste))
+
+            if (value.ID == -1)
             {
-                if (value.ID == -1)
-                {
-                    value.ID = this.MaxGruppen + 1;
-                }
-                else
-                { }
-                foreach (Person pers in this.Personen)
-                {
-                    foreach (int persid in Mitgliederliste)
-                    {
-                        if (pers.ID == persid)
-                        {
-                            value.Mitglieder.Add(pers);
-                        }
-                        else
-                        { }
-                    }
-                }
-                this.Gruppen.Add(value);
-                this.MaxGruppen++;
-                ergebnis = true;
+                value.ID = this.MaxGruppen + 1;
             }
             else
+            { }
+            foreach (Person pers in this.Personen)
             {
-                ergebnis = false;
+                foreach (int persid in Mitgliederliste)
+                {
+                    if (pers.ID == persid)
+                    {
+                        value.Mitglieder.Add(pers);
+                    }
+                    else
+                    { }
+                }
             }
-
+            this.Gruppen.Add(value);
+            this.MaxGruppen++;
+            ergebnis = true;
             return ergebnis;
         }
-
         public bool AddGruppe(Gruppe value)
         {
             bool ergebnis = false;
 
-            if (value.AddToDatabase(null))
-            {
-                if (value.ID == -1)
-                {
-                    value.ID = this.MaxGruppen + 1;
-                }
-                else
-                { }
 
-                this.Gruppen.Add(value);
-                this.MaxGruppen++;
-                ergebnis = true;
+            if (value.ID == -1)
+            {
+                value.ID = this.MaxGruppen + 1;
             }
             else
-            {
-                ergebnis = false;
-            }
+            { }
+
+            this.Gruppen.Add(value);
+            this.MaxGruppen++;
+            ergebnis = true;
+
             return ergebnis;
         }
         public bool ChangeGruppe(string name, string sportart, ListItemCollection Mitgliederliste)
@@ -774,34 +588,26 @@ namespace Turnierverwaltung2020
                 else
                 { }
             }
-
             foreach (Gruppe grup in this.Gruppen)
             {
                 if (grup.ID == EditGruppe)
                 {
-                    if (grup.ChangeInDatabase(name, tochange, MitgliederIDs))
+                  grup.Mitglieder.Clear();
+                  grup.Name = name;
+                  grup.Sportart = tochange;
+                    foreach (int index in MitgliederIDs)
                     {
-                        grup.Mitglieder.Clear();
-                        grup.Name = name;
-                        grup.Sportart = tochange;
-                        foreach (int index in MitgliederIDs)
+                        foreach (Person pers in Personen)
                         {
-                            foreach (Person pers in Personen)
+                            if (pers.ID == index)
                             {
-                                if (pers.ID == index)
-                                {
-                                    grup.Mitglieder.Add(pers);
-                                }
-                                else
-                                { }
+                                grup.Mitglieder.Add(pers);
                             }
+                            else
+                            { }
                         }
-                        ergebnis = true;
                     }
-                    else
-                    {
-                        ergebnis = false;
-                    }
+                    ergebnis = true;
                     break;
                 }
                 else
@@ -814,15 +620,9 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
 
-            if (Gruppen[index - 1].DeleteFromDatabase())
-            {
-                this.Gruppen.RemoveAt(index - 1);
-                ergebnis = true;
-            }
-            else
-            {
-                ergebnis = false;
-            }
+            this.Gruppen.RemoveAt(index - 1);
+            ergebnis = true;
+
             return ergebnis;
         }
         public bool IsGruppeVorhanden(string neu, sportart sportart)
@@ -903,22 +703,16 @@ namespace Turnierverwaltung2020
                 //Dummy ohne ID!
                 Turnier neu = new MannschaftsTurnier(Name, toadd, mannschaftsliste);
 
-                if (neu.AddToDatabase())
+                if (neu.ID == -1)
                 {
-                    if (neu.ID == -1)
-                    {
-                        neu.ID = this.MaxTurniere + 1;
-                    }
-                    else
-                    { }
+                    neu.ID = this.MaxTurniere + 1;
                     this.Turniere.Add(neu);
                     this.MaxTurniere++;
-                    ergebnis = true;
                 }
                 else
-                {
-                    ergebnis = false;
-                }
+                { }
+
+                ergebnis = true;
             }
             else
             {
@@ -962,22 +756,16 @@ namespace Turnierverwaltung2020
                 //Dummy ohne ID!
                 Turnier neu = new GruppenTurnier(Name, toadd, gruppensliste);
 
-                if (neu.AddToDatabase())
+                if (neu.ID == -1)
                 {
-                    if (neu.ID == -1)
-                    {
-                        neu.ID = this.MaxTurniere;
-                    }
-                    else
-                    { }
+                    neu.ID = this.MaxTurniere;
                     this.Turniere.Add(neu);
                     this.MaxTurniere++;
-                    ergebnis = true;
                 }
                 else
-                {
-                    ergebnis = false;
-                }
+                { }
+
+                ergebnis = true;
             }
             return ergebnis;
         }
@@ -985,22 +773,15 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
 
-            if (value.AddToDatabase())
+            if (value.ID == -1)
             {
-                if (value.ID == -1)
-                {
-                    value.ID = this.MaxTurniere + 1;
-                }
-                else
-                { }
-                this.Turniere.Add(value);
-                this.MaxTurniere++;
-                ergebnis = true;
+                value.ID = this.MaxTurniere + 1;
             }
             else
-            {
-                ergebnis = false;
-            }
+            { }
+            this.Turniere.Add(value);
+            this.MaxTurniere++;
+            ergebnis = true;
 
             return ergebnis;
         }
@@ -1036,12 +817,7 @@ namespace Turnierverwaltung2020
         {
             bool ergebnis = false;
 
-            if (this.Turniere[id].DeleteFromDB())
-            {
-                this.Turniere.RemoveAt(id);
-            }
-            else
-            { }
+            this.Turniere.RemoveAt(id);
 
             return ergebnis;
         }
@@ -1131,7 +907,6 @@ namespace Turnierverwaltung2020
                 }
             }
 
-            this.Turniere[IndexEditTurnier].ChangeInDB();
             return ergebnis;
         }
         public void SelectTurnier(string value)
@@ -1210,18 +985,16 @@ namespace Turnierverwaltung2020
                 neu.setErgebniswert2(tore2);
             }
 
-            if (neu.AddToDatabase())
+
+            if (neu.ID == -1)
             {
-                if (neu.ID == -1)
-                {
-                    neu.ID = ((MannschaftsTurnier)SelectedTurnier).Spiele.Count + 1;
-                }
-                else
-                { }
-                SelectedTurnier.addSpiel(neu);
+                neu.ID = ((MannschaftsTurnier)SelectedTurnier).Spiele.Count + 1;
             }
             else
             { }
+
+            SelectedTurnier.addSpiel(neu);
+
             if (SelectedTurnierSpieltag == 0)
             {
                 SelectedTurnierSpieltag = 1;
@@ -1238,18 +1011,17 @@ namespace Turnierverwaltung2020
             else
             { }
 
-            if (neu.AddToDatabase())
+
+            if (neu.ID == -1)
             {
-                if (neu.ID == -1)
-                {
-                    neu.ID = ((MannschaftsTurnier)SelectedTurnier).Spiele.Count + 1;
-                }
-                else
-                { }
-                SelectedTurnier.addSpiel(neu);
+                neu.ID = ((MannschaftsTurnier)SelectedTurnier).Spiele.Count + 1;
             }
             else
             { }
+
+            SelectedTurnier.addSpiel(neu);
+
+
             if (SelectedTurnierSpieltag == 0)
             {
                 SelectedTurnierSpieltag = 1;
@@ -1309,18 +1081,13 @@ namespace Turnierverwaltung2020
             else
             { }
 
-            if (neu.AddToDatabase())
+            if (neu.ID == -1)
             {
-                if (neu.ID == -1)
-                {
-                    neu.ID = ((GruppenTurnier)SelectedTurnier).Spiele.Count + 1;
-                }
-                else
-                { }
-                SelectedTurnier.addSpiel(neu);
+                neu.ID = ((GruppenTurnier)SelectedTurnier).Spiele.Count + 1;
             }
             else
             { }
+            SelectedTurnier.addSpiel(neu);
         }
         public void ChangeSpielInTurnier(int id, string name1, string name2, string ergebnis1, string ergebnis2)
         {
@@ -2582,529 +2349,6 @@ namespace Turnierverwaltung2020
             { }
         }
 
-        #endregion
-
-        #region Datenbank
-        public void loadData()
-        {
-            this.DB_Status = false;
-            MySqlConnection Conn2;
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = this.MyConnectionString;
-                Conn.Open();
-                this.DB_Status = true;
-                this.Dbwarnung = true;
-            }
-            catch (MySqlException)
-            {
-                this.DB_Status = false;
-                return;
-            }
-            //TODO vorhanden ID´s mit -1 zur Datenbank synchen
-            #region sportarten
-            Sportarten.Clear();
-            SqlString = "select * from sportarten";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-            MySqlDataReader rdr = command.ExecuteReader();
-            while (rdr.Read())
-            {
-                sportart neus = new sportart();
-                neus.id = Convert.ToInt32(rdr.GetValue(0).ToString());
-                neus.name = rdr.GetValue(1).ToString();
-                neus.Mannschaft = rdr.GetBoolean(2);
-                neus.PluspunkteproSpiel = rdr.GetInt32(3);
-                neus.UnentschiedenpunkteproSpiel = rdr.GetInt32(4);
-                neus.MinupunkteproSpiel = rdr.GetInt32(5);
-                Sportarten.Add(neus);
-            }
-            rdr.Close();
-            #endregion
-
-            #region Personen
-            this.Personen.Clear();
-            SqlString = "select personen.id,personen.name,personen.vorname,personen.geburtsdatum,sportarten.bezeichnung," +
-                        "personentypen.bezeichnung,personen.details from personen left join sportarten on sportarten.id = personen.sportart " +
-                        "left join personentypen on personentypen.id = personen.typ;";
-
-            command = new MySqlCommand(SqlString, Conn);
-
-            rdr = command.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Person neu = null;
-                int id = Convert.ToInt32(rdr.GetValue(0).ToString());
-                string name = rdr.GetValue(1).ToString();
-                string vorname = rdr.GetValue(2).ToString();
-                DateTime geburtsdatum = DateTime.Parse(rdr.GetValue(3).ToString());
-                string spart = rdr.GetValue(4).ToString();
-                sportart sportart = null;
-                foreach (sportart spa in this.Sportarten)
-                {
-                    if (spa.name == spart)
-                    {
-                        sportart = spa;
-                        break;
-                    }
-                    else
-                    { }
-                }
-                string typ = rdr.GetValue(5).ToString();
-                string detailidstring = rdr.GetValue(6).ToString();
-                int detailid = -1;
-                if (detailidstring != "")
-                {
-                    detailid = rdr.GetInt32(6);
-                }
-                else
-                { }
-
-                switch (typ)
-                {
-                    case "Fussballspieler":
-                        string newsqlstring = "select anzahlspiele, geschossenetore, position from fussballspieler where id = " + detailid + ";";
-                        int anzspiele = -1;
-                        int geschtore = -1;
-                        string position = "";
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        MySqlCommand command2 = new MySqlCommand(newsqlstring, Conn2);
-                        MySqlDataReader rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzspiele = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                            geschtore = Convert.ToInt32(rdr2.GetValue(1).ToString());
-                            position = rdr2.GetValue(2).ToString();
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-                        neu = new Fussballspieler(name, vorname, geburtsdatum, anzspiele, position, geschtore, sportart);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "Handballspieler":
-                        newsqlstring = "select anzahlspiele, geworfenetore, einsatzbereich from handballspieler where id = " + detailid + ";";
-                        anzspiele = -1;
-                        int gewtore = -1;
-                        string einsatz = "";
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzspiele = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                            gewtore = Convert.ToInt32(rdr2.GetValue(1).ToString());
-                            einsatz = rdr2.GetValue(2).ToString();
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new Handballspieler(name, vorname, geburtsdatum, anzspiele, einsatz, gewtore, sportart);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "Tennisspieler":
-                        newsqlstring = "select anzahlspiele,gewonnenespiele from tennisspieler where id = " + detailid + ";";
-                        anzspiele = -1;
-                        int gewspiel = -1;
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzspiele = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                            gewspiel = Convert.ToInt32(rdr2.GetValue(1).ToString());
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new Tennisspieler(name, vorname, geburtsdatum, anzspiele, gewspiel, sportart);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "WeitererSpieler":
-                        newsqlstring = "select anzahlspiele, gewonnenespiele from weitererspieler where id = " + detailid + ";";
-                        anzspiele = -1;
-                        gewspiel = -1;
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzspiele = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                            gewspiel = Convert.ToInt32(rdr2.GetValue(1).ToString());
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new WeitererSpieler(name, vorname, geburtsdatum, sportart, anzspiele, gewspiel);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "Physiotherapeut":
-                        newsqlstring = "select anzahljahre from physiotherapeut where id = " + detailid + ";";
-                        int anzjahre = -1;
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzjahre = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new Physiotherapeut(name, vorname, geburtsdatum, anzjahre, sportart);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "Trainer":
-                        newsqlstring = "select anzahlvereine from trainer where id = " + detailid + ";";
-                        int anzvereine = -1;
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            anzvereine = Convert.ToInt32(rdr2.GetValue(0).ToString());
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new Trainer(name, vorname, geburtsdatum, anzvereine, sportart);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                    case "AndereAufgaben":
-                        newsqlstring = "select Einsatz from andereaufgaben where id = " + detailid + ";";
-                        string aufgabe = "";
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = this.MyConnectionString;
-                        Conn2.Open();
-                        command2 = new MySqlCommand(newsqlstring, Conn2);
-                        rdr2 = command2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            aufgabe = rdr2.GetValue(0).ToString();
-                        }
-                        rdr2.Close();
-                        Conn2.Close();
-
-                        neu = new AndereAufgaben(name, vorname, geburtsdatum, sportart, aufgabe);
-                        neu.ID = id;
-                        this.Personen.Add(neu);
-                        break;
-                }
-            }
-            rdr.Close();
-            Conn.Close();
-            #endregion
-
-            #region Mannschaften
-            this.Mannschaften.Clear();
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = this.MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return;
-            }
-
-            SqlString = "select mannschaften.id,mannschaften.name,sportarten.bezeichnung," +
-                        "mannschaften.punkte,mannschaften.toreplus,mannschaften.toreminus," +
-                        "mannschaften.gewonnenespiele,mannschaften.verlorenespiele,mannschaften.unentschieden " +
-                        "from mannschaften " +
-                        "left join sportarten on sportarten.id = mannschaften.sportart;";
-
-            command = new MySqlCommand(SqlString, Conn);
-
-            rdr = command.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Mannschaft neu = null;
-                int id = rdr.GetInt32(0);
-                string name = rdr.GetValue(1).ToString();
-                string spart = rdr.GetValue(2).ToString();
-                sportart sportart = null;
-                foreach (sportart spa in this.Sportarten)
-                {
-                    if (spa.name == spart)
-                    {
-                        sportart = spa;
-                        break;
-                    }
-                    else
-                    { }
-                }
-                int punkte = rdr.GetInt32(3);
-                int toreplus = rdr.GetInt32(4);
-                int toreminus = rdr.GetInt32(5);
-                int gewonnen = rdr.GetInt32(6);
-                int verloren = rdr.GetInt32(7);
-                int unentschieden = rdr.GetInt32(8);
-
-                neu = new Mannschaft(name, sportart);
-                neu.ID = id;
-                neu.Punkte = punkte;
-                neu.Toreminus = toreminus;
-                neu.TorePlus = toreplus;
-                neu.GewonneneSpiele = gewonnen;
-                neu.VerloreneSpiele = verloren;
-                neu.Unentschieden = unentschieden;
-                neu.Anzahlspiele = neu.GewonneneSpiele + neu.VerloreneSpiele + neu.Unentschieden;
-                //Mannschaftsmitglieder auslesen
-                try
-                {
-                    Conn2 = new MySqlConnection();
-                    Conn2.ConnectionString = this.MyConnectionString;
-                    Conn2.Open();
-                }
-                catch (MySqlException)
-                {
-                    return;
-                }
-                string SqlString2 = "select mannschaftsmitglieder.person " +
-                    "from mannschaftsmitglieder " +
-                    "where mannschaftsmitglieder.mannschaft = '" + id + "';";
-                MySqlCommand command2 = new MySqlCommand(SqlString2, Conn2);
-                MySqlDataReader rdr2 = command2.ExecuteReader();
-                while (rdr2.Read())
-                {
-                    int persid = rdr2.GetInt32(0);
-
-                    foreach (Person pers in this.Personen)
-                    {
-                        if (pers.ID == persid)
-                        {
-                            neu.Mitglieder.Add(pers);
-                            break;
-                        }
-                        else
-                        { }
-                    }
-                }
-                rdr2.Close();
-                Conn2.Close();
-                this.Mannschaften.Add(neu);
-            }
-            rdr.Close();
-            Conn.Close();
-            #endregion
-
-            #region Gruppen
-            this.Gruppen.Clear();
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = this.MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return;
-            }
-
-            SqlString = "select gruppen.id,gruppen.name,sportarten.bezeichnung " +
-                        "from gruppen " +
-                        "left join sportarten on sportarten.id = gruppen.sportart;";
-
-            command = new MySqlCommand(SqlString, Conn);
-
-            rdr = command.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Gruppe neu = null;
-                int id = rdr.GetInt32(0);
-                string name = rdr.GetValue(1).ToString();
-                string spart = rdr.GetValue(2).ToString();
-                sportart sportart = null;
-                foreach (sportart spa in this.Sportarten)
-                {
-                    if (spa.name == spart)
-                    {
-                        sportart = spa;
-                        break;
-                    }
-                    else
-                    { }
-                }
-                neu = new Gruppe(name, sportart);
-                neu.ID = id;
-
-                //Gruppenmitglieder auslesen
-                try
-                {
-                    Conn2 = new MySqlConnection();
-                    Conn2.ConnectionString = this.MyConnectionString;
-                    Conn2.Open();
-                }
-                catch (MySqlException)
-                {
-                    return;
-                }
-                string SqlString2 = "select gruppenmitglieder.person " +
-                    "from gruppenmitglieder " +
-                    "where gruppenmitglieder.gruppe = '" + id + "';";
-                MySqlCommand command2 = new MySqlCommand(SqlString2, Conn2);
-                MySqlDataReader rdr2 = command2.ExecuteReader();
-                while (rdr2.Read())
-                {
-                    int persid = rdr2.GetInt32(0);
-
-                    foreach (Person pers in this.Personen)
-                    {
-                        if (pers.ID == persid)
-                        {
-                            neu.Mitglieder.Add(pers);
-                            break;
-                        }
-                        else
-                        { }
-                    }
-                }
-                rdr2.Close();
-                Conn2.Close();
-                this.Gruppen.Add(neu);
-            }
-            rdr.Close();
-            Conn.Close();
-            #endregion
-
-            #region Turniere
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = this.MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return;
-            }
-
-            SqlString = "select turnier.id,turnier.bezeichnung,sportarten.bezeichnung, " +
-                        "turnier.typ " +
-                        "from turnier " +
-                        "left join sportarten on sportarten.id = turnier.sportart;";
-
-            command = new MySqlCommand(SqlString, Conn);
-
-            rdr = command.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Turnier neu = null;
-                int id = rdr.GetInt32(0);
-                string name = rdr.GetValue(1).ToString();
-                string spart = rdr.GetValue(2).ToString();
-                sportart sportart = null;
-                foreach (sportart spa in this.Sportarten)
-                {
-                    if (spa.name == spart)
-                    {
-                        sportart = spa;
-                        break;
-                    }
-                    else
-                    { }
-                }
-                int typ = rdr.GetInt32(3);
-                //Turnierteilnehmer auslesen
-                try
-                {
-                    Conn2 = new MySqlConnection();
-                    Conn2.ConnectionString = this.MyConnectionString;
-                    Conn2.Open();
-                }
-                catch (MySqlException)
-                {
-                    return;
-                }
-                if (typ == 1)
-                {
-                    neu = new MannschaftsTurnier(name, sportart, new List<Mannschaft>());
-                    neu.ID = id;
-                }
-                else
-                {
-                    neu = new GruppenTurnier(name, sportart, new List<Gruppe>());
-                    neu.ID = id;
-                }
-
-                string SqlString2 = "select * " +
-                    "from turnierteilnehmer " +
-                    "where turnierteilnehmer.turnier = '" + id + "';";
-                MySqlCommand command2 = new MySqlCommand(SqlString2, Conn2);
-                MySqlDataReader rdr2 = command2.ExecuteReader();
-                //Alle Teilnehmer des Turniers auslesen
-                while (rdr2.Read())
-                {
-                    int teilid = -1;
-                    if (typ == 1)
-                    {
-                        if (rdr2.GetValue(1).ToString() != "")
-                        {
-                            teilid = rdr2.GetInt32(1);
-                        }
-                        else
-                        {                        
-                        }
-                        foreach (Mannschaft man in this.Mannschaften)
-                        {
-                            if (man.ID == teilid)
-                            {
-                                ((MannschaftsTurnier)neu).Teilnehmer.Add(man);
-                            }
-                            else
-                            { }
-                        }
-                    }
-                    else
-                    {
-                        if (rdr2.GetValue(2).ToString() != "")
-                        {
-                            teilid = rdr2.GetInt32(2);
-                        }
-                        else
-                        { }
-                        foreach (Gruppe grp in this.Gruppen)
-                        {
-                            if (grp.ID == teilid)
-                            {
-                                ((GruppenTurnier)neu).getTeilnemer().Add(grp);
-                            }
-                            else
-                            { }
-                        }
-                    }
-                }
-                rdr2.Close();
-                Conn2.Close();
-                this.Turniere.Add(neu);
-            }
-            rdr.Close();
-            Conn.Close();
-            #endregion
-        }
         #endregion
         #endregion
     }
