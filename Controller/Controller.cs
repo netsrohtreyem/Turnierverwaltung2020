@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Serialization;
 
@@ -44,6 +46,7 @@ namespace Turnierverwaltung2020
         private int _maxMannschaften;
         private int _maxGruppen;
         private int _maxTurniere;
+        private int _maxSportarten;
         private bool _hinundrueck;
         private bool _editSpiel;
         private int _editSpielID;
@@ -84,6 +87,7 @@ namespace Turnierverwaltung2020
         public int EditSpielID { get => _editSpielID; set => _editSpielID = value; }
         public string SelectedSportart { get => _selectedSportart; set => _selectedSportart = value; }
         public string HTTPSession { get => _HTTPSession; set => _HTTPSession = value; }
+        public int MaxSportarten { get => _maxSportarten; set => _maxSportarten = value; }
         #endregion
 
         #region Konstruktoren
@@ -105,6 +109,7 @@ namespace Turnierverwaltung2020
             MaxMannschaften = 0;
             MaxPersonen = 0;
             MaxTurniere = 0;
+            MaxSportarten = 0;
             hinundrueck = true;
             EditSpiel = false;
             EditSpielID = -1;
@@ -118,7 +123,14 @@ namespace Turnierverwaltung2020
         #region Sportart
         public void AddSportArt(sportart value)
         {
-            this.Sportarten.Add(value);
+            if (value.id == -1)
+            {
+                MaxSportarten++;
+                value.id = MaxSportarten;
+                this.Sportarten.Add(value);
+            }
+            else
+            { }
         }
 
         public bool DeleteSportart(string name)
@@ -205,15 +217,35 @@ namespace Turnierverwaltung2020
                 { }
             }
         }
+        private void SetSportartenMax()
+        {
+            MaxSportarten = 0;
+            foreach (sportart sp in Sportarten)
+            {
+                if (sp.id > MaxSportarten)
+                {
+                    MaxSportarten = sp.id;
+                }
+                else
+                { }
+            }
+        }
         #endregion
 
         #region Person
         public bool AddPerson(Person value)
         {
             bool ergebnis = true;
+            if (value.ID == -1)
+            {
+                value.ID = this.MaxPersonen + 1;
+                this.MaxPersonen++;
+                this.Personen.Add(value);
+            }
+            else
+            {
 
-            this.Personen.Add(value);
-
+            }
             return ergebnis;
         }
         public bool DeletePerson(int nummer)
@@ -329,6 +361,19 @@ namespace Turnierverwaltung2020
                 default:
                     this.Personen.Sort(CompareByName);
                     break;
+            }
+        }
+        private void SetPersonenMax()
+        {
+            MaxPersonen = 0;
+            foreach (Person pers in Personen)
+            {
+                if (pers.ID > MaxPersonen)
+                {
+                    MaxSportarten = pers.ID;
+                }
+                else
+                { }
             }
         }
         #endregion
@@ -495,6 +540,19 @@ namespace Turnierverwaltung2020
             }
             return false;
         }
+        private void SetMannschaftenMax()
+        {
+            MaxMannschaften = 0;
+            foreach (Mannschaft man in Mannschaften)
+            {
+                if (man.ID > MaxMannschaften)
+                {
+                    MaxMannschaften = man.ID;
+                }
+                else
+                { }
+            }
+        }
         #endregion
 
         #region Gruppe
@@ -637,6 +695,19 @@ namespace Turnierverwaltung2020
                 { }
             }
             return false;
+        }
+        private void SetGruppenMax()
+        {
+            MaxGruppen = 0;
+            foreach (Gruppe grp in Gruppen)
+            {
+                if (grp.ID > MaxGruppen)
+                {
+                    MaxGruppen = grp.ID;
+                }
+                else
+                { }
+            }
         }
         #endregion
 
@@ -2218,82 +2289,403 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Export XML,JSON
-        public void XMLSichern(string path, int art)
+        public void SportartenAlsXMLSichern(Page view)
         {
-            if (art == 1)//Personen
+            if (Sportarten.Count > 0)
             {
-                if (this.Personen.Count > 0)
+                string FileName = "Sportartenliste-" + DateTime.Now.ToShortDateString() + ".xml";
+                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                //XML File erzeugen
+                XmlSerializer serializer = new XmlSerializer(typeof(List<sportart>));
+
+                StreamWriter SR = new StreamWriter(new FileStream(FilePath, FileMode.Create), Encoding.UTF8);
+                try
                 {
-                    Type[] personTypes = { typeof(Person),
-                                   typeof(Fussballspieler),
-                                   typeof(Handballspieler),
-                                   typeof(Tennisspieler),
-                                    typeof(WeitererSpieler),
-                                    typeof(Physiotherapeut),
-                                    typeof(Trainer),
-                                    typeof(AndereAufgaben)};
-                    XmlSerializer serializer = new XmlSerializer(this.Personen.GetType(), personTypes);
-
-                    StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                    serializer.Serialize(SR, this.Personen);
+                    serializer.Serialize(SR, this.Sportarten);
+                }
+                catch (Exception)
+                {
                     SR.Close();
+                    return;
+                }
+                SR.Close();
+                //File senden
+                HttpResponse response = System.Web.HttpContext.Current.Response;
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "text/xml";
+                response.AddHeader("Content-Disposition", "attachment; filename=" + FileName + ";");
+                response.TransmitFile(FilePath);
+                response.Flush();
+                //File löschen
+                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                response.End();
+                /*if (art == 1)//Personen
+                {
+                    if (this.Personen.Count > 0)
+                    {
+                        Type[] personTypes = { typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+                        XmlSerializer serializer = new XmlSerializer(this.Personen.GetType(), personTypes);
+
+                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
+
+                        serializer.Serialize(SR, this.Personen);
+                        SR.Close();
+                    }
+                    else
+                    { }
+                }
+                else if (art == 2)//Mannschaften
+                {
+                    if (this.Mannschaften.Count > 0)
+                    {
+                        Type[] mannschaftTypes = { typeof(Mannschaft),
+                                        typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+
+                        XmlSerializer serializer = new XmlSerializer(this.Mannschaften.GetType(), mannschaftTypes);
+
+                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
+
+                        serializer.Serialize(SR, this.Mannschaften);
+                        SR.Close();
+                    }
+                    else
+                    { }
+                }
+                else if (art == 3)//Gruppen
+                {
+                    if (this.Gruppen.Count > 0)
+                    {
+                        Type[] gruppenTypes = { typeof(Gruppe),
+                                        typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+
+                        XmlSerializer serializer = new XmlSerializer(this.Gruppen.GetType(), gruppenTypes);
+
+                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
+
+                        serializer.Serialize(SR, this.Gruppen);
+                        SR.Close();
+                    }
+                    else
+                    { }
                 }
                 else
-                { }
-            }
-            else if (art == 2)//Mannschaften
-            {
-                if (this.Mannschaften.Count > 0)
-                {
-                    Type[] mannschaftTypes = { typeof(Mannschaft),
-                                    typeof(Person),
-                                   typeof(Fussballspieler),
-                                   typeof(Handballspieler),
-                                   typeof(Tennisspieler),
-                                    typeof(WeitererSpieler),
-                                    typeof(Physiotherapeut),
-                                    typeof(Trainer),
-                                    typeof(AndereAufgaben)};
-
-                    XmlSerializer serializer = new XmlSerializer(this.Mannschaften.GetType(), mannschaftTypes);
-
-                    StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                    serializer.Serialize(SR, this.Mannschaften);
-                    SR.Close();
-                }
-                else
-                { }
-            }
-            else if (art == 3)//Gruppen
-            {
-                if (this.Gruppen.Count > 0)
-                {
-                    Type[] gruppenTypes = { typeof(Gruppe),
-                                    typeof(Person),
-                                   typeof(Fussballspieler),
-                                   typeof(Handballspieler),
-                                   typeof(Tennisspieler),
-                                    typeof(WeitererSpieler),
-                                    typeof(Physiotherapeut),
-                                    typeof(Trainer),
-                                    typeof(AndereAufgaben)};
-
-                    XmlSerializer serializer = new XmlSerializer(this.Gruppen.GetType(), gruppenTypes);
-
-                    StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                    serializer.Serialize(SR, this.Gruppen);
-                    SR.Close();
-                }
-                else
-                { }
+                { }*/
             }
             else
             { }
         }
 
+        public void SportartenAlsXMLLaden(FileUpload upload, Page view)
+        {
+            //File uploaden
+            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            if (upload.PostedFile.ContentType == "text/xml")
+            {
+                upload.SaveAs(Path);
+            }
+            else
+            { }
+
+            //in Liste laden
+            XmlSerializer serializer = new XmlSerializer(typeof(List<sportart>));
+
+            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            try
+            {
+                this.Sportarten.Clear();
+                this.Sportarten =  (List<sportart>)serializer.Deserialize(SR);
+                this.SetSportartenMax();
+            }
+            catch (Exception)
+            {
+                SR.Close();
+                return;
+            }
+            SR.Close();
+            SR.Dispose();
+            File.Delete(Path);
+        }
+
+        public void PersonenAlsXMLSichern(Page view)
+        {
+            if (Personen.Count > 0)
+            {
+                string FileName = "Teilnehmerliste-" + DateTime.Now.ToShortDateString() + ".xml";
+                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                //XML File erzeugen
+                Type[] personTypes = { typeof(Teilnehmer),
+                                       typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+                XmlSerializer serializer = new XmlSerializer(this.Personen.GetType(), personTypes);
+
+                StreamWriter SR = new StreamWriter(new FileStream(FilePath, FileMode.Create), Encoding.UTF8);
+                try
+                {
+                    serializer.Serialize(SR, this.Personen);
+                }
+                catch (Exception)
+                {
+                    SR.Close();
+                    return;
+                }
+                SR.Close();
+                //File senden
+                HttpResponse response = System.Web.HttpContext.Current.Response;
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "text/xml";
+                response.AddHeader("Content-Disposition", "attachment; filename=" + FileName + ";");
+                response.TransmitFile(FilePath);
+                response.Flush();
+                //File löschen
+                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                response.End();
+            }
+            else
+            { }
+        }
+
+        public void PersonenAlsXMLLaden(FileUpload upload, Page view)
+        {
+            //File uploaden
+            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            if (upload.PostedFile.ContentType == "text/xml")
+            {
+                upload.SaveAs(Path);
+            }
+            else
+            { }
+
+            //in Liste laden
+            Type[] personTypes = {     typeof(Teilnehmer),                                        
+                                        typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+            XmlSerializer serializer = new XmlSerializer(this.Personen.GetType(), personTypes);
+
+            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            try
+            {
+                this.Personen.Clear();
+                this.Personen = (List<Teilnehmer>)serializer.Deserialize(SR);
+                this.SetPersonenMax();
+            }
+            catch (Exception)
+            {
+                SR.Close();
+                return;
+            }
+            SR.Close();
+            SR.Dispose();
+            File.Delete(Path);
+        }
+
+        public void MannschaftenAlsXMLSichern(Page view)
+        {
+            if (Mannschaften.Count > 0)
+            {
+                string FileName = "Mannschaftsliste-" + DateTime.Now.ToShortDateString() + ".xml";
+                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                //XML File erzeugen
+                Type[] manTypes = { typeof(Mannschaft),
+                                        typeof(Teilnehmer),
+                                       typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+                XmlSerializer serializer = new XmlSerializer(this.Mannschaften.GetType(), manTypes);
+
+                StreamWriter SR = new StreamWriter(new FileStream(FilePath, FileMode.Create), Encoding.UTF8);
+                try
+                {
+                    serializer.Serialize(SR, this.Mannschaften);
+                }
+                catch (Exception)
+                {
+                    SR.Close();
+                    return;
+                }
+                SR.Close();
+                //File senden
+                HttpResponse response = System.Web.HttpContext.Current.Response;
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "text/xml";
+                response.AddHeader("Content-Disposition", "attachment; filename=" + FileName + ";");
+                response.TransmitFile(FilePath);
+                response.Flush();
+                //File löschen
+                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                response.End();
+            }
+            else
+            { }
+        }
+
+        public void MannschaftenAlsXMLLaden(FileUpload upload, Page view)
+        {
+            //File uploaden
+            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            if (upload.PostedFile.ContentType == "text/xml")
+            {
+                upload.SaveAs(Path);
+            }
+            else
+            { }
+
+            //in Liste laden
+            Type[] manTypes = { typeof(Mannschaft),
+                                    typeof(Teilnehmer),
+                                        typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+            XmlSerializer serializer = new XmlSerializer(this.Mannschaften.GetType(), manTypes);
+
+            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            try
+            {
+                this.Mannschaften.Clear();
+                this.Mannschaften = (List<Mannschaft>)serializer.Deserialize(SR);
+                this.SetMannschaftenMax();
+            }
+            catch (Exception)
+            {
+                SR.Close();
+                return;
+            }
+            SR.Close();
+            SR.Dispose();
+            File.Delete(Path);
+        }
+
+        public void GruppenAlsXMLSichern(Page view)
+        {
+            if (Gruppen.Count > 0)
+            {
+                string FileName = "Gruppenliste-" + DateTime.Now.ToShortDateString() + ".xml";
+                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                //XML File erzeugen
+                Type[] grpTypes = { typeof(Gruppe),
+                                        typeof(Teilnehmer),
+                                       typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+                XmlSerializer serializer = new XmlSerializer(this.Gruppen.GetType(), grpTypes);
+
+                StreamWriter SR = new StreamWriter(new FileStream(FilePath, FileMode.Create), Encoding.UTF8);
+                try
+                {
+                    serializer.Serialize(SR, this.Gruppen);
+                }
+                catch (Exception)
+                {
+                    SR.Close();
+                    return;
+                }
+                SR.Close();
+                //File senden
+                HttpResponse response = System.Web.HttpContext.Current.Response;
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "text/xml";
+                response.AddHeader("Content-Disposition", "attachment; filename=" + FileName + ";");
+                response.TransmitFile(FilePath);
+                response.Flush();
+                //File löschen
+                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                response.End();
+            }
+            else
+            { }
+        }
+
+        public void GruppenAlsXMLLaden(FileUpload upload, Page view)
+        {
+            //File uploaden
+            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            if (upload.PostedFile.ContentType == "text/xml")
+            {
+                upload.SaveAs(Path);
+            }
+            else
+            { }
+
+            //in Liste laden
+            Type[] grpTypes = { typeof(Gruppe),
+                                    typeof(Teilnehmer),
+                                        typeof(Person),
+                                       typeof(Fussballspieler),
+                                       typeof(Handballspieler),
+                                       typeof(Tennisspieler),
+                                        typeof(WeitererSpieler),
+                                        typeof(Physiotherapeut),
+                                        typeof(Trainer),
+                                        typeof(AndereAufgaben)};
+            XmlSerializer serializer = new XmlSerializer(this.Gruppen.GetType(), grpTypes);
+
+            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            try
+            {
+                this.Gruppen.Clear();
+                this.Gruppen = (List<Gruppe>)serializer.Deserialize(SR);
+                this.SetGruppenMax();
+            }
+            catch (Exception)
+            {
+                SR.Close();
+                return;
+            }
+            SR.Close();
+            SR.Dispose();
+            File.Delete(Path);
+        }
         public void JSONSichern(string path, int art)
         {
             if (art == 1)

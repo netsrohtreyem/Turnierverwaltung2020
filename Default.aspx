@@ -17,7 +17,15 @@
     </asp:Table>
  <h3>Verfügare Sportarten:</h3>
     <asp:DropDownList ID="drpdwList1" runat="server" Font-Bold="True" Font-Size="Large" AutoPostBack="True" OnSelectedIndexChanged="drpdwList1_SelectedIndexChanged"></asp:DropDownList> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="btnloeschen" runat="server" Text="markierte löschen" OnClick="btnloeschen_Click" Font-Bold="True" Font-Size="Medium" />
- <h3>Sportart hinzufügen:</h3>
+    <br />
+    <br />
+    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Liste als XML File downloaden" Font-Bold="True" Font-Size="Medium" />
+    <br />
+    <br />
+    <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium" />
+    <br />
+    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Liste aus XML uploaden" />
+    <h3>Sportart hinzufügen:</h3>
     <asp:CheckBox ID="CheckBox1" runat="server" Text="Mannschafts - Sport" Checked="true" AutoPostBack="True" OnCheckedChanged="CheckBox1_CheckedChanged" />
     &nbsp;&nbsp;&nbsp;
     <asp:CheckBox ID="CheckBox2" runat="server" Text="Einzel - Sport" AutoPostBack="True" OnCheckedChanged="CheckBox2_CheckedChanged"/>
@@ -39,7 +47,7 @@
     &nbsp;&nbsp;
     <br />
     <br />
-    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Änderungen speichern" Font-Bold="True" />
+    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Änderungen speichern" Font-Bold="True" Enabled="false" />
     &nbsp;&nbsp;&nbsp;&nbsp;
  <asp:Button ID="btnSportHinzu" runat="server" Text="hinzufügen" Font-Bold="True" Font-Size="Medium" OnClick="btnSportHinzu_Click"/>
     <br />

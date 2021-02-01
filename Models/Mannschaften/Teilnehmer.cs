@@ -84,10 +84,6 @@ namespace Turnierverwaltung2020
         public abstract int CompareByAnzahlJahre(Teilnehmer value);
         public abstract int CompareByAnzahlspiele(Teilnehmer value);
         public abstract int CompareBySportart(Teilnehmer value);
-        public abstract bool AddToDatabase(List<int> Mitgliederliste);
-        public abstract bool DeleteFromDatabase();
-        public abstract bool ChangeInDatabase(string name, sportart spart, List<int> Mitgliederliste);
-        public abstract Ranking getRanking(List<Spiel> value);
         #endregion
     }
 }

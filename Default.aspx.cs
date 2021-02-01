@@ -286,7 +286,6 @@ namespace Turnierverwaltung2020
             if (this.IsPostBack)
             {
 
- 
             }
             else
             {
@@ -437,6 +436,8 @@ namespace Turnierverwaltung2020
             }
             else
             { }
+            this.txtname.Enabled = true;
+            this.Button1.Enabled = false;
         }
 
         //Sportart auswählen
@@ -448,6 +449,7 @@ namespace Turnierverwaltung2020
                 {
                     if (sp.name.Equals(drpdwList1.SelectedValue))
                     {
+                        this.txtname.Enabled = false;
                         this.txtname.Text = sp.name;
                         this.txtlost.Text = sp.MinupunkteproSpiel.ToString();
                         this.txtsieg.Text = sp.PluspunkteproSpiel.ToString();
@@ -469,6 +471,7 @@ namespace Turnierverwaltung2020
 
                     }
                 }
+                this.Button1.Enabled = true;
             }
             else
             {
@@ -489,6 +492,22 @@ namespace Turnierverwaltung2020
         {
             this.CheckBox1.Checked = false;
             this.CheckBox2.Checked = true;
+        }
+
+        protected void btnListeladen_Click(object sender, EventArgs e)
+        {
+            if (fileupload.FileName != "")
+            {
+                Verwalter.SportartenAlsXMLLaden(fileupload, this);
+                Response.Redirect(Request.RawUrl);
+            }
+            else
+            { }
+        }
+
+        protected void btnListespeichern_Click(object sender, EventArgs e)
+        {
+            Verwalter.SportartenAlsXMLSichern(this);
         }
     }
 }

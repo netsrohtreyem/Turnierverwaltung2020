@@ -60,6 +60,33 @@ namespace Turnierverwaltung2020
         protected global::System.Web.UI.WebControls.Button btnloeschen;
 
         /// <summary>
+        /// btnXMLsichern-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnXMLsichern;
+
+        /// <summary>
+        /// fileupload-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fileupload;
+
+        /// <summary>
+        /// btnUpload-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUpload;
+
+        /// <summary>
         /// CheckBox1-Steuerelement
         /// </summary>
         /// <remarks>

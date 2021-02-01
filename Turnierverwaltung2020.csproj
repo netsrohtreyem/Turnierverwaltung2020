@@ -128,6 +128,10 @@
     <Content Include="Images\Pfeillinks.png" />
     <Content Include="Images\stift.png" />
     <Content Include="Images\upanddown.png" />
+    <Content Include="Import_Export\Gruppenliste-01.02.2021.xml" />
+    <Content Include="Import_Export\Mannschaftsliste-01.02.2021.xml" />
+    <Content Include="Import_Export\Sportartenliste-01.02.2021.xml" />
+    <Content Include="Import_Export\Teilnehmerliste-01.02.2021.xml" />
     <Content Include="Views\About.aspx" />
     <Content Include="Views\Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -312,7 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Import_Export\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

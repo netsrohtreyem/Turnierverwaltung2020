@@ -882,6 +882,44 @@ namespace Turnierverwaltung2020.Views
         }
         #endregion
 
+        protected void btnXMLsichern_Click1(object sender, EventArgs e)
+        {
+            if (Verwalter.Mannschaften.Count > 0)
+            {
+                Verwalter.MannschaftenAlsXMLSichern(this);
+            }
+            else
+            { }
+        }
+        protected void btnXMLsichern_Click2(object sender, EventArgs e)
+        {
+            if (Verwalter.Mannschaften.Count > 0)
+            {
+                Verwalter.GruppenAlsXMLSichern(this);
+            }
+            else
+            { }
+        }
+        protected void btnUpload_Click1(object sender, EventArgs e)
+        {
+            if (fileupload.FileName != "")
+            {
+                Verwalter.MannschaftenAlsXMLLaden(fileupload, this);
+                Response.Redirect(Request.RawUrl);
+            }
+            else
+            { }
+        }
+        protected void btnUpload_Click2(object sender, EventArgs e)
+        {
+            if (fileupload.FileName != "")
+            {
+                Verwalter.GruppenAlsXMLLaden(fileupload, this);
+                Response.Redirect(Request.RawUrl);
+            }
+            else
+            { }
+        }
         #endregion
 
 

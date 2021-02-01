@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfSportart xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <sportart>
+    <id>1</id>
+    <name>Fussball</name>
+    <Mannschaft>true</Mannschaft>
+    <Einzel>false</Einzel>
+    <PluspunkteproSpiel>3</PluspunkteproSpiel>
+    <MinupunkteproSpiel>0</MinupunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>1</UnentschiedenpunkteproSpiel>
+  </sportart>
+  <sportart>
+    <id>2</id>
+    <name>Handball</name>
+    <Mannschaft>true</Mannschaft>
+    <Einzel>false</Einzel>
+    <PluspunkteproSpiel>2</PluspunkteproSpiel>
+    <MinupunkteproSpiel>2</MinupunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>1</UnentschiedenpunkteproSpiel>
+  </sportart>
+  <sportart>
+    <id>3</id>
+    <name>Tennis</name>
+    <Mannschaft>true</Mannschaft>
+    <Einzel>true</Einzel>
+    <PluspunkteproSpiel>0</PluspunkteproSpiel>
+    <MinupunkteproSpiel>0</MinupunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>0</UnentschiedenpunkteproSpiel>
+  </sportart>
+  <sportart>
+    <id>4</id>
+    <name>Tischtennis</name>
+    <Mannschaft>false</Mannschaft>
+    <Einzel>true</Einzel>
+    <PluspunkteproSpiel>1</PluspunkteproSpiel>
+    <MinupunkteproSpiel>1</MinupunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>0</UnentschiedenpunkteproSpiel>
+  </sportart>
+</ArrayOfSportart>

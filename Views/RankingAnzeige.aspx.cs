@@ -168,7 +168,7 @@ namespace Turnierverwaltung2020.Views
 
         private void LoadRanking()
         {
-            Ranking Tabelle = this.Verwalter.SelectedTurnier.GetRanking(this.Verwalter.SelectedTurnierGruppe);
+/*            Ranking Tabelle = this.Verwalter.SelectedTurnier.GetRanking(this.Verwalter.SelectedTurnierGruppe);
             if (Tabelle != null)
             {
                 foreach (string value in Tabelle.Titelzeile)
@@ -183,7 +183,7 @@ namespace Turnierverwaltung2020.Views
                 }
             }
             else
-            { }
+            { }*/
         }
     }
 }

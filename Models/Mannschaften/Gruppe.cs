@@ -16,12 +16,10 @@ namespace Turnierverwaltung2020
     public class Gruppe : Teilnehmer
     {
         #region Eigenschaften
-        private Ranking _Tabelle;
         private List<Teilnehmer> _mitglieder;
         #endregion
 
         #region Accessoren/Modifier
-        public Ranking Tabelle { get => _Tabelle; set => _Tabelle = value; }
         public List<Teilnehmer> Mitglieder { get => _mitglieder; set => _mitglieder = value; }
         #endregion
 
@@ -29,17 +27,14 @@ namespace Turnierverwaltung2020
         public Gruppe()
         {
             Mitglieder = new List<Teilnehmer>();
-            Tabelle = new Ranking(this.Sportart, new List<string>(), new List<TableRow>());
         }
         public Gruppe(string nam, sportart sport) : base(nam, sport, 0)
         {
             Mitglieder = new List<Teilnehmer>();
-            Tabelle = new Ranking(this.Sportart, new List<string>(), new List<TableRow>());
         }
         public Gruppe(Gruppe value) : base(value)
         {
             Mitglieder = new List<Teilnehmer>(value.Mitglieder);
-            Tabelle = new Ranking(value.Tabelle);
         }
         #endregion
 
@@ -161,260 +156,6 @@ namespace Turnierverwaltung2020
                 { }
             }
             return false;
-        }
-
-        public override bool AddToDatabase(List<int> Mitgliederliste)
-        {
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-            bool ergebnis = false;
-            int sportartenid = -1;
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;
-            }
-            string SqlString = "select id from sportarten where Bezeichnung = '" + Sportart + "';";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-            MySqlDataReader rdr;
-            try
-            {
-                rdr = command.ExecuteReader();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                return false;
-            }
-            rdr.Read();
-            sportartenid = rdr.GetInt32(0);
-            rdr.Close();
-
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return false;
-            }
-            SqlString = "INSERT INTO gruppen " +
-                               "(ID, Name, Sportart) " +
-                               "VALUES (NULL, '" + Name + "', '" + sportartenid + "');";
-
-            command = new MySqlCommand(SqlString, Conn);
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl > 0)
-            {
-                MySqlConnection Conn2;
-                try
-                {
-                    Conn2 = new MySqlConnection();
-                    Conn2.ConnectionString = MyConnectionString;
-                    Conn2.Open();
-                }
-                catch (MySqlException)
-                {
-                    return false;
-                }
-                this.ID = (int)command.LastInsertedId;
-
-                foreach (int index in Mitgliederliste)
-                {
-                    string sqlstring2 = "INSERT INTO gruppenmitglieder (ID, Gruppe, Person) " +
-                                        "VALUES(NULL, '" + command.LastInsertedId + "', '" + index + "');";
-
-                    MySqlCommand command2 = new MySqlCommand(sqlstring2, Conn2);
-                    anzahl = command2.ExecuteNonQuery();
-                    if (anzahl > 0)
-                    {
-                        ergebnis = true;
-                    }
-                    else
-                    {
-                        ergebnis = false;
-                        break;
-                    }
-                }
-                if (Mitgliederliste.Count <= 0)
-                {
-                    ergebnis = true;
-                }
-                else
-                { }
-
-                Conn2.Close();
-            }
-            else
-            {
-                ergebnis = false;
-            }
-
-            Conn.Close();
-            return ergebnis;
-        }
-        public override bool DeleteFromDatabase()
-        {
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-            bool ergebnis = false;
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;
-            }
-            string SqlString = "DELETE FROM gruppenmitglieder WHERE gruppe = '" + ID + "';";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl >= 0)
-            {
-                ergebnis = true;
-                SqlString = "DELETE FROM gruppen WHERE ID = '" + ID + "';";
-                command = new MySqlCommand(SqlString, Conn);
-                anzahl = command.ExecuteNonQuery();
-                if (anzahl > 0)
-                {
-                    ergebnis = true;
-                }
-                else
-                {
-                    ergebnis = false;
-                }
-            }
-            else
-            {
-                ergebnis = false;
-            }
-            Conn.Close();
-            return ergebnis;
-        }
-        public override bool ChangeInDatabase(string name, sportart spart, List<int> Mitgliederliste)
-        {
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-            bool ergebnis = false;
-            int sportartenid = -1;
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;
-            }
-            string SqlString = "select id from sportarten where Bezeichnung = '" + spart.name + "';";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-            MySqlDataReader rdr;
-            try
-            {
-                rdr = command.ExecuteReader();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                return false;
-            }
-            rdr.Read();
-            sportartenid = rdr.GetInt32(0);
-            rdr.Close();
-            this.Sportart = spart;
-            //TODO
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return false;
-            }
-
-            SqlString = "UPDATE gruppen SET Name = '" + name + "', Sportart = '" + sportartenid + "' " +
-                        "WHERE gruppen.ID = '" + ID + "';";
-            command = new MySqlCommand(SqlString, Conn);
-            int anzahl = command.ExecuteNonQuery();
-            if (anzahl > 0)
-            {
-                ergebnis = true;
-                SqlString = " DELETE FROM gruppenmitglieder WHERE gruppe = '" + ID + "';";
-                command = new MySqlCommand(SqlString, Conn);
-                anzahl = command.ExecuteNonQuery();
-                if (anzahl >= 0)
-                {
-                    MySqlConnection Conn2;
-                    try
-                    {
-                        Conn2 = new MySqlConnection();
-                        Conn2.ConnectionString = MyConnectionString;
-                        Conn2.Open();
-                    }
-                    catch (MySqlException)
-                    {
-                        return false;
-                    }
-
-                    foreach (int index in Mitgliederliste)
-                    {
-                        string sqlstring2 = "INSERT INTO gruppenmitglieder (ID, gruppe, Person) " +
-                                            "VALUES(NULL, '" + ID + "', '" + index + "');";
-                        MySqlCommand command2 = new MySqlCommand(sqlstring2, Conn2);
-                        anzahl = command2.ExecuteNonQuery();
-                        if (anzahl > 0)
-                        {
-                            this.Name = name;
-                            this.Sportart.name = spart.name;
-                            ergebnis = true;
-                        }
-                        else
-                        {
-                            ergebnis = false;
-                            break;
-                        }
-                    }
-                    Conn2.Close();
-                }
-                else
-                {
-                    ergebnis = false;
-                }
-            }
-            else
-            {
-                ergebnis = false;
-            }
-            Conn.Close();
-            return ergebnis;
-        }
-
-        public void MakeRanking(List<Spiel> spiele)
-        {
-            //Tabelle erstellen
-            this.Tabelle = new Ranking(this.Sportart, new List<string>(), new List<TableRow>());
-
-            this.Sportart.setTabelle(this.Tabelle, this.Mitglieder, spiele);
-        }
-
-        public override Ranking getRanking(List<Spiel> value)
-        {
-            MakeRanking(value);
-            return this.Tabelle;
         }
 
         public override int CompareByEinsatz(Teilnehmer value)

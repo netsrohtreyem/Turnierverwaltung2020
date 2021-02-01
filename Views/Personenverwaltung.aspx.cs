@@ -1383,43 +1383,6 @@ namespace Turnierverwaltung2020.Views
                 gefunden = false;
             }
         }
-        protected void btnXML_Click(object sender, EventArgs e)
-        {
-            string path = Server.MapPath("~/Import_Export/Personen_" + DateTime.Today.ToShortDateString() + ".xml");
-
-            this.Verwalter.XMLSichern(path, 1);
-        }
-        protected void btnJSON_Click(object sender, EventArgs e)
-        {
-            string path = Server.MapPath("~/Import_Export/Personen_" + DateTime.Today.ToShortDateString() + ".json");
-
-            this.Verwalter.JSONSichern(path, 1);
-        }
-        protected void btnUpload_Click(object sender, EventArgs e)
-        {
-            /*   string path = Server.MapPath("~/Import_Export");
-               string neupath = path + @"/" + this.FileUploadControl1.FileName;
-
-               if (this.FileUploadControl1.FileName.Contains(".xml"))
-               {
-                   //this.FileUploadControl1.SaveAs(neupath);
-                   this.Verwalter.XMLLaden(this.FileUploadControl1.FileContent,1);
-                   this.FileUploadControl1.FileContent.Close();
-               }
-               else if (this.FileUploadControl1.FileName.Contains(".json"))
-               {
-                   //this.FileUploadControl1.SaveAs(neupath);
-                   StreamReader SR = new StreamReader(this.FileUploadControl1.FileContent);
-                   string json = SR.ReadToEnd();
-                   SR.Close();
-                   this.Verwalter.JSONLaden(json,1);
-               }
-               else
-               {
-               }
-               // Reload
-               Response.Redirect(Request.RawUrl);*/
-        }
         protected void HeaderClick(object sender, EventArgs e)
         {
             string ID = "";
@@ -1434,6 +1397,20 @@ namespace Turnierverwaltung2020.Views
             this.Verwalter.PersonenSortieren(ID);
             //Reload
             Response.Redirect(Request.RawUrl);
+        }
+        protected void btnXMLsichern_Click(object sender, EventArgs e)
+        {
+            Verwalter.PersonenAlsXMLSichern(this);
+        }
+        protected void btnUpload_Click1(object sender, EventArgs e)
+        {
+            if (fileupload.FileName != "")
+            {
+                Verwalter.PersonenAlsXMLLaden(fileupload, this);
+                Response.Redirect(Request.RawUrl);
+            }
+            else
+            { }
         }
         #endregion
     }

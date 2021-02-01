@@ -2,6 +2,16 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1 style="font-weight: bold">Mannschaft- oder Einzelverwaltung</h1>
     <h2 style="font-weight: bold">Hinzufügen oder Bearbeiten einer Turnier Mannschaft oder einer Einzel - Gruppe</h2>
+    <asp:Button ID="btnXMLsichern1" runat="server" Text="Mannschaftsliste als XML File downloaden" Font-Bold="True" Font-Size="Medium" OnClick="btnXMLsichern_Click1" />
+    <asp:Button ID="btnXMLsichern2" runat="server" Text="Gruppenliste als XML File downloaden" Font-Bold="True" Font-Size="Medium" OnClick="btnXMLsichern_Click2" />
+    <br />
+    <br />
+    <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium" />
+    <br />
+    <asp:Button ID="btnUpload1" runat="server" Font-Bold="True" Font-Size="Medium" Text="Mannschaftsliste aus XML uploaden" OnClick="btnUpload_Click1" />
+    <asp:Button ID="btnUpload2" runat="server" Font-Bold="True" Font-Size="Medium" Text="Gruppenliste aus XML uploaden" OnClick="btnUpload_Click2" />
+
+
     <p style="font-weight: bold; font-size: large;">Auswählen ob eine Mannschaft oder eine Turniergruppe angelegt oder geändert werden soll</p>
     <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Large">
         <asp:ListItem Selected="True" Text ="Mannschaft"></asp:ListItem>

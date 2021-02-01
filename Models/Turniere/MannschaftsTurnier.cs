@@ -392,11 +392,6 @@ namespace Turnierverwaltung2020
 
             this.Sportart.setTabelle(this.Tabelle, this.Teilnehmer, this.Spiele);
         }
-        public override Ranking GetRanking(int value)
-        {
-            MakeRanking();
-            return this.Tabelle;
-        }
         public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
         {
             bool ergebnis = false;

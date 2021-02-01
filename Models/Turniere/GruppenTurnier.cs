@@ -381,18 +381,6 @@ namespace Turnierverwaltung2020
             }
         }
 
-        public override Ranking GetRanking(int gruppe)
-        {
-            if (gruppe > 0 && this.Gruppen.Count > 0)
-            {
-                return this.Gruppen[gruppe - 1].getRanking(this.Spiele);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
         {
             throw new NotImplementedException();
