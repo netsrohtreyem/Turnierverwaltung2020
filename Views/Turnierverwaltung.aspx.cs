@@ -237,6 +237,7 @@ namespace Turnierverwaltung2020.Views
                     index = Convert.ToInt32(id.Substring(8));
                     this.Verwalter.IndexEditTurnier = index - 1;
                     this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
+                    this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier];
                     int sportindex = 0;
                     foreach (sportart sp in this.Verwalter.Sportarten)
                     {
@@ -308,6 +309,7 @@ namespace Turnierverwaltung2020.Views
                     index = Convert.ToInt32(id.Substring(8));
                     this.Verwalter.IndexEditTurnier = index - 1;
                     this.txtNameTurnier.Text = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].Bezeichnung;
+                    this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier];
                     int sportindex = 0;
                     foreach (sportart sp in this.Verwalter.Sportarten)
                     {
@@ -573,6 +575,34 @@ namespace Turnierverwaltung2020.Views
                         this.lstVerfuegbareTeilnehmer.Items.Add("bisher keine Teilnehmer");
                     }
                 }
+            }
+            else
+            { }
+        }
+
+        protected void btnListeladen_Click(object sender, EventArgs e)
+        {
+            if (fileupload.FileName != "")
+            {
+                if (this.rbListArt.Items[0].Selected)
+                {
+                    Verwalter.TurniereAlsXMLLaden(fileupload, this, true);
+                }
+                else
+                {
+                    Verwalter.TurniereAlsXMLLaden(fileupload, this, false);
+                }
+                Response.Redirect(Request.RawUrl);
+            }
+            else
+            { }
+        }
+
+        protected void btnListespeichern_Click(object sender, EventArgs e)
+        {
+            if (this.txtNameTurnier.Text != "")
+            {
+                Verwalter.TurniereAlsXMLSichern(this);
             }
             else
             { }

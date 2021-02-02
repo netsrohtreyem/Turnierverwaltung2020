@@ -54,23 +54,6 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Worker
-        public override bool AddToDatabase()
-        {
-            //Todo
-            return true;
-        }
-
-        public override bool DeleteFromDB()
-        {
-            //Todo
-            return true;
-        }
-
-        public override bool ChangeInDB()
-        {
-            //Todo
-            return true;
-        }
 
         public override string getSpieltag()
         {
@@ -125,6 +108,21 @@ namespace Turnierverwaltung2020
         public override void setErgebniswert2(string ergebnis2)
         {
             this.Ergebnis2 = Convert.ToInt32(ergebnis2);
+        }
+
+        public override bool TeilnehmerVorhanden(List<Teilnehmer> value)
+        {
+            bool gefunden = false;
+            foreach (Teilnehmer tln in value)
+            {
+                if (tln.Name.Equals(this.Teilnehmer1.Name) || tln.Name.Equals(this.Teilnehmer2.Name))
+                {
+                    gefunden = true;
+                }
+                else
+                { }
+            }
+            return gefunden;
         }
         #endregion
     }

@@ -11,12 +11,12 @@ namespace Turnierverwaltung2020
     {
         #region Eigenschaften
         private int _id;
-        private Turnier _Turnier;
+        private int _Turnierid;
         #endregion
 
         #region Accessoren/Modifier
         public int ID { get => _id; set => _id = value; }
-        public Turnier Turnier { get => _Turnier; set => _Turnier = value; }
+        public int Turnier { get => _Turnierid; set => _Turnierid = value; }
 
         #endregion
 
@@ -24,12 +24,12 @@ namespace Turnierverwaltung2020
         public Spiel()
         {
             this.ID = -1;
-            this.Turnier = null;
+            this.Turnier = -1;
         }
         public Spiel(Turnier turn)
         {
             this.ID = -1;
-            this.Turnier = turn;
+            this.Turnier = turn.ID;
         }
         public Spiel(Spiel value)
         {
@@ -39,9 +39,6 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Worker
-        public abstract bool AddToDatabase();
-        public abstract bool DeleteFromDB();
-        public abstract bool ChangeInDB();
         public abstract string getSpieltag();
         public abstract string getMannschaftName1();
         public abstract string getMannschaftName2();
@@ -53,6 +50,7 @@ namespace Turnierverwaltung2020
         public abstract object getTeilnehmer2();
         public abstract void setErgebniswert1(string ergebnis1);
         public abstract void setErgebniswert2(string ergebnis2);
+        public abstract bool TeilnehmerVorhanden(List<Teilnehmer> value);
         #endregion
     }
 }

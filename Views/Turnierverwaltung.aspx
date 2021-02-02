@@ -7,7 +7,15 @@
         <asp:ListItem Selected="True">Mannschaft</asp:ListItem>
         <asp:ListItem>Gruppen</asp:ListItem>
     </asp:RadioButtonList>
-    <h4 style="font-weight: bold">&nbsp;</h4>
+    <h4 style="font-weight: bold">
+    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Turnier incl. Spiele als XML File downloaden" Font-Bold="True" Font-Size="Medium"/>
+    </h4>
+    <h4 style="font-weight: bold">
+    <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium"/>
+    </h4>
+    <h4 style="font-weight: bold">
+    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Turnier incl. Spiele aus XML uploaden"/>
+    </h4>
     <h4 style="font-weight: bold">Eine Sportart für das Turnier auswählen bzw. ändern:</h4>
     <asp:DropDownList ID="drpSportart1" runat="server" AutoPostBack="false" Font-Bold="True" Font-Size="Medium"></asp:DropDownList>
     <br />

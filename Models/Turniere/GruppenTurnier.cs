@@ -271,8 +271,6 @@ namespace Turnierverwaltung2020
             Person pers1 = ((Person)teilnehmer1);
             Person pers2 = ((Person)teilnehmer2);
             Spiel neu = new Gruppenspiel(this, grpid, pers1, pers2);
-            if (neu.AddToDatabase())
-            {
                 if (neu.ID == -1)
                 {
                     neu.ID = this.Spiele.Count + 1;
@@ -280,16 +278,9 @@ namespace Turnierverwaltung2020
                 else
                 { }
                 this.Spiele.Add(neu);
-            }
-            else
-            {
-
-            }
         }
         public override void addSpiel(Spiel neu)
         {
-            if (neu.AddToDatabase())
-            {
                 if (neu.ID == -1)
                 {
                     neu.ID = this.Spiele.Count + 1;
@@ -297,11 +288,6 @@ namespace Turnierverwaltung2020
                 else
                 { }
                 this.Spiele.Add(neu);
-            }
-            else
-            {
-
-            }
         }
         public override string getSpieleBezeichnung()
         {
@@ -321,7 +307,7 @@ namespace Turnierverwaltung2020
         {
             foreach (Spiel sp in Spiele)
             {
-                if (search.Turnier.ID == sp.Turnier.ID &&
+                if (search.Turnier == sp.Turnier &&
                     search.getMannschaftName1().Equals(sp.getMannschaftName1()) &&
                     search.getMannschaftName2().Equals(sp.getMannschaftName2()))
                 {
@@ -371,7 +357,7 @@ namespace Turnierverwaltung2020
         {
             foreach (Spiel sp in this.Spiele)
             {
-                if (sp.ID == id && sp.Turnier.ID == this.ID)
+                if (sp.ID == id && sp.Turnier == this.ID)
                 {
                     sp.setErgebniswert1(ergebnis1);
                     sp.setErgebniswert2(ergebnis2);

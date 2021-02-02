@@ -5,7 +5,6 @@
     <h2 style="font-weight: bold">Turnier durchführen</h2>
     <br />
     <h3>Wählen Sie ein Turnier aus:</h3>
-    <br />
     <asp:DropDownList ID="drpListTurniere" runat="server" Font-Size="Medium">
         <asp:ListItem>kein Turnier vorhanden</asp:ListItem>
     </asp:DropDownList>

@@ -15,14 +15,12 @@ namespace Turnierverwaltung2020
         private List<Teilnehmer> _Teilnehmer;
         private int _anzahlTeilnehmer;
         private int _maxSpieltag;
-        private Ranking _Tabelle;
         #endregion
 
         #region Accessoren/Modifier
         public List<Teilnehmer> Teilnehmer { get => _Teilnehmer; set => _Teilnehmer = value; }
         public int AnzahlTeilnehmer { get => _anzahlTeilnehmer; set => _anzahlTeilnehmer = value; }
         public int MaxSpieltag { get => _maxSpieltag; set => _maxSpieltag = value; }
-        public Ranking Tabelle { get => _Tabelle; set => _Tabelle = value; }
         #endregion
 
         #region Konstruktoren
@@ -266,8 +264,7 @@ namespace Turnierverwaltung2020
         public override void addSpiel(int spieltag, object mannschaft1, object mannschaft2)
         {
             Spiel neu = new Mannschaftsspiel(this, ((Mannschaft)mannschaft1), ((Mannschaft)mannschaft1), spieltag);
-            if (neu.AddToDatabase())
-            {
+
                 if (neu.ID == -1)
                 {
                     neu.ID = this.Spiele.Count + 1;
@@ -282,14 +279,10 @@ namespace Turnierverwaltung2020
                 }
                 else
                 { }
-            }
-            else
-            { }
         }
         public override void addSpiel(Spiel neu)
         {
-            if (neu.AddToDatabase())
-            {
+
                 if (neu.ID == -1)
                 {
                     neu.ID = this.Spiele.Count + 1;
@@ -304,9 +297,6 @@ namespace Turnierverwaltung2020
                 }
                 else
                 { }
-            }
-            else
-            { }
         }
         public override string getSpieleBezeichnung()
         {
@@ -376,7 +366,7 @@ namespace Turnierverwaltung2020
         {
             foreach (Spiel sp in this.Spiele)
             {
-                if (sp.ID == id && sp.Turnier.ID == this.ID)
+                if (sp.ID == id && sp.Turnier == this.ID)
                 {
                     sp.setErgebniswert1(ergebnis1);
                     sp.setErgebniswert2(ergebnis2);
@@ -384,13 +374,6 @@ namespace Turnierverwaltung2020
                 else
                 { }
             }
-        }
-        public void MakeRanking()
-        {
-            //Tabelle erstellen
-            this.Tabelle = new Ranking(this.Sportart, new List<string>(), new List<TableRow>());
-
-            this.Sportart.setTabelle(this.Tabelle, this.Teilnehmer, this.Spiele);
         }
         public override bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag)
         {

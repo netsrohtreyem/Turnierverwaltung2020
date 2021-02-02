@@ -222,8 +222,7 @@ namespace Turnierverwaltung2020
                 neuesSpiel.setErgebniswert1("1");
                 neuesSpiel.setErgebniswert2("4");
                 this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
-                neuesSpiel = new Mannschaftsspiel(testneu, man9, man15, 2
-);
+                neuesSpiel = new Mannschaftsspiel(testneu, man9, man15, 2);
                 neuesSpiel.setErgebniswert1("2");
                 neuesSpiel.setErgebniswert2("0");
                 this.Verwalter.AddSpielToMannschaftsTurnier(neuesSpiel);
@@ -276,11 +275,9 @@ namespace Turnierverwaltung2020
 
 
                 this.Verwalter.SelectedTurnierSpieltag = 1;
-                this.Verwalter.SelectedTurnierIndex = 1;
-                this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[0];
-                #endregion
-                */
-
+                this.Verwalter.SelectedTurnierIndex = -1;
+                this.Verwalter.SelectedTurnier = null;
+                #endregion*/
                 #endregion
             }
             if (this.IsPostBack)
