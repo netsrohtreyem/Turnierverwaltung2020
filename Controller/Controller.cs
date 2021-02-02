@@ -2502,7 +2502,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/" + FileName));
+                //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
                 /*if (art == 1)//Personen
                 {
@@ -2609,7 +2609,7 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            File.Delete(Path);
+            //File.Delete(Path);
         }
 
         public void PersonenAlsXMLSichern(Page view)
@@ -2650,7 +2650,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/" + FileName));
+                //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2694,7 +2694,7 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            File.Delete(Path);
+            //File.Delete(Path);
         }
 
         public void MannschaftenAlsXMLSichern(Page view)
@@ -2736,7 +2736,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/" + FileName));
+                //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2781,7 +2781,7 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            File.Delete(Path);
+            //File.Delete(Path);
         }
 
         public void GruppenAlsXMLSichern(Page view)
@@ -2823,7 +2823,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/" + FileName));
+                //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2868,7 +2868,7 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            File.Delete(Path);
+            //File.Delete(Path);
         }
 
         public void TurniereAlsXMLSichern(Page view)
@@ -2920,7 +2920,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/" + FileName));
+                //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2993,7 +2993,7 @@ namespace Turnierverwaltung2020
 
             SR.Close();
             SR.Dispose();
-            File.Delete(Path);
+            //File.Delete(Path);
             this.AddTurnier((Turnier)neu);
         }
 
