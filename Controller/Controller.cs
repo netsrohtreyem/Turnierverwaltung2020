@@ -2478,7 +2478,7 @@ namespace Turnierverwaltung2020
             if (Sportarten.Count > 0)
             {
                 string FileName = "Sportartenliste-" + DateTime.Now.ToShortDateString() + ".xml";
-                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                string FilePath = view.Server.MapPath("~/" + FileName);
                 //XML File erzeugen
                 XmlSerializer serializer = new XmlSerializer(typeof(List<sportart>));
 
@@ -2502,7 +2502,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
                 /*if (art == 1)//Personen
                 {
@@ -2584,7 +2584,7 @@ namespace Turnierverwaltung2020
         public void SportartenAlsXMLLaden(FileUpload upload, Page view)
         {
             //File uploaden
-            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            string Path = view.Server.MapPath("~/") + upload.FileName;
             if (upload.PostedFile.ContentType == "text/xml")
             {
                 upload.SaveAs(Path);
@@ -2617,7 +2617,7 @@ namespace Turnierverwaltung2020
             if (Personen.Count > 0)
             {
                 string FileName = "Teilnehmerliste-" + DateTime.Now.ToShortDateString() + ".xml";
-                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                string FilePath = view.Server.MapPath("~/" + FileName);
                 //XML File erzeugen
                 Type[] personTypes = { typeof(Teilnehmer),
                                        typeof(Person),
@@ -2650,7 +2650,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2660,7 +2660,7 @@ namespace Turnierverwaltung2020
         public void PersonenAlsXMLLaden(FileUpload upload, Page view)
         {
             //File uploaden
-            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            string Path = view.Server.MapPath("~/") + upload.FileName;
             if (upload.PostedFile.ContentType == "text/xml")
             {
                 upload.SaveAs(Path);
@@ -2702,7 +2702,7 @@ namespace Turnierverwaltung2020
             if (Mannschaften.Count > 0)
             {
                 string FileName = "Mannschaftsliste-" + DateTime.Now.ToShortDateString() + ".xml";
-                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                string FilePath = view.Server.MapPath("~/" + FileName);
                 //XML File erzeugen
                 Type[] manTypes = { typeof(Mannschaft),
                                         typeof(Teilnehmer),
@@ -2736,7 +2736,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2746,7 +2746,7 @@ namespace Turnierverwaltung2020
         public void MannschaftenAlsXMLLaden(FileUpload upload, Page view)
         {
             //File uploaden
-            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            string Path = view.Server.MapPath("~/") + upload.FileName;
             if (upload.PostedFile.ContentType == "text/xml")
             {
                 upload.SaveAs(Path);
@@ -2789,7 +2789,7 @@ namespace Turnierverwaltung2020
             if (Gruppen.Count > 0)
             {
                 string FileName = "Gruppenliste-" + DateTime.Now.ToShortDateString() + ".xml";
-                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                string FilePath = view.Server.MapPath("~/" + FileName);
                 //XML File erzeugen
                 Type[] grpTypes = { typeof(Gruppe),
                                         typeof(Teilnehmer),
@@ -2823,7 +2823,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2833,7 +2833,7 @@ namespace Turnierverwaltung2020
         public void GruppenAlsXMLLaden(FileUpload upload, Page view)
         {
             //File uploaden
-            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            string Path = view.Server.MapPath("~/") + upload.FileName;
             if (upload.PostedFile.ContentType == "text/xml")
             {
                 upload.SaveAs(Path);
@@ -2878,7 +2878,7 @@ namespace Turnierverwaltung2020
                 string FileName = "Turnier-"+SelectedTurnier.Bezeichnung + "-" + DateTime.Now.ToShortDateString() + ".xml";
                 FileName = FileName.Replace('\\', '_');
                 FileName = FileName.Replace('/', '_');
-                string FilePath = view.Server.MapPath("~/App_Data/" + FileName);
+                string FilePath = view.Server.MapPath("~/" + FileName);
                 //XML File erzeugen
                 Type[] turnTypes = { typeof(Turnier),
                                      typeof(MannschaftsTurnier),
@@ -2920,7 +2920,7 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                File.Delete(view.Server.MapPath("~/App_Data/" + FileName));
+                File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
             }
             else
@@ -2930,7 +2930,7 @@ namespace Turnierverwaltung2020
         public void TurniereAlsXMLLaden(FileUpload upload, Page view,bool mannschaft)
         {
             //File uploaden
-            string Path = view.Server.MapPath("~/App_Data/") + upload.FileName;
+            string Path = view.Server.MapPath("~/") + upload.FileName;
             if (upload.PostedFile.ContentType == "text/xml")
             {
                 upload.SaveAs(Path);
