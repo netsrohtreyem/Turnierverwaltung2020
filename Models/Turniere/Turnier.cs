@@ -115,7 +115,8 @@ namespace Turnierverwaltung2020
         public abstract void SetMaxSpieltag(int v);
         public abstract int getAnzahlPersonenteilnehmer(int value);
         public abstract void ChangeSpiel(int id, string name1, string name2, string ergebnis1, string ergebnis2);
-        public abstract bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag);       
+        public abstract bool SindMannschaftenAmSpieltagVorhanden(int teilnehmer1, int teilnehmer2, List<Mannschaft> liste, int spieltag);
+        public abstract Ranking GetRanking(int selectedTurnierGruppe);
         #endregion
     }
 }

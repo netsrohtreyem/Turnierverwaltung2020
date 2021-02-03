@@ -31,9 +31,9 @@ namespace Turnierverwaltung2020
                 {
                     Response.Redirect("http://www.google.com");
                 }
-                #region Testdaten
+                /*#region Testdaten
                 //Standart setzen
-                /*#region Sportarten
+                #region Sportarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
                 this.Verwalter.Sportarten.Clear();
@@ -277,8 +277,8 @@ namespace Turnierverwaltung2020
                 this.Verwalter.SelectedTurnierSpieltag = 1;
                 this.Verwalter.SelectedTurnierIndex = -1;
                 this.Verwalter.SelectedTurnier = null;
-                #endregion*/
                 #endregion
+                #endregion*/
             }
             if (this.IsPostBack)
             {

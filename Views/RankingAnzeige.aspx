@@ -10,7 +10,7 @@
         <asp:ListItem>kein Turnier vorhanden</asp:ListItem>
     </asp:DropDownList>
     &nbsp;&nbsp;&nbsp;
-    <asp:Button ID="btnTurnierAuswahl" runat="server" Text="auswählen"/>
+    <asp:Button ID="btnTurnierAuswahl" runat="server" Text="auswählen" OnClick="btnTurnierAuswahl_Click"/>
     <br />
     <br />
     </asp:Panel>

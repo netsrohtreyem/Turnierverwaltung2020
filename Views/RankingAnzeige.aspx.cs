@@ -78,6 +78,7 @@ namespace Turnierverwaltung2020.Views
                 else
                 { }
             }
+
             if (this.Verwalter.SelectedTurnier != null)
             {
                 this.lblTurniername.Visible = true;
@@ -112,7 +113,7 @@ namespace Turnierverwaltung2020.Views
                 {
                     this.pnlGruppen.Visible = false;
                     this.lblTurniername.Text += (" , mit " +
-                        this.Verwalter.SelectedTurnier.getTeilnemer().Count + " Mannschaften");
+                    this.Verwalter.SelectedTurnier.getTeilnemer().Count + " Mannschaften");
                 }
                 LoadRanking();
             }
@@ -168,7 +169,7 @@ namespace Turnierverwaltung2020.Views
 
         private void LoadRanking()
         {
-/*            Ranking Tabelle = this.Verwalter.SelectedTurnier.GetRanking(this.Verwalter.SelectedTurnierGruppe);
+            Ranking Tabelle = this.Verwalter.SelectedTurnier.GetRanking(this.Verwalter.SelectedTurnierGruppe);
             if (Tabelle != null)
             {
                 foreach (string value in Tabelle.Titelzeile)
@@ -183,7 +184,12 @@ namespace Turnierverwaltung2020.Views
                 }
             }
             else
-            { }*/
+            { }
+        }
+
+        protected void btnTurnierAuswahl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

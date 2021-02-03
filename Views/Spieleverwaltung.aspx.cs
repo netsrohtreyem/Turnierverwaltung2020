@@ -531,6 +531,7 @@ namespace Turnierverwaltung2020.Views
 
                 foreach (Mannschaft man in this.Verwalter.SelectedTurnier.getTeilnemer())
                 {
+                    this.txtnumber.Text = this.Verwalter.SelectedTurnierSpieltag.ToString();
                     this.drplstMannschaft1.Items.Add(man.ID + ", " + man.Name);
                     this.drplstMannschaft2.Items.Add(man.ID + ", " + man.Name);
                 }

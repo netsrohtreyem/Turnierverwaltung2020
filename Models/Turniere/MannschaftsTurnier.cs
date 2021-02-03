@@ -434,6 +434,26 @@ namespace Turnierverwaltung2020
             }
             return ergebnis;
         }
+
+        public override Ranking GetRanking(int selectedTurnierGruppe)
+        {
+            Ranking neu = new Ranking();
+            neu.Sportart = this.Sportart;
+            neu.Titelzeile = new List<string>();
+            neu.Titelzeile.Add("Rang");
+            neu.Titelzeile.Add("Verein");
+            neu.Titelzeile.Add("Spiele");
+            neu.Titelzeile.Add("Punkte");
+            neu.Titelzeile.Add("Siege");
+            neu.Titelzeile.Add("Unentschd.");
+            neu.Titelzeile.Add("Verloren");
+            neu.Titelzeile.Add("Tore");
+            neu.Titelzeile.Add("Diff");
+            //Tablerows generieren
+            neu.makeRanking(this.Spiele,this.Teilnehmer,true);
+
+            return neu;
+        }
         #endregion
     }
 }
