@@ -2502,80 +2502,10 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
+                FileInfo fi = new FileInfo(FilePath);
+                fi.Delete();
                 //File.Delete(view.Server.MapPath("~/" + FileName));
                 response.End();
-                /*if (art == 1)//Personen
-                {
-                    if (this.Personen.Count > 0)
-                    {
-                        Type[] personTypes = { typeof(Person),
-                                       typeof(Fussballspieler),
-                                       typeof(Handballspieler),
-                                       typeof(Tennisspieler),
-                                        typeof(WeitererSpieler),
-                                        typeof(Physiotherapeut),
-                                        typeof(Trainer),
-                                        typeof(AndereAufgaben)};
-                        XmlSerializer serializer = new XmlSerializer(this.Personen.GetType(), personTypes);
-
-                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                        serializer.Serialize(SR, this.Personen);
-                        SR.Close();
-                    }
-                    else
-                    { }
-                }
-                else if (art == 2)//Mannschaften
-                {
-                    if (this.Mannschaften.Count > 0)
-                    {
-                        Type[] mannschaftTypes = { typeof(Mannschaft),
-                                        typeof(Person),
-                                       typeof(Fussballspieler),
-                                       typeof(Handballspieler),
-                                       typeof(Tennisspieler),
-                                        typeof(WeitererSpieler),
-                                        typeof(Physiotherapeut),
-                                        typeof(Trainer),
-                                        typeof(AndereAufgaben)};
-
-                        XmlSerializer serializer = new XmlSerializer(this.Mannschaften.GetType(), mannschaftTypes);
-
-                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                        serializer.Serialize(SR, this.Mannschaften);
-                        SR.Close();
-                    }
-                    else
-                    { }
-                }
-                else if (art == 3)//Gruppen
-                {
-                    if (this.Gruppen.Count > 0)
-                    {
-                        Type[] gruppenTypes = { typeof(Gruppe),
-                                        typeof(Person),
-                                       typeof(Fussballspieler),
-                                       typeof(Handballspieler),
-                                       typeof(Tennisspieler),
-                                        typeof(WeitererSpieler),
-                                        typeof(Physiotherapeut),
-                                        typeof(Trainer),
-                                        typeof(AndereAufgaben)};
-
-                        XmlSerializer serializer = new XmlSerializer(this.Gruppen.GetType(), gruppenTypes);
-
-                        StreamWriter SR = new StreamWriter(new FileStream(path, FileMode.Create), Encoding.UTF8);
-
-                        serializer.Serialize(SR, this.Gruppen);
-                        SR.Close();
-                    }
-                    else
-                    { }
-                }
-                else
-                { }*/
             }
             else
             { }
@@ -2609,7 +2539,9 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            //File.Delete(Path);
+            //File löschen
+            FileInfo fi = new FileInfo(Path);
+            fi.Delete();
         }
 
         public void PersonenAlsXMLSichern(Page view)
@@ -2650,7 +2582,8 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                //File.Delete(view.Server.MapPath("~/" + FileName));
+                FileInfo fi = new FileInfo(FilePath);
+                fi.Delete();
                 response.End();
             }
             else
@@ -2694,7 +2627,9 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            //File.Delete(Path);
+            //File löschen
+            FileInfo fi = new FileInfo(Path);
+            fi.Delete();
         }
 
         public void MannschaftenAlsXMLSichern(Page view)
@@ -2736,7 +2671,8 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                //File.Delete(view.Server.MapPath("~/" + FileName));
+                FileInfo fi = new FileInfo(FilePath);
+                fi.Delete();
                 response.End();
             }
             else
@@ -2781,7 +2717,9 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            //File.Delete(Path);
+            //File löschen
+            FileInfo fi = new FileInfo(Path);
+            fi.Delete();
         }
 
         public void GruppenAlsXMLSichern(Page view)
@@ -2823,7 +2761,8 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                //File.Delete(view.Server.MapPath("~/" + FileName));
+                FileInfo fi = new FileInfo(FilePath);
+                fi.Delete();
                 response.End();
             }
             else
@@ -2868,7 +2807,9 @@ namespace Turnierverwaltung2020
             }
             SR.Close();
             SR.Dispose();
-            //File.Delete(Path);
+            //File löschen
+            FileInfo fi = new FileInfo(Path);
+            fi.Delete();
         }
 
         public void TurniereAlsXMLSichern(Page view)
@@ -2920,7 +2861,8 @@ namespace Turnierverwaltung2020
                 response.TransmitFile(FilePath);
                 response.Flush();
                 //File löschen
-                //File.Delete(view.Server.MapPath("~/" + FileName));
+                FileInfo fi = new FileInfo(FilePath);
+                fi.Delete();
                 response.End();
             }
             else
@@ -2993,7 +2935,9 @@ namespace Turnierverwaltung2020
 
             SR.Close();
             SR.Dispose();
-            //File.Delete(Path);
+            //File löschen
+            FileInfo fi = new FileInfo(Path);
+            fi.Delete();
             this.AddTurnier((Turnier)neu);
         }
 
