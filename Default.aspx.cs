@@ -31,22 +31,22 @@ namespace Turnierverwaltung2020
                 {
                     Response.Redirect("http://www.google.com");
                 }
-                /*#region Testdaten
+                #region Testdaten
                 //Standart setzen
-                #region Sportarten
+                /*#region Sportarten
                 sportart neu = new sportart("Fussball", true, false, 3, 0, 1);
                 neu.id = 1;
                 this.Verwalter.Sportarten.Clear();
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Handball", true, false, 2, 2, 1);
                 neu.id = 2;
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Tennis", true, true, 0, 0, 0);
                 neu.id = 3;
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 neu = new sportart("Tischtennis", false, true, 1, 1, 0);
                 neu.id = 4;
-                this.Verwalter.Sportarten.Add(neu);
+                this.Verwalter.AddSportArt(neu);
                 #endregion
 
                 #region Personen
@@ -277,8 +277,8 @@ namespace Turnierverwaltung2020
                 this.Verwalter.SelectedTurnierSpieltag = 1;
                 this.Verwalter.SelectedTurnierIndex = -1;
                 this.Verwalter.SelectedTurnier = null;
-                #endregion
                 #endregion*/
+                #endregion
             }
             if (this.IsPostBack)
             {

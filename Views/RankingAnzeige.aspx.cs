@@ -88,7 +88,7 @@ namespace Turnierverwaltung2020.Views
                 {
                     this.pnlGruppen.Visible = true;
                     int selectedgruppe = this.Verwalter.SelectedTurnierGruppe;
-                    int anzahlGruppen = this.Verwalter.SelectedTurnier.getTeilnemer().Count;
+                    int anzahlGruppen = this.Verwalter.SelectedTurnier.getTeilnehmer().Count;
                     if (anzahlGruppen > 0)
                     {
                         if (selectedgruppe <= 0)
@@ -113,7 +113,7 @@ namespace Turnierverwaltung2020.Views
                 {
                     this.pnlGruppen.Visible = false;
                     this.lblTurniername.Text += (" , mit " +
-                    this.Verwalter.SelectedTurnier.getTeilnemer().Count + " Mannschaften");
+                    this.Verwalter.SelectedTurnier.getTeilnehmer().Count + " Mannschaften");
                 }
                 LoadRanking();
             }
@@ -124,10 +124,10 @@ namespace Turnierverwaltung2020.Views
 
         private void LoadGruppen()
         {
-            if (this.Verwalter.SelectedTurnier.getTeilnemer().Count > 0)
+            if (this.Verwalter.SelectedTurnier.getTeilnehmer().Count > 0)
             {
                 this.drplistGruppen.Items.Clear();
-                foreach (Gruppe grp in this.Verwalter.SelectedTurnier.getTeilnemer())
+                foreach (Gruppe grp in this.Verwalter.SelectedTurnier.getTeilnehmer())
                 {
                     this.drplistGruppen.Items.Add(grp.ID + ", " + grp.Name);
                 }
@@ -169,7 +169,8 @@ namespace Turnierverwaltung2020.Views
 
         private void LoadRanking()
         {
-            Ranking Tabelle = this.Verwalter.SelectedTurnier.GetRanking(this.Verwalter.SelectedTurnierGruppe);
+            Ranking Tabelle = this.Verwalter.GetRanking();
+
             if (Tabelle != null)
             {
                 foreach (string value in Tabelle.Titelzeile)

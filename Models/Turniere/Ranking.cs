@@ -57,29 +57,30 @@ namespace Turnierverwaltung2020
             this.Zeilen.Clear();
         }
 
-        public void makeRanking(List<Spiel> spiele,List<Teilnehmer> teilnehmer, bool mannschaft)
-        {
-            //Teilnehmer nullen
-            foreach (Teilnehmer tln in teilnehmer)
+        public void makeRanking(List<Spiel> spiele,Turnier turn, bool mannschaft)
+        {        
+            //Alle Teilnehmer reset
+            foreach(Teilnehmer tln in turn.getTeilnehmer())
             {
                 tln.Anzahlspiele = 0;
-                tln.Punkte = 0;
                 tln.GewonneneSpiele = 0;
                 tln.Unentschieden = 0;
                 tln.VerloreneSpiele = 0;
                 tln.Toreminus = 0;
                 tln.TorePlus = 0;
             }
-                //Punkte berechnen
+            //Punkte berechnen
             foreach (Spiel sp in spiele)
             {
                 //Sieg Tln 1
-                if(Convert.ToInt32(sp.getErgebniswert1()) > Convert.ToInt32(sp.getErgebniswert2()))
+                if (Convert.ToInt32(sp.getErgebniswert1()) > Convert.ToInt32(sp.getErgebniswert2()))
                 {
                     if (mannschaft)
                     {
-                        Mannschaft man1 = (Mannschaft)sp.getTeilnehmer1();
-                        Mannschaft man2 = (Mannschaft)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(),turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(),turn.getSelectedGruppe());
+                        Mannschaft man1 = (Mannschaft)tln1;
+                        Mannschaft man2 = (Mannschaft)tln2;
                         man1.Anzahlspiele++;
                         man1.GewonneneSpiele++;
                         man1.Punkte = man1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -95,11 +96,13 @@ namespace Turnierverwaltung2020
                                         man2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         man2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         man2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(man1);
+                        sp.SetTeilnehmer2(man2);
                     }
                     else
                     {
-                        Teilnehmer tln1 = (Teilnehmer)sp.getTeilnehmer1();
-                        Teilnehmer tln2 = (Teilnehmer)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
                         tln1.Anzahlspiele++;
                         tln1.GewonneneSpiele++;
                         tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -115,6 +118,8 @@ namespace Turnierverwaltung2020
                                         tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(tln1);
+                        sp.SetTeilnehmer2(tln2);
                     }
                 }
                 //Sieg Tln2
@@ -122,8 +127,10 @@ namespace Turnierverwaltung2020
                 {
                     if (mannschaft)
                     {
-                        Mannschaft man1 = (Mannschaft)sp.getTeilnehmer1();
-                        Mannschaft man2 = (Mannschaft)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
+                        Mannschaft man1 = (Mannschaft)tln1;
+                        Mannschaft man2 = (Mannschaft)tln2;
                         man2.Anzahlspiele++;
                         man2.GewonneneSpiele++;
                         man2.Punkte = man2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -139,11 +146,13 @@ namespace Turnierverwaltung2020
                                         man1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         man1.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         man1.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(man1);
+                        sp.SetTeilnehmer2(man2);
                     }
                     else
                     {
-                        Teilnehmer tln1 = (Teilnehmer)sp.getTeilnehmer1();
-                        Teilnehmer tln2 = (Teilnehmer)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
                         tln2.Anzahlspiele++;
                         tln2.GewonneneSpiele++;
                         tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -159,6 +168,8 @@ namespace Turnierverwaltung2020
                                         tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(tln1);
+                        sp.SetTeilnehmer2(tln2);
                     }
                 }
                 //unentschieden
@@ -166,8 +177,10 @@ namespace Turnierverwaltung2020
                 {
                     if (mannschaft)
                     {
-                        Mannschaft man1 = (Mannschaft)sp.getTeilnehmer1();
-                        Mannschaft man2 = (Mannschaft)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
+                        Mannschaft man1 = (Mannschaft)tln1;
+                        Mannschaft man2 = (Mannschaft)tln2;
                         man1.Anzahlspiele++;
                         man1.Unentschieden++;
                         man1.Punkte = man1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -183,11 +196,13 @@ namespace Turnierverwaltung2020
                                         man2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         man2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         man2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(man1);
+                        sp.SetTeilnehmer2(man2);
                     }
                     else
                     {
-                        Teilnehmer tln1 = (Teilnehmer)sp.getTeilnehmer1();
-                        Teilnehmer tln2 = (Teilnehmer)sp.getTeilnehmer2();
+                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
                         tln1.Anzahlspiele++;
                         tln1.Unentschieden++;
                         tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
@@ -203,6 +218,8 @@ namespace Turnierverwaltung2020
                                         tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
                         tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
                         tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                        sp.SetTeilnehmer1(tln1);
+                        sp.SetTeilnehmer2(tln2);
                     }
                 }
             }
@@ -211,13 +228,14 @@ namespace Turnierverwaltung2020
             //Rows erzeugen
             this.Zeilen = new List<TableRow>();
 
-            teilnehmer.Sort(Vergleich);
+            turn.getTeilnehmer().Sort(Vergleich);
             int rank = 1;
-            foreach(Teilnehmer tln in teilnehmer)
+            foreach(Teilnehmer tln in turn.getTeilnehmer())
             {
                 TableRow neu = new TableRow();
                 TableCell neucell = new TableCell();
                 neucell.Text = rank.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 rank++;
                 neu.Cells.Add(neucell);
 
@@ -227,26 +245,32 @@ namespace Turnierverwaltung2020
 
                 neucell = new TableCell();
                 neucell.Text = tln.Anzahlspiele.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
                 neucell.Text = tln.Punkte.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
                 neucell.Text = tln.GewonneneSpiele.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
                 neucell.Text = tln.Unentschieden.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
                 neucell.Text = tln.VerloreneSpiele.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
                 neucell.Text = tln.TorePlus.ToString() + ":" + tln.Toreminus.ToString();
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 neucell = new TableCell();
@@ -263,6 +287,7 @@ namespace Turnierverwaltung2020
                 {
                     neucell.Text = "0";
                 }
+                neucell.HorizontalAlign = HorizontalAlign.Center;
                 neu.Cells.Add(neucell);
 
                 this.Zeilen.Add(neu);

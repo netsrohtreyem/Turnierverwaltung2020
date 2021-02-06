@@ -61,11 +61,9 @@ namespace Turnierverwaltung2020
             return Sportart.name.CompareTo(value.Sportart.name);
         }
         public abstract string getSpieleBezeichnung();
-        public abstract bool AddToDatabase();
-        public abstract bool DeleteFromDB();
-        public abstract bool ChangeInDB();
         public abstract int getAnzahlTeilnehmer();
-        public abstract List<Teilnehmer> getTeilnemer();
+        public abstract List<Teilnehmer> getTeilnehmer();
+        public abstract Teilnehmer getTeilnehmer(Teilnehmer teilnehmer,int grp);
         public abstract void clearTeilnehmer();
         public abstract void addTeilnehmer(object items);
         public abstract string GetTypus();
@@ -110,8 +108,7 @@ namespace Turnierverwaltung2020
             }
             return ergebnis;
         }
-        public abstract Spiel getSpiel(int spielid, int spieltag);
-        
+        public abstract Spiel getSpiel(int spielid, int spieltag);        
         public abstract void SetMaxSpieltag(int v);
         public abstract int getAnzahlPersonenteilnehmer(int value);
         public abstract void ChangeSpiel(int id, string name1, string name2, string ergebnis1, string ergebnis2);

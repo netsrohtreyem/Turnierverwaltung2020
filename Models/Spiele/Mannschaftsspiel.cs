@@ -90,12 +90,12 @@ namespace Turnierverwaltung2020
             return -1;
         }
 
-        public override object getTeilnehmer1()
+        public override Teilnehmer getTeilnehmer1()
         {
             return this.Man1;
         }
 
-        public override object getTeilnehmer2()
+        public override Teilnehmer getTeilnehmer2()
         {
             return this.Man2;
         }
@@ -123,6 +123,16 @@ namespace Turnierverwaltung2020
                 { }
             }
             return gefunden;
+        }
+
+        public override void SetTeilnehmer1(Teilnehmer man1)
+        {
+            this.Man1 = (Mannschaft)man1;
+        }
+
+        public override void SetTeilnehmer2(Teilnehmer man2)
+        {
+            this.Man2 = (Mannschaft)man2;
         }
         #endregion
     }

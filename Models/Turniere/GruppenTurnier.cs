@@ -21,6 +21,7 @@ namespace Turnierverwaltung2020
         public int AnzahlTeilnehmer { get => AnzahlGruppen; set => AnzahlGruppen = value; }
         public int AnzahlGruppen { get => _anzahlGruppen; set => _anzahlGruppen = value; }
         public int SelectedGruppe { get => _selectedGruppe; set => _selectedGruppe = value; }
+        public ListItemCollection Items { get; }
         #endregion
 
         #region Konstruktoren
@@ -45,190 +46,14 @@ namespace Turnierverwaltung2020
             this.AnzahlTeilnehmer = value.AnzahlTeilnehmer;
         }
 
+        public GruppenTurnier(string bez, sportart sport, ListItemCollection items) : this(bez, sport)
+        {
+            Items = items;
+        }
+
         #endregion
 
         #region Worker
-        public override bool AddToDatabase()
-        {
-            bool ergebnis = false;
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-            int sportartenid = -1;
-
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
-            }
-            string SqlString = "select id from sportarten where Bezeichnung = '" + this.Sportart + "' ;";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-            MySqlDataReader rdr;
-            try
-            {
-                rdr = command.ExecuteReader();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                return false;
-            }
-            rdr.Read();
-            sportartenid = rdr.GetInt32(0);
-            rdr.Close();
-
-            SqlString = "insert into turnier (ID,Bezeichnung,Sportart,Typ) " +
-            "VALUES (null,'" + this.Bezeichnung + "', " + sportartenid + " , 1 );";
-
-            command = new MySqlCommand(SqlString, Conn);
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl > 0)
-            {
-                int turnierid = (int)command.LastInsertedId;
-                this.ID = turnierid;
-                foreach (Gruppe grp in this.Gruppen)
-                {
-                    SqlString = "insert into turnierteilnehmer (ID,Mannschaft,Gruppe,Turnier) " +
-                    "VALUES (null, null, '" + grp.ID + "', '" + turnierid + "');";
-                    command = new MySqlCommand(SqlString, Conn);
-                    try
-                    {
-                        anzahl = command.ExecuteNonQuery();
-                    }
-                    catch (Exception)
-                    {
-                        Conn.Close();
-                        return false;
-                    }
-                    if (anzahl > 0)
-                    {
-                        ergebnis = true;
-                    }
-                    else
-                    {
-                        ergebnis = true;
-                    }
-                }
-            }
-            else
-            {
-                ergebnis = false;
-            }
-
-            Conn.Close();
-            return ergebnis;
-        }
-
-        public override bool DeleteFromDB()
-        {
-            bool ergebnis = false;
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
-            }
-
-            string SqlString = "delete from turnierteilnehmer where turnier = '" + this.ID + "' ;";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl < 0)
-            {
-                return false;
-            }
-            else
-            { }
-
-            SqlString = "delete from turnier where ID = '" + this.ID + "' ;";
-            command = new MySqlCommand(SqlString, Conn);
-
-            anzahl = command.ExecuteNonQuery();
-
-            if (anzahl > 0)
-            {
-                ergebnis = true;
-            }
-            else
-            {
-                ergebnis = false;
-            }
-
-            return ergebnis;
-        }
-
-        public override bool ChangeInDB()
-        {
-            bool ergebnis = false;
-            MySqlConnection Conn = new MySqlConnection();
-            string MyConnectionString = Properties.Settings.Default.Connectionstring;
-
-            try
-            {
-                Conn = new MySqlConnection();
-                Conn.ConnectionString = MyConnectionString;
-                Conn.Open();
-            }
-            catch (MySqlException)
-            {
-                return true;//Datenbank nicht verfügbar true damit Objekt im Controller gespeichert wird
-            }
-
-            string SqlString = "update turnier " +
-                               "set Bezeichnung = '" + this.Bezeichnung + "' , " +
-                               "Sportart = (select id from sportarten where bezeichnung = '" + this.Sportart + "') , " +
-                               "Typ = '1' " +
-                               "where ID = '" + this.ID + "';";
-            MySqlCommand command = new MySqlCommand(SqlString, Conn);
-
-            int anzahl = command.ExecuteNonQuery();
-
-            if (anzahl < 0)
-            {
-                return false;
-            }
-            else
-            {
-                ergebnis = true;
-            }
-
-            SqlString = "delete from turnierteilnehmer where turnier = '" + this.ID + "' ;";
-            command = new MySqlCommand(SqlString, Conn);
-            anzahl = command.ExecuteNonQuery();
-
-            if (anzahl < 0)
-            {
-                return false;
-            }
-            else
-            {
-                ergebnis = true;
-            }
-
-            foreach (Gruppe grp in this.Gruppen)
-            {
-                SqlString = "insert into turnierteilnehmer " +
-                            "(ID,Mannschaft,Gruppe,Turnier) " +
-                            "values(null, null , '" + grp.ID + "' , '" + this.ID + "');";
-                command = new MySqlCommand(SqlString, Conn);
-                anzahl = command.ExecuteNonQuery();
-            }
-            return ergebnis;
-        }
-
         public override int getAnzahlTeilnehmer()
         {
             this.AnzahlGruppen = this.Gruppen.Count;
@@ -243,7 +68,7 @@ namespace Turnierverwaltung2020
             return ergebnis;
         }
 
-        public override List<Teilnehmer> getTeilnemer()
+        public override List<Teilnehmer> getTeilnehmer()
         {
             return this.Gruppen;
         }
@@ -411,9 +236,31 @@ namespace Turnierverwaltung2020
             neu.Titelzeile.Add("Tore");
             neu.Titelzeile.Add("Diff");
             //Tablerows generieren
-            neu.makeRanking(this.Spiele,((Gruppe)this.Gruppen[selectedTurnierGruppe-1]).Mitglieder, false);
+            neu.makeRanking(this.Spiele,this, false);
 
             return neu;
+        }
+
+        public override Teilnehmer getTeilnehmer(Teilnehmer teilnehmer,int selectedgruppe)
+        {
+            Teilnehmer such = teilnehmer;
+            Teilnehmer ergebnis = null;
+
+
+
+            foreach (Teilnehmer teiln in ((Gruppe)this.Gruppen[selectedgruppe+1]).Mitglieder)
+            {
+                if (teiln.Name.Equals(teilnehmer.Name) &&
+                    teiln.ID == teilnehmer.ID)
+                {
+                    ergebnis = teiln;
+                    break;
+                }
+                else
+                { }
+            }
+
+            return ergebnis;
         }
         #endregion
     }

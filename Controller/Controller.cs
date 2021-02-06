@@ -126,6 +126,15 @@ namespace Turnierverwaltung2020
         #region Sportart
         public void AddSportArt(sportart value)
         {
+            foreach(sportart sp in this.Sportarten)
+            {
+                if (sp.name.Equals(value.name))
+                {
+                    return;
+                }
+                else
+                { }
+            }
             if (value.id == -1)
             {
                 MaxSportarten++;
@@ -139,7 +148,6 @@ namespace Turnierverwaltung2020
                 this.Sportarten.Add(value);
             }
         }
-
         public bool DeleteSportart(string name)
         {
             int id = -1;
@@ -207,7 +215,6 @@ namespace Turnierverwaltung2020
             }
             return ergebnis;
         }
-
         public void SportartAktualisieren(string bez, string lost, string sieg, string unent, bool typ)
         {
             foreach(sportart sp in this.Sportarten)
@@ -242,6 +249,15 @@ namespace Turnierverwaltung2020
         #region Person
         public bool AddPerson(Person value)
         {
+            foreach(Person pers in this.Personen)
+            {
+                if(pers.Name.Equals(value.Name) && pers.getSportart().Equals(value.getSportart()))
+                {
+                    return false;
+                }
+                else
+                { }
+            }
             bool ergebnis = true;
             if (value.ID == -1)
             {
@@ -390,16 +406,20 @@ namespace Turnierverwaltung2020
         #region Mannschaft
         public bool AddMannschaft(Mannschaft value)
         {
-            bool ergebnis = false;
+            bool ergebnis = true;
+            foreach(Mannschaft man in this.Mannschaften)
+            {
+                if(man.Name.Equals(value.Name) && man.Sportart.name.Equals(value.Sportart.name))
+                {
+                    ergebnis = false;
+                    break;
+                }
+                else
+                {
+                    ergebnis = true;
+                }
+            }
 
-            if (this.Mannschaften.Contains(value))
-            {
-                ergebnis = false;
-            }
-            else
-            {
-                ergebnis = true;
-            }
             if (ergebnis)
             {
                 if (value.ID == -1)
@@ -425,44 +445,60 @@ namespace Turnierverwaltung2020
         public bool AddMannschaft(Mannschaft value, ListItemCollection mitgliedervalue)
         {
             bool ergebnis = false;
-            List<int> Mitgliederliste = new List<int>();
-            List<Person> Liste = new List<Person>();
-            if (mitgliedervalue[0].Text != "bisher keine Mitglieder")
+            foreach (Mannschaft man in this.Mannschaften)
             {
-                foreach (ListItem li in mitgliedervalue)
+                if (man.Name.Equals(value.Name) && man.Sportart.name.Equals(value.Sportart.name))
                 {
-                    int id = Convert.ToInt32(li.Text.Substring(0, li.Text.IndexOf(",")));
-                    Mitgliederliste.Add(id);
+                    ergebnis = false;
+                    break;
                 }
+                else
+                {
+                    ergebnis = true;
+                }
+            }
+            if (ergebnis)
+            {
+                List<int> Mitgliederliste = new List<int>();
+                List<Person> Liste = new List<Person>();
+                if (mitgliedervalue[0].Text != "bisher keine Mitglieder")
+                {
+                    foreach (ListItem li in mitgliedervalue)
+                    {
+                        int id = Convert.ToInt32(li.Text.Substring(0, li.Text.IndexOf(",")));
+                        Mitgliederliste.Add(id);
+                    }
+                }
+                else
+                { }
+
+
+                if (value.ID == -1)
+                {
+                    value.ID = this.MaxMannschaften + 1;
+                    this.Mannschaften.Add(value);
+                    this.MaxMannschaften++;
+                }
+                else
+                {
+
+                }
+                foreach (Person pers in this.Personen)
+                {
+                    foreach (int persid in Mitgliederliste)
+                    {
+                        if (pers.ID == persid)
+                        {
+                            value.Mitglieder.Add(pers);
+                        }
+                        else
+                        { }
+                    }
+                }
+
             }
             else
             { }
-
-
-            if (value.ID == -1)
-            {
-                value.ID = this.MaxMannschaften + 1;
-                this.Mannschaften.Add(value);
-                this.MaxMannschaften++;
-            }
-            else
-            {
-
-            }
-            foreach (Person pers in this.Personen)
-            {
-                foreach (int persid in Mitgliederliste)
-                {
-                    if (pers.ID == persid)
-                    {
-                        value.Mitglieder.Add(pers);
-                    }
-                    else
-                    { }
-                }
-            }
-                               
-            ergebnis = true;
 
             return ergebnis;
         }
@@ -568,74 +604,103 @@ namespace Turnierverwaltung2020
         public bool AddGruppe(Gruppe value, ListItemCollection mitgliedervalue)
         {
             bool ergebnis = false;
-            List<int> Mitgliederliste = new List<int>();
-            if(mitgliedervalue == null)
+            foreach (Gruppe grp in this.Gruppen)
             {
-                mitgliedervalue = new ListItemCollection();
-                ListItem neuerEintrag = new ListItem("bisher keine Teilnehmer");
-                mitgliedervalue.Add(neuerEintrag);
-            }
-            else
-            { }
-
-            if (mitgliedervalue[0].Text != "bisher keine Teilnehmer")
-            {
-                foreach (ListItem li in mitgliedervalue)
+                if (grp.Name.Equals(value.Name) && grp.Sportart.name.Equals(value.Sportart.name))
                 {
-                    int id = Convert.ToInt32(li.Text.Substring(0, li.Text.IndexOf(",")));
-                    Mitgliederliste.Add(id);
+                    ergebnis = false;
+                    break;
+                }
+                else
+                {
+                    ergebnis = true;
                 }
             }
-            else
-            { }
-
-            if (value.ID == -1)
+            if (ergebnis)
             {
-                value.ID = this.MaxGruppen + 1;
-                MaxGruppen++;
-                this.Gruppen.Add(value);
-            }
-            else
-            {
-                MaxGruppen++;
-                value.ID = this.MaxGruppen;
-                this.Gruppen.Add(value);
-            }
-            foreach (Person pers in this.Personen)
-            {
-                foreach (int persid in Mitgliederliste)
+                List<int> Mitgliederliste = new List<int>();
+                if (mitgliedervalue == null)
                 {
-                    if (pers.ID == persid)
+                    mitgliedervalue = new ListItemCollection();
+                    ListItem neuerEintrag = new ListItem("bisher keine Teilnehmer");
+                    mitgliedervalue.Add(neuerEintrag);
+                }
+                else
+                { }
+
+                if (mitgliedervalue[0].Text != "bisher keine Teilnehmer")
+                {
+                    foreach (ListItem li in mitgliedervalue)
                     {
-                        value.Mitglieder.Add(pers);
+                        int id = Convert.ToInt32(li.Text.Substring(0, li.Text.IndexOf(",")));
+                        Mitgliederliste.Add(id);
                     }
-                    else
-                    { }
+                }
+                else
+                { }
+
+                if (value.ID == -1)
+                {
+                    value.ID = this.MaxGruppen + 1;
+                    MaxGruppen++;
+                    this.Gruppen.Add(value);
+                }
+                else
+                {
+                    MaxGruppen++;
+                    value.ID = this.MaxGruppen;
+                    this.Gruppen.Add(value);
+                }
+                foreach (Person pers in this.Personen)
+                {
+                    foreach (int persid in Mitgliederliste)
+                    {
+                        if (pers.ID == persid)
+                        {
+                            value.Mitglieder.Add(pers);
+                        }
+                        else
+                        { }
+                    }
                 }
             }
-            ergebnis = true;
+            else
+            { }
             return ergebnis;
         }
         public bool AddGruppe(Gruppe value)
         {
             bool ergebnis = false;
-
-
-            if (value.ID == -1)
+            foreach (Gruppe grp in this.Gruppen)
             {
-                value.ID = this.MaxGruppen + 1;
-                this.Gruppen.Add(value);
-                this.MaxGruppen++;
+                if (grp.Name.Equals(value.Name) && grp.Sportart.name.Equals(value.Sportart.name))
+                {
+                    ergebnis = false;
+                    break;
+                }
+                else
+                {
+                    ergebnis = true;
+                }
+            }
+
+            if (ergebnis)
+            {
+                if (value.ID == -1)
+                {
+                    value.ID = this.MaxGruppen + 1;
+                    this.Gruppen.Add(value);
+                    this.MaxGruppen++;
+                }
+                else
+                {
+                    this.MaxGruppen++;
+                    value.ID = this.MaxGruppen;
+                    this.Gruppen.Add(value);
+                }
             }
             else
-            {
-                this.MaxGruppen++;
-                value.ID = this.MaxGruppen;
-                this.Gruppen.Add(value);
-            }
-
-
-            ergebnis = true;
+            { }
 
             return ergebnis;
         }
@@ -730,151 +795,6 @@ namespace Turnierverwaltung2020
         #endregion
 
         #region Turnier
-        public bool AddTurnier(string Name, string sportart, ListItemCollection items, int typ)
-        {
-            bool ergebnis = false;
-
-            if (Name == "")
-            {
-                return ergebnis;
-            }
-            else
-            { }
-            sportart toadd = null;
-            foreach (sportart spart in this.Sportarten)
-            {
-                if (spart.name == sportart)
-                {
-                    toadd = spart;
-                    break;
-                }
-                else
-                { }
-            }
-
-            if (typ == 0)
-            {
-                if (toadd == null)//neue Sportart!
-                {
-                    toadd = new sportart(sportart, true, false, 0, 0, 0);
-                    this.AddSportArt(toadd);
-                }
-                else
-                { }
-            
-                List<Mannschaft> mannschaftsliste = new List<Mannschaft>();
-                if (items[0].Text != "bisher keine Mannschaften")
-                {
-                    foreach (ListItem ls in items)
-                    {
-                        int mannid = Convert.ToInt32(ls.Text.Substring(0, ls.Text.IndexOf(",")));
-                        string mannNameSportArt = ls.Text.Substring(ls.Text.IndexOf(", ") + 2);
-                        string mannName = mannNameSportArt.Substring(0, mannNameSportArt.IndexOf(", "));
-                        string mannsportart = mannNameSportArt.Substring(mannNameSportArt.IndexOf(", ") + 2);
-                        if (mannid < 0)
-                        {
-                            foreach (Mannschaft man in Mannschaften)
-                            {
-                                if (man.Name == mannName && man.Sportart.name == mannsportart)
-                                {
-                                    mannschaftsliste.Add(man);
-                                }
-                                else
-                                { }
-                            }
-                        }
-                        else
-                        {
-                            foreach (Mannschaft man in Mannschaften)
-                            {
-                                if (man.ID == mannid)
-                                {
-                                    mannschaftsliste.Add(man);
-                                }
-                                else
-                                { }
-                            }
-                        }
-                    }
-                }
-                else
-                { }
-                //Dummy ohne ID!
-                Turnier neu = new MannschaftsTurnier(Name, toadd, mannschaftsliste);
-
-                if (neu.ID == -1)
-                {
-                    neu.ID = this.MaxTurniere + 1;
-                    this.Turniere.Add(neu);
-                    this.MaxTurniere++;
-                }
-                else
-                { }
-
-                ergebnis = true;
-            }
-            else
-            {
-                if (toadd == null)//neue Sportart!
-                {
-                    toadd = new sportart(sportart, false, true, 0, 0, 0);
-                    this.AddSportArt(toadd);
-                }
-                else
-                { }
-                List<Gruppe> gruppensliste = new List<Gruppe>();
-                if (items[0].Text != "bisher keine Teilnehmer")
-                {
-                    foreach (ListItem ls in items)
-                    {
-                        int grupid = Convert.ToInt32(ls.Text.Substring(0, ls.Text.IndexOf(",")));
-                        string gruppNameSportArt = ls.Text.Substring(ls.Text.IndexOf(", ") + 2);
-                        string gruppName = gruppNameSportArt.Substring(0, gruppNameSportArt.IndexOf(", "));
-                        string gruppsportart = gruppNameSportArt.Substring(gruppNameSportArt.IndexOf(", ") + 2);
-                        if (grupid < 0)
-                        {
-                            foreach (Gruppe grp in Gruppen)
-                            {
-                                if (grp.Name == gruppName && grp.Sportart.name == gruppsportart)
-                                {
-                                    gruppensliste.Add(grp);
-                                }
-                                else
-                                { }
-                            }
-                        }
-                        else
-                        {
-                            foreach (Gruppe grp in Gruppen)
-                            {
-                                if (grp.ID == grupid)
-                                {
-                                    gruppensliste.Add(grp);
-                                }
-                                else
-                                { }
-                            }
-                        }
-                    }
-                }
-                else
-                { }
-                //Dummy ohne ID!
-                Turnier neu = new GruppenTurnier(Name, toadd, gruppensliste);
-
-                if (neu.ID == -1)
-                {
-                    neu.ID = this.MaxTurniere;
-                    this.Turniere.Add(neu);
-                    this.MaxTurniere++;
-                }
-                else
-                { }
-
-                ergebnis = true;
-            }
-            return ergebnis;
-        }
         public bool AddTurnier(Turnier value)
         {
             bool ergebnis = false;
@@ -1155,7 +1075,7 @@ namespace Turnierverwaltung2020
         public void SelectTurnierGruppe(string value)
         {
             int id = Convert.ToInt32(value.Substring(0, value.IndexOf(",")));
-            foreach (Gruppe grp in this.SelectedTurnier.getTeilnemer())
+            foreach (Gruppe grp in this.SelectedTurnier.getTeilnehmer())
             {
                 if (grp.ID == id)
                 {
@@ -1312,7 +1232,7 @@ namespace Turnierverwaltung2020
             else
             { }
 
-            int gruppenid = SelectedTurnier.getTeilnemer()[grpid - 1].ID;
+            int gruppenid = SelectedTurnier.getTeilnehmer()[grpid - 1].ID;
 
             Spiel neu = new Gruppenspiel(SelectedTurnier, gruppenid, pers1, pers2);
 
@@ -1331,6 +1251,34 @@ namespace Turnierverwaltung2020
             { }
             SelectedTurnier.addSpiel(neu);
         }
+        public void AddSpielToGruppenTurnier(Spiel neu)
+        {
+            if (SelectedTurnier.isSpielVorhanden(neu))
+            {
+                return;
+            }
+            else
+            { }
+
+
+            if (neu.ID == -1)
+            {
+                neu.ID = ((GruppenTurnier)SelectedTurnier).Spiele.Count + 1;
+            }
+            else
+            { }
+
+            SelectedTurnier.addSpiel(neu);
+
+
+            if (SelectedTurnierSpieltag == 0)
+            {
+                SelectedTurnierSpieltag = 1;
+            }
+            else
+            { }
+        }
+
         public void ChangeSpielInTurnier(int id, string name1, string name2, string ergebnis1, string ergebnis2)
         {
             SelectedTurnier.ChangeSpiel(id, name1, name2, ergebnis1, ergebnis2);
@@ -1354,7 +1302,7 @@ namespace Turnierverwaltung2020
                 int anzahlspieltage = (this.SelectedTurnier.getAnzahlTeilnehmer() - 1) * 2;
                 int anzahlTeilnehmer = this.SelectedTurnier.getAnzahlTeilnehmer();
                 Random Zufallszahl = new Random(DateTime.Now.GetHashCode());
-                List<Teilnehmer> OrgListe = new List<Teilnehmer>(this.SelectedTurnier.getTeilnemer());
+                List<Teilnehmer> OrgListe = new List<Teilnehmer>(this.SelectedTurnier.getTeilnehmer());
 
                 List<Mannschaft> Liste = new List<Mannschaft>();
                 Zufallszahl.Next();
@@ -1503,8 +1451,8 @@ namespace Turnierverwaltung2020
                             continue;
                         }
                         int selectedGruppe = this.SelectedTurnier.getSelectedGruppe();
-                        Teilnehmer pers1 = ((Gruppe)this.SelectedTurnier.getTeilnemer()[selectedGruppe - 1]).Mitglieder[teiln1];
-                        Teilnehmer pers2 = ((Gruppe)this.SelectedTurnier.getTeilnemer()[selectedGruppe - 1]).Mitglieder[teiln2];
+                        Teilnehmer pers1 = ((Gruppe)this.SelectedTurnier.getTeilnehmer()[selectedGruppe - 1]).Mitglieder[teiln1];
+                        Teilnehmer pers2 = ((Gruppe)this.SelectedTurnier.getTeilnehmer()[selectedGruppe - 1]).Mitglieder[teiln2];
                         neu = new Gruppenspiel(this.SelectedTurnier, this.SelectedTurnierGruppe, pers1, pers2);
 
                         if (IsSpielVorhanden(neu, neueSpielehin) || IsMannschaftsKombiVorhanden(neu, neueSpielehin))
@@ -1536,8 +1484,8 @@ namespace Turnierverwaltung2020
                         }
 
                         int selectedGruppe = this.SelectedTurnier.getSelectedGruppe();
-                        Teilnehmer pers1 = ((Gruppe)this.SelectedTurnier.getTeilnemer()[selectedGruppe - 1]).Mitglieder[teiln1];
-                        Teilnehmer pers2 = ((Gruppe)this.SelectedTurnier.getTeilnemer()[selectedGruppe - 1]).Mitglieder[teiln2];
+                        Teilnehmer pers1 = ((Gruppe)this.SelectedTurnier.getTeilnehmer()[selectedGruppe - 1]).Mitglieder[teiln1];
+                        Teilnehmer pers2 = ((Gruppe)this.SelectedTurnier.getTeilnehmer()[selectedGruppe - 1]).Mitglieder[teiln2];
                         neu = new Gruppenspiel(this.SelectedTurnier, this.SelectedTurnierGruppe, pers1, pers2);
 
                         if (IsSpielVorhanden(neu, neueSpielehin) || IsMannschaftsKombiVorhanden(neu, neueSpielerueck) ||
@@ -2054,7 +2002,7 @@ namespace Turnierverwaltung2020
                 }
                 else if (type == 1 && tun is GruppenTurnier)//Gruppen
                 {
-                    if (((GruppenTurnier)tun).getTeilnemer().Contains(this.Gruppen[v]))
+                    if (((GruppenTurnier)tun).getTeilnehmer().Contains(this.Gruppen[v]))
                     {
                         ergebnis = true;
                         break;
@@ -2938,7 +2886,86 @@ namespace Turnierverwaltung2020
             //File löschen
             FileInfo fi = new FileInfo(Path);
             fi.Delete();
-            this.AddTurnier((Turnier)neu);
+            if (neu is MannschaftsTurnier)
+            {
+                //Sportarten
+                this.AddSportArt(((MannschaftsTurnier)neu).Sportart);
+
+                //Personen + Mannschaften
+                foreach (Teilnehmer tln in ((MannschaftsTurnier)neu).Teilnehmer)
+                {
+                    Mannschaft man = (Mannschaft)tln;
+                    foreach(Person pers in man.Mitglieder)
+                    {
+                        this.AddPerson(pers);
+                    }
+                    this.AddMannschaft(man);
+                }
+                //Turnier
+                this.AddTurnier((Turnier)neu);
+                SelectedTurnierSpieltag = 1;
+                SelectedTurnierIndex = 0;
+                SelectedTurnier = null;
+                int index = 1;
+                foreach (Turnier turn in this.Turniere)
+                {
+                    if (turn.Bezeichnung.Equals(((Turnier)neu).Bezeichnung) && turn.Sportart.name.Equals(((Turnier)neu).Sportart.name))
+                    {
+                        this.SelectedTurnierIndex = index;
+                        this.SelectedTurnier = turn;
+                        break;
+                    }
+                    else
+                    { }
+                    index++;
+                }
+                //Spiele
+                foreach(Spiel sp in ((MannschaftsTurnier)neu).Spiele)
+                {
+                    this.AddSpielToMannschaftsTurnier(sp);
+                }
+            }
+            else
+            {
+                this.AddSportArt(((GruppenTurnier)neu).Sportart);
+                foreach (Teilnehmer tln in ((GruppenTurnier)neu).Gruppen)
+                {
+                    Gruppe grp = (Gruppe)tln;
+                    foreach (Person pers in grp.Mitglieder)
+                    {
+                        this.AddPerson(pers);
+                    }
+                    AddGruppe(grp);
+                }
+                this.AddTurnier((Turnier)neu);
+                //Turnier
+                this.AddTurnier((Turnier)neu);
+                SelectedTurnierSpieltag = 1;
+                SelectedTurnierIndex = 0;
+                SelectedTurnier = null;
+                int index = 1;
+                foreach (Turnier turn in this.Turniere)
+                {
+                    if (turn.Bezeichnung.Equals(((Turnier)neu).Bezeichnung) && turn.Sportart.name.Equals(((Turnier)neu).Sportart.name))
+                    {
+                        this.SelectedTurnierIndex = index;
+                        this.SelectedTurnier = turn;
+                        break;
+                    }
+                    else
+                    { }
+                    index++;
+                }
+                //Spiele
+                foreach (Spiel sp in ((GruppenTurnier)neu).Spiele)
+                {
+                    this.AddSpielToGruppenTurnier(sp);
+                }
+            }
+
+            this.SelectedTurnierSpieltag = 1;
+            this.SelectedTurnierIndex = -1;
+            this.SelectedTurnier = null;
         }
 
         public void JSONSichern(string path, int art)
@@ -2997,6 +3024,12 @@ namespace Turnierverwaltung2020
         }
 
         #endregion
+
+        public Ranking GetRanking()
+        {
+            return this.SelectedTurnier.GetRanking(this.SelectedTurnierGruppe);
+        }
+
         #endregion
     }
 }

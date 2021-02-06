@@ -46,11 +46,13 @@ namespace Turnierverwaltung2020
         public abstract string getErgebniswert2();
         public abstract int Get_Spieltag();
         public abstract int getGruppe();
-        public abstract object getTeilnehmer1();
-        public abstract object getTeilnehmer2();
+        public abstract Teilnehmer getTeilnehmer1();
+        public abstract Teilnehmer getTeilnehmer2();
         public abstract void setErgebniswert1(string ergebnis1);
         public abstract void setErgebniswert2(string ergebnis2);
         public abstract bool TeilnehmerVorhanden(List<Teilnehmer> value);
+        public abstract void SetTeilnehmer1(Teilnehmer man1);
+        public abstract void SetTeilnehmer2(Teilnehmer man2);
         #endregion
     }
 }

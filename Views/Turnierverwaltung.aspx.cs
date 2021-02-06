@@ -158,7 +158,7 @@ namespace Turnierverwaltung2020.Views
                 }
                 else
                 {
-                    foreach (Gruppe grp in ((GruppenTurnier)turnier).getTeilnemer())
+                    foreach (Gruppe grp in ((GruppenTurnier)turnier).getTeilnehmer())
                     {
                         neuedropdownliste.Items.Add(grp.ID + ", " + grp.Name + ", " + grp.Sportart.name);
                     }
@@ -256,7 +256,7 @@ namespace Turnierverwaltung2020.Views
                     this.lstVorhandeneTeilnehmer.Items.Clear();
                     if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
                     {
-                        foreach (Mannschaft man in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                        foreach (Mannschaft man in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnehmer())
                         {
                             string it = man.ID + ", " + man.Name + ", " + man.Sportart.name;
                             this.lstVorhandeneTeilnehmer.Items.Add(it);
@@ -328,7 +328,7 @@ namespace Turnierverwaltung2020.Views
                     this.lstVorhandeneTeilnehmer.Items.Clear();
                     if (this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getAnzahlTeilnehmer() > 0)
                     {
-                        foreach (Gruppe grp in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnemer())
+                        foreach (Gruppe grp in this.Verwalter.Turniere[this.Verwalter.IndexEditTurnier].getTeilnehmer())
                         {
                             string it = grp.ID + ", " + grp.Name + ", " + grp.Sportart.name;
                             this.lstVorhandeneTeilnehmer.Items.Add(it);
@@ -430,9 +430,36 @@ namespace Turnierverwaltung2020.Views
         {
             if (this.btnTurnierHinzufuegen.Text != "Turnier ändern")
             {
-                if (this.rbListArt.Items[0].Selected)
+                sportart art = null;
+                foreach (sportart sp in Verwalter.Sportarten)
                 {
-                    if (this.Verwalter.AddTurnier(this.txtNameTurnier.Text, this.drpSportart1.SelectedValue, this.lstVorhandeneTeilnehmer.Items, 0))
+                    if (sp.Equals(this.drpSportart1.SelectedValue))
+                    {
+                        art = sp;
+                        break;
+                    }
+                    else
+                    { }
+                }
+
+                if (this.rbListArt.Items[0].Selected && art != null)
+                {
+                    List<Mannschaft> liste = new List<Mannschaft>();
+                    foreach(ListItem ls in this.lstVorhandeneTeilnehmer.Items)
+                    {
+                        foreach(Mannschaft man in Verwalter.Mannschaften)
+                        {
+                            if(man.Equals(ls.Value))
+                            {
+                                liste.Add(man);
+                                break;
+                            }
+                            else
+                            { }
+                        }
+                    }
+                    Turnier neu = new MannschaftsTurnier(this.txtNameTurnier.Text,art, liste);
+                    if (this.Verwalter.AddTurnier(neu))
                     {
 
                     }
@@ -443,7 +470,22 @@ namespace Turnierverwaltung2020.Views
                 }
                 else
                 {
-                    if (this.Verwalter.AddTurnier(this.txtNameTurnier.Text, this.drpSportart1.SelectedValue, this.lstVorhandeneTeilnehmer.Items, 1))
+                    List<Gruppe> liste = new List<Gruppe>();
+                    foreach (ListItem ls in this.lstVorhandeneTeilnehmer.Items)
+                    {
+                        foreach (Gruppe grp in Verwalter.Gruppen)
+                        {
+                            if (grp.Equals(ls.Value))
+                            {
+                                liste.Add(grp);
+                                break;
+                            }
+                            else
+                            { }
+                        }
+                    }
+                    Turnier neu = new GruppenTurnier(this.txtNameTurnier.Text,art,liste);
+                    if (this.Verwalter.AddTurnier(neu))
                     {
 
                     }

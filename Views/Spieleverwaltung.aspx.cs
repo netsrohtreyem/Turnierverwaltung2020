@@ -124,7 +124,7 @@ namespace Turnierverwaltung2020.Views
                     this.lblTitelTable.Text = "Vorhandene Spiele des " + this.Verwalter.SelectedTurnier.Sportart.name + " - Turniers '" +
                         this.Verwalter.SelectedTurnier.Bezeichnung +
                         "', Gruppe: " + this.Verwalter.SelectedTurnierGruppe +
-                        "(" + this.Verwalter.SelectedTurnier.getTeilnemer().Count + ")";
+                        "(" + this.Verwalter.SelectedTurnier.getTeilnehmer().Count + ")";
                     this.lblspieltag.Text = "Gruppe:";
 
                 }
@@ -529,7 +529,7 @@ namespace Turnierverwaltung2020.Views
                 this.drplstMannschaft1.Items.Clear();
                 this.drplstMannschaft2.Items.Clear();
 
-                foreach (Mannschaft man in this.Verwalter.SelectedTurnier.getTeilnemer())
+                foreach (Mannschaft man in this.Verwalter.SelectedTurnier.getTeilnehmer())
                 {
                     this.txtnumber.Text = this.Verwalter.SelectedTurnierSpieltag.ToString();
                     this.drplstMannschaft1.Items.Add(man.ID + ", " + man.Name);
@@ -543,7 +543,7 @@ namespace Turnierverwaltung2020.Views
                 this.drplstGruppe1.Items.Clear();
                 this.drplstGruppe2.Items.Clear();
 
-                foreach (Person pers in ((Gruppe)this.Verwalter.SelectedTurnier.getTeilnemer()[this.Verwalter.SelectedTurnierSpieltag - 1]).Mitglieder)
+                foreach (Person pers in ((Gruppe)this.Verwalter.SelectedTurnier.getTeilnehmer()[this.Verwalter.SelectedTurnierSpieltag - 1]).Mitglieder)
                 {
                     this.drplstGruppe1.Items.Add(pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString());
                     this.drplstGruppe2.Items.Add(pers.ID + ", " + pers.Name + ", " + pers.Vorname + ", " + pers.Geburtsdatum.ToShortDateString());
