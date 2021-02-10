@@ -22,18 +22,18 @@
     <id>3</id>
     <name>Tennis</name>
     <Mannschaft>true</Mannschaft>
-    <Einzel>true</Einzel>
-    <PluspunkteproSpiel>0</PluspunkteproSpiel>
+    <Einzel>false</Einzel>
+    <PluspunkteproSpiel>2</PluspunkteproSpiel>
     <MinupunkteproSpiel>0</MinupunkteproSpiel>
-    <UnentschiedenpunkteproSpiel>0</UnentschiedenpunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>1</UnentschiedenpunkteproSpiel>
   </sportart>
   <sportart>
     <id>4</id>
     <name>Tischtennis</name>
     <Mannschaft>false</Mannschaft>
     <Einzel>true</Einzel>
-    <PluspunkteproSpiel>1</PluspunkteproSpiel>
-    <MinupunkteproSpiel>1</MinupunkteproSpiel>
-    <UnentschiedenpunkteproSpiel>0</UnentschiedenpunkteproSpiel>
+    <PluspunkteproSpiel>2</PluspunkteproSpiel>
+    <MinupunkteproSpiel>0</MinupunkteproSpiel>
+    <UnentschiedenpunkteproSpiel>1</UnentschiedenpunkteproSpiel>
   </sportart>
 </ArrayOfSportart>

@@ -603,7 +603,7 @@ namespace Turnierverwaltung2020
         #region Gruppe
         public bool AddGruppe(Gruppe value, ListItemCollection mitgliedervalue)
         {
-            bool ergebnis = false;
+            bool ergebnis = true;
             foreach (Gruppe grp in this.Gruppen)
             {
                 if (grp.Name.Equals(value.Name) && grp.Sportart.name.Equals(value.Sportart.name))
@@ -670,7 +670,7 @@ namespace Turnierverwaltung2020
         }
         public bool AddGruppe(Gruppe value)
         {
-            bool ergebnis = false;
+            bool ergebnis = true;
             foreach (Gruppe grp in this.Gruppen)
             {
                 if (grp.Name.Equals(value.Name) && grp.Sportart.name.Equals(value.Sportart.name))
@@ -922,8 +922,9 @@ namespace Turnierverwaltung2020
                 }
                 if(!gefunden)
                 {
+                    value.ID = this.MaxTurniere + 1;
                     this.Turniere.Add(value);
-                    this.MaxTurniere = value.ID;
+                    this.MaxTurniere++;
                 }
                 else
                 { }
@@ -2817,7 +2818,7 @@ namespace Turnierverwaltung2020
             { }
         }
 
-        public void TurniereAlsXMLLaden(FileUpload upload, Page view,bool mannschaft)
+        public void TurniereAlsXMLLaden(FileUpload upload, Page view)
         {
             //File uploaden
             string Path = view.Server.MapPath("~/") + upload.FileName;
@@ -2849,16 +2850,23 @@ namespace Turnierverwaltung2020
                                      typeof(AndereAufgaben)};
 
             XmlSerializer serializer = null;
-            if (mannschaft)
+            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            SR.ReadLine();
+            string typus = SR.ReadLine();
+            SR.Close();
+            SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            if (typus.Contains("MannschaftsTurnier"))
             {
                 serializer = new XmlSerializer(typeof(MannschaftsTurnier), turnTypes);
             }
-            else
+            else if(typus.Contains("GruppenTurnier"))
             {
                 serializer = new XmlSerializer(typeof(GruppenTurnier), turnTypes);
             }
-
-            StreamReader SR = new StreamReader(new FileStream(Path, FileMode.Open), Encoding.UTF8);
+            else
+            {
+                return;
+            }
             object neu = null;
             try
             {
@@ -2928,6 +2936,7 @@ namespace Turnierverwaltung2020
             else
             {
                 this.AddSportArt(((GruppenTurnier)neu).Sportart);
+                //Gruppen hinzufügen
                 foreach (Teilnehmer tln in ((GruppenTurnier)neu).Gruppen)
                 {
                     Gruppe grp = (Gruppe)tln;
@@ -2937,10 +2946,11 @@ namespace Turnierverwaltung2020
                     }
                     AddGruppe(grp);
                 }
-                this.AddTurnier((Turnier)neu);
                 //Turnier
+                ((Turnier)neu).setSelectedGruppe(1);
                 this.AddTurnier((Turnier)neu);
                 SelectedTurnierSpieltag = 1;
+                SelectedTurnierGruppe = 1;
                 SelectedTurnierIndex = 0;
                 SelectedTurnier = null;
                 int index = 1;
@@ -2965,6 +2975,7 @@ namespace Turnierverwaltung2020
 
             this.SelectedTurnierSpieltag = 1;
             this.SelectedTurnierIndex = -1;
+            SelectedTurnierGruppe = -1;
             this.SelectedTurnier = null;
         }
 
@@ -3027,7 +3038,10 @@ namespace Turnierverwaltung2020
 
         public Ranking GetRanking()
         {
-            return this.SelectedTurnier.GetRanking(this.SelectedTurnierGruppe);
+           Ranking neu = this.SelectedTurnier.GetRanking(this.SelectedTurnierGruppe);
+
+
+            return neu;
         }
 
         #endregion

@@ -15,15 +15,6 @@ namespace Turnierverwaltung2020.Views
     {
 
         /// <summary>
-        /// rbListArt-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rbListArt;
-
-        /// <summary>
         /// btnXMLsichern-Steuerelement
         /// </summary>
         /// <remarks>
@@ -49,6 +40,15 @@ namespace Turnierverwaltung2020.Views
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnUpload;
+
+        /// <summary>
+        /// rbListArt-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rbListArt;
 
         /// <summary>
         /// drpSportart1-Steuerelement

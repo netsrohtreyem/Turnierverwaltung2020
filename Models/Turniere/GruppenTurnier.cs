@@ -223,17 +223,18 @@ namespace Turnierverwaltung2020
 
         public override Ranking GetRanking(int selectedTurnierGruppe)
         {
+            this.SelectedGruppe = selectedTurnierGruppe;
             Ranking neu = new Ranking();
             neu.Sportart = this.Sportart;
             neu.Titelzeile = new List<string>();
             neu.Titelzeile.Add("Rang");
-            neu.Titelzeile.Add("Verein");
+            neu.Titelzeile.Add("Name");
             neu.Titelzeile.Add("Spiele");
-            neu.Titelzeile.Add("Punkte");
+            neu.Titelzeile.Add("Punkte Gesamt");
             neu.Titelzeile.Add("Siege");
             neu.Titelzeile.Add("Unentschd.");
             neu.Titelzeile.Add("Verloren");
-            neu.Titelzeile.Add("Tore");
+            neu.Titelzeile.Add("Punkteverhältnis");
             neu.Titelzeile.Add("Diff");
             //Tablerows generieren
             neu.makeRanking(this.Spiele,this, false);
@@ -248,10 +249,9 @@ namespace Turnierverwaltung2020
 
 
 
-            foreach (Teilnehmer teiln in ((Gruppe)this.Gruppen[selectedgruppe+1]).Mitglieder)
+            foreach (Teilnehmer teiln in ((Gruppe)this.Gruppen[selectedgruppe-1]).Mitglieder)
             {
-                if (teiln.Name.Equals(teilnehmer.Name) &&
-                    teiln.ID == teilnehmer.ID)
+                if (teiln.Name.Equals(teilnehmer.Name))
                 {
                     ergebnis = teiln;
                     break;

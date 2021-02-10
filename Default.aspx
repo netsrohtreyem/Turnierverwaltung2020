@@ -19,12 +19,12 @@
     <asp:DropDownList ID="drpdwList1" runat="server" Font-Bold="True" Font-Size="Large" AutoPostBack="True" OnSelectedIndexChanged="drpdwList1_SelectedIndexChanged"></asp:DropDownList> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="btnloeschen" runat="server" Text="markierte löschen" OnClick="btnloeschen_Click" Font-Bold="True" Font-Size="Medium" />
     <br />
     <br />
-    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Liste als XML File downloaden" Font-Bold="True" Font-Size="Medium" />
+    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Liste der Sportarten als XML-Datei downloaden" Font-Bold="True" Font-Size="Medium" />
     <br />
     <br />
     <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium" />
     <br />
-    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Liste aus XML uploaden" />
+    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Liste der Sporarten aus einer XML-Datei hochladen" />
     <h3>Sportart hinzufügen:</h3>
     <asp:CheckBox ID="CheckBox1" runat="server" Text="Mannschafts - Sport" Checked="true" AutoPostBack="True" OnCheckedChanged="CheckBox1_CheckedChanged" />
     &nbsp;&nbsp;&nbsp;

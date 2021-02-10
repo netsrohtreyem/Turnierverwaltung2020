@@ -626,14 +626,7 @@ namespace Turnierverwaltung2020.Views
         {
             if (fileupload.FileName != "")
             {
-                if (this.rbListArt.Items[0].Selected)
-                {
-                    Verwalter.TurniereAlsXMLLaden(fileupload, this, true);
-                }
-                else
-                {
-                    Verwalter.TurniereAlsXMLLaden(fileupload, this, false);
-                }
+                Verwalter.TurniereAlsXMLLaden(fileupload, this);
                 Response.Redirect(Request.RawUrl);
             }
             else

@@ -42,6 +42,7 @@ namespace Turnierverwaltung2020.Views
                                 if (this.Verwalter.SelectedTurnier is GruppenTurnier)
                                 {
                                     this.Verwalter.SelectedTurnierGruppe = gruppenindex;
+                                    
                                 }
                                 else
                                 { }
@@ -189,6 +190,11 @@ namespace Turnierverwaltung2020.Views
         }
 
         protected void btnTurnierAuswahl_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnGruppenauswahl_Click(object sender, EventArgs e)
         {
 
         }

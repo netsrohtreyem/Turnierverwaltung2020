@@ -393,7 +393,13 @@ namespace Turnierverwaltung2020.Views
                         {
                             this.drplistSpieltag.Items.Add(index.ToString());
                         }
-                        this.drplistSpieltag.SelectedIndex = this.Verwalter.Get_SelectedSpieltagoderGruppe() - 1;
+                        int grp = this.Verwalter.Get_SelectedSpieltagoderGruppe();
+                        if (grp > 0)
+                        {
+                            this.drplistSpieltag.SelectedIndex = this.Verwalter.Get_SelectedSpieltagoderGruppe() - 1;
+                        }
+                        else
+                        { }
                     }
                 }
                 else

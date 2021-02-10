@@ -62,18 +62,34 @@ namespace Turnierverwaltung2020
             //Alle Teilnehmer reset
             foreach(Teilnehmer tln in turn.getTeilnehmer())
             {
-                tln.Anzahlspiele = 0;
-                tln.GewonneneSpiele = 0;
-                tln.Unentschieden = 0;
-                tln.VerloreneSpiele = 0;
-                tln.Toreminus = 0;
-                tln.TorePlus = 0;
+                if (tln is Mannschaft)
+                {
+                    tln.Anzahlspiele = 0;
+                    tln.GewonneneSpiele = 0;
+                    tln.Unentschieden = 0;
+                    tln.VerloreneSpiele = 0;
+                    tln.Toreminus = 0;
+                    tln.TorePlus = 0;
+                }
+                else
+                {
+                    foreach(Person pers in ((Gruppe)tln).Mitglieder)
+                    {
+                        pers.Anzahlspiele = 0;
+                        pers.GewonneneSpiele = 0;
+                        pers.Unentschieden = 0;
+                        pers.VerloreneSpiele = 0;
+                        pers.TorePlus = 0;
+                        pers.Toreminus = 0;
+                    }
+                }
             }
             //Punkte berechnen
             foreach (Spiel sp in spiele)
             {
                 //Sieg Tln 1
-                if (Convert.ToInt32(sp.getErgebniswert1()) > Convert.ToInt32(sp.getErgebniswert2()))
+                if ((Convert.ToInt32(sp.getErgebniswert1()) > Convert.ToInt32(sp.getErgebniswert2()))&&
+                    ((Convert.ToInt32(sp.getErgebniswert1()) >= 0 && Convert.ToInt32(sp.getErgebniswert2())>= 0)))
                 {
                     if (mannschaft)
                     {
@@ -101,29 +117,35 @@ namespace Turnierverwaltung2020
                     }
                     else
                     {
-                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
-                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
-                        tln1.Anzahlspiele++;
-                        tln1.GewonneneSpiele++;
-                        tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
-                        tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
+                        if (sp.getGruppe() == turn.getSelectedGruppe())
+                        {
+                            Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                            Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
+                            tln1.Anzahlspiele++;
+                            tln1.GewonneneSpiele++;
+                            tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
+                            tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
 
-                        tln2.Anzahlspiele++;
-                        tln2.VerloreneSpiele++;
-                        tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
-                        tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
-                        sp.SetTeilnehmer1(tln1);
-                        sp.SetTeilnehmer2(tln2);
+                            tln2.Anzahlspiele++;
+                            tln2.VerloreneSpiele++;
+                            tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
+                            tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                            sp.SetTeilnehmer1(tln1);
+                            sp.SetTeilnehmer2(tln2);
+                        }
+                        else
+                        { }
                     }
                 }
                 //Sieg Tln2
-                else if(Convert.ToInt32(sp.getErgebniswert2()) > Convert.ToInt32(sp.getErgebniswert1()))
+                else if((Convert.ToInt32(sp.getErgebniswert2()) > Convert.ToInt32(sp.getErgebniswert1())) &&
+                    ((Convert.ToInt32(sp.getErgebniswert1()) >= 0 && Convert.ToInt32(sp.getErgebniswert2()) >= 0)))
                 {
                     if (mannschaft)
                     {
@@ -151,29 +173,35 @@ namespace Turnierverwaltung2020
                     }
                     else
                     {
-                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
-                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
-                        tln2.Anzahlspiele++;
-                        tln2.GewonneneSpiele++;
-                        tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
-                        tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
+                        if (sp.getGruppe() == turn.getSelectedGruppe())
+                        {
+                            Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                            Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
+                            tln2.Anzahlspiele++;
+                            tln2.GewonneneSpiele++;
+                            tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
+                            tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
 
-                        tln1.Anzahlspiele++;
-                        tln1.VerloreneSpiele++;
-                        tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
-                        tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
-                        sp.SetTeilnehmer1(tln1);
-                        sp.SetTeilnehmer2(tln2);
+                            tln1.Anzahlspiele++;
+                            tln1.VerloreneSpiele++;
+                            tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
+                            tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                            sp.SetTeilnehmer1(tln1);
+                            sp.SetTeilnehmer2(tln2);
+                        }
+                        else
+                        { }
                     }
                 }
                 //unentschieden
-                else
+                else if ((Convert.ToInt32(sp.getErgebniswert2()) == Convert.ToInt32(sp.getErgebniswert1())) &&
+                    ((Convert.ToInt32(sp.getErgebniswert1()) >= 0 && Convert.ToInt32(sp.getErgebniswert2()) >= 0)))
                 {
                     if (mannschaft)
                     {
@@ -201,96 +229,178 @@ namespace Turnierverwaltung2020
                     }
                     else
                     {
-                        Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
-                        Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
-                        tln1.Anzahlspiele++;
-                        tln1.Unentschieden++;
-                        tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
-                        tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
+                        if (sp.getGruppe() == turn.getSelectedGruppe())
+                        {
+                            Teilnehmer tln1 = turn.getTeilnehmer(sp.getTeilnehmer1(), turn.getSelectedGruppe());
+                            Teilnehmer tln2 = turn.getTeilnehmer(sp.getTeilnehmer2(), turn.getSelectedGruppe());
+                            tln1.Anzahlspiele++;
+                            tln1.Unentschieden++;
+                            tln1.Punkte = tln1.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln1.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln1.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln1.TorePlus += Convert.ToInt32(sp.getErgebniswert1());
+                            tln1.Toreminus += Convert.ToInt32(sp.getErgebniswert2());
 
-                        tln2.Anzahlspiele++;
-                        tln2.Unentschieden++;
-                        tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
-                                        tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
-                                        tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
-                        tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
-                        tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
-                        sp.SetTeilnehmer1(tln1);
-                        sp.SetTeilnehmer2(tln2);
+                            tln2.Anzahlspiele++;
+                            tln2.Unentschieden++;
+                            tln2.Punkte = tln2.GewonneneSpiele * this.Sportart.PluspunkteproSpiel +
+                                            tln2.Unentschieden * this.Sportart.UnentschiedenpunkteproSpiel -
+                                            tln2.VerloreneSpiele * this.Sportart.MinupunkteproSpiel;
+                            tln2.TorePlus += Convert.ToInt32(sp.getErgebniswert2());
+                            tln2.Toreminus += Convert.ToInt32(sp.getErgebniswert1());
+                            sp.SetTeilnehmer1(tln1);
+                            sp.SetTeilnehmer2(tln2);
+                        }
+                        else
+                        { }
                     }
                 }
+                else
+                { }
             }
 
             Comparison<Teilnehmer> Vergleich = new Comparison<Teilnehmer>(VergleichPunkte);
             //Rows erzeugen
             this.Zeilen = new List<TableRow>();
 
-            turn.getTeilnehmer().Sort(Vergleich);
+            
             int rank = 1;
-            foreach(Teilnehmer tln in turn.getTeilnehmer())
+            if (mannschaft)
             {
-                TableRow neu = new TableRow();
-                TableCell neucell = new TableCell();
-                neucell.Text = rank.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                rank++;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.Name;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.Anzahlspiele.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.Punkte.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.GewonneneSpiele.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.Unentschieden.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.VerloreneSpiele.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                neucell.Text = tln.TorePlus.ToString() + ":" + tln.Toreminus.ToString();
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                neucell = new TableCell();
-                int diff = (tln.TorePlus - tln.Toreminus);
-                if (diff > 0)
+                turn.getTeilnehmer().Sort(Vergleich);
+                foreach (Teilnehmer tln in turn.getTeilnehmer())
                 {
-                    neucell.Text = "+" + diff.ToString();
+                    TableRow neu = new TableRow();
+                    TableCell neucell = new TableCell();
+                    neucell.Text = rank.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    rank++;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.Name;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.Anzahlspiele.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.Punkte.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.GewonneneSpiele.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.Unentschieden.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.VerloreneSpiele.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    neucell.Text = tln.TorePlus.ToString() + ":" + tln.Toreminus.ToString();
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    neucell = new TableCell();
+                    int diff = (tln.TorePlus - tln.Toreminus);
+                    if (diff > 0)
+                    {
+                        neucell.Text = "+" + diff.ToString();
+                    }
+                    else if (diff < 0)
+                    {
+                        neucell.Text = diff.ToString();
+                    }
+                    else
+                    {
+                        neucell.Text = "0";
+                    }
+                    neucell.HorizontalAlign = HorizontalAlign.Center;
+                    neu.Cells.Add(neucell);
+
+                    this.Zeilen.Add(neu);
                 }
-                else if(diff < 0)
+            }
+            else
+            {
+                if (turn.getSelectedGruppe() > 0)
                 {
-                    neucell.Text = diff.ToString();
+                    ((Gruppe)turn.getTeilnehmer()[turn.getSelectedGruppe() - 1]).Mitglieder.Sort(Vergleich);
+                    foreach (Teilnehmer tln in ((Gruppe)turn.getTeilnehmer()[turn.getSelectedGruppe() - 1]).Mitglieder)
+                    {
+                        TableRow neu = new TableRow();
+                        TableCell neucell = new TableCell();
+                        neucell.Text = rank.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        rank++;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.Name;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.Anzahlspiele.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.Punkte.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.GewonneneSpiele.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.Unentschieden.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.VerloreneSpiele.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        neucell.Text = tln.TorePlus.ToString() + ":" + tln.Toreminus.ToString();
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        neucell = new TableCell();
+                        int diff = (tln.TorePlus - tln.Toreminus);
+                        if (diff > 0)
+                        {
+                            neucell.Text = "+" + diff.ToString();
+                        }
+                        else if (diff < 0)
+                        {
+                            neucell.Text = diff.ToString();
+                        }
+                        else
+                        {
+                            neucell.Text = "0";
+                        }
+                        neucell.HorizontalAlign = HorizontalAlign.Center;
+                        neu.Cells.Add(neucell);
+
+                        this.Zeilen.Add(neu);
+                    }
                 }
                 else
-                {
-                    neucell.Text = "0";
-                }
-                neucell.HorizontalAlign = HorizontalAlign.Center;
-                neu.Cells.Add(neucell);
-
-                this.Zeilen.Add(neu);
+                { }
             }
         }
 

@@ -22,7 +22,7 @@
             <asp:ListItem Text="keine Gruppe vorhanden" ></asp:ListItem>
         </asp:DropDownList>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnGruppenauswahl" runat="server" Text="Auswahl bestätigen" />
+        <asp:Button ID="btnGruppenauswahl" runat="server" Text="Auswahl bestätigen" OnClick="btnGruppenauswahl_Click" />
         <br />
         <br />
     </asp:Panel>

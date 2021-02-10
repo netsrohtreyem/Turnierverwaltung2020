@@ -2,20 +2,21 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1 style="font-weight: bold">Turnierverwaltung</h1>
     <h2 style="font-weight: bold">Hinzufügen bzw Bearbeiten eines Turniers:</h2>
-    <p style="font-weight: bold; font-size: large;">Art des Turniers auswählen/ändern</p>
-    <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Medium">
-        <asp:ListItem Selected="True">Mannschaft</asp:ListItem>
-        <asp:ListItem>Gruppen</asp:ListItem>
-    </asp:RadioButtonList>
     <h4 style="font-weight: bold">
-    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Turnier incl. Spiele als XML File downloaden" Font-Bold="True" Font-Size="Medium"/>
+    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Ein Turnier incl. Spiele als XML-Datei downloaden" Font-Bold="True" Font-Size="Medium" ToolTip="Turnier vorher aus der Liste auswählen"/>
     </h4>
     <h4 style="font-weight: bold">
     <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium"/>
     </h4>
     <h4 style="font-weight: bold">
-    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Turnier incl. Spiele aus XML uploaden"/>
+    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Ein Turnier incl. Spiele aus einer XML-Datei hochladen"/>
     </h4>
+    <br />
+    <p style="font-weight: bold; font-size: large;">Art des (neuen) Turniers auswählen/ändern</p>
+    <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Medium">
+    <asp:ListItem Selected="True">Mannschaft</asp:ListItem>
+    <asp:ListItem>Gruppen</asp:ListItem>
+    </asp:RadioButtonList>
     <h4 style="font-weight: bold">Eine Sportart für das Turnier auswählen bzw. ändern:</h4>
     <asp:DropDownList ID="drpSportart1" runat="server" AutoPostBack="false" Font-Bold="True" Font-Size="Medium"></asp:DropDownList>
     <br />

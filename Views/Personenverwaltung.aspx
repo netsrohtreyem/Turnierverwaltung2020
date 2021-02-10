@@ -2,12 +2,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2 >Personenverwaltung</h2>
     <h3 style="font-weight: bold">Hinzufügen oder Bearbeiten von Personen</h3> 
-    <asp:Button ID="btnXMLsichern" runat="server" Text="Liste als XML File downloaden" Font-Bold="True" Font-Size="Medium" OnClick="btnXMLsichern_Click" />
+    <asp:Button ID="btnXMLsichern" runat="server" Text="Personenliste als XML-Datei downloaden" Font-Bold="True" Font-Size="Medium" OnClick="btnXMLsichern_Click" />
     <br />
     <br />
     <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium" />
     <br />
-    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" Text="Liste aus XML uploaden" OnClick="btnUpload_Click1" />
+    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" Text="Personenliste als XML-Datei hochladen" OnClick="btnUpload_Click1" />
 
     <h3>Auswahl des Personen Typs:</h3>
     <asp:RadioButtonList ID="rdbtnList1" runat="server">

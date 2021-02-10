@@ -276,8 +276,7 @@ namespace Turnierverwaltung2020
 
             foreach(Mannschaft man in this.Teilnehmer)
             {
-                if(man.Name.Equals(teilnehmer.Name) &&
-                    man.ID == teilnehmer.ID)
+                if(man.Name.Equals(teilnehmer.Name))
                 {
                     ergebnis = man;
                     break;
