@@ -3,13 +3,13 @@
     <h1 style="font-weight: bold">Turnierverwaltung</h1>
     <h2 style="font-weight: bold">Hinzufügen bzw Bearbeiten eines Turniers:</h2>
     <h4 style="font-weight: bold">
-    <asp:Button ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Ein Turnier incl. Spiele als XML-Datei downloaden" Font-Bold="True" Font-Size="Medium" ToolTip="Turnier vorher aus der Liste auswählen"/>
+    <asp:Button Visible="false" ID="btnXMLsichern" runat="server" OnClick="btnListespeichern_Click" Text="Ein Turnier incl. Spiele als XML-Datei downloaden" Font-Bold="True" Font-Size="Medium" ToolTip="Turnier vorher aus der Liste auswählen"/>
     </h4>
     <h4 style="font-weight: bold">
-    <asp:FileUpload ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium"/>
+    <asp:FileUpload Visible="false" ID="fileupload" runat="server" Font-Bold="True" Font-Size="Medium"/>
     </h4>
     <h4 style="font-weight: bold">
-    <asp:Button ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Ein Turnier incl. Spiele aus einer XML-Datei hochladen"/>
+    <asp:Button Visible="false" ID="btnUpload" runat="server" Font-Bold="True" Font-Size="Medium" OnClick="btnListeladen_Click" Text="Ein Turnier incl. Spiele aus einer XML-Datei hochladen"/>
     </h4>
     <br />
     <p style="font-weight: bold; font-size: large;">Art des (neuen) Turniers auswählen/ändern</p>
