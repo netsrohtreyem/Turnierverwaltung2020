@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -616,6 +617,7 @@ namespace Turnierverwaltung2020.Views
             this.tblAusgabetabelle.Rows[0].Cells[12].Controls.Add(newButton);
             #endregion
 
+            
             //Daten
             foreach (Teilnehmer pers in this.Verwalter.Personen)
             {

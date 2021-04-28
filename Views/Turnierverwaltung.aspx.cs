@@ -433,7 +433,7 @@ namespace Turnierverwaltung2020.Views
                 sportart art = null;
                 foreach (sportart sp in Verwalter.Sportarten)
                 {
-                    if (sp.Equals(this.drpSportart1.SelectedValue))
+                    if (sp.name.Equals(this.drpSportart1.SelectedValue))
                     {
                         art = sp;
                         break;

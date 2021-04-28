@@ -571,19 +571,6 @@ namespace Turnierverwaltung2020.Views
                     }
                     else
                     {
-                        neu.Name = this.txtName.Text;
-                        toadd = null;
-                        foreach (sportart spart in this.Verwalter.Sportarten)
-                        {
-                            if (spart.name == this.drpSportart1.SelectedValue)
-                            {
-                                toadd = spart;
-                                break;
-                            }
-                            else
-                            { }
-                        }
-                        neu.Sportart = toadd;
                     }
                     //Mitglieder
                     foreach (ListItem li in this.lstVorhandeneMitglieder.Items)

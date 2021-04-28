@@ -444,7 +444,7 @@ namespace Turnierverwaltung2020
         }
         public bool AddMannschaft(Mannschaft value, ListItemCollection mitgliedervalue)
         {
-            bool ergebnis = false;
+            bool ergebnis = true;
             foreach (Mannschaft man in this.Mannschaften)
             {
                 if (man.Name.Equals(value.Name) && man.Sportart.name.Equals(value.Sportart.name))
