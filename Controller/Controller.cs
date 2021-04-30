@@ -100,6 +100,10 @@ namespace Turnierverwaltung2020
             this.Mannschaften = new List<Mannschaft>();
             this.Gruppen = new List<Gruppe>();
             this.Sportarten = new List<sportart>();
+            //Standardsportarten
+            this.Sportarten.Add(new sportart("Fussball", true, false, 3, 0, 1));
+            this.Sportarten.Add(new sportart("Handball", true, false, 2, 1, 1));
+            this.Sportarten.Add(new sportart("Tennis", false, true, 1, 1, 0));
             NeuesMitglied = null;
             EditPerson = false;
             MannschaftOderGruppe = true;

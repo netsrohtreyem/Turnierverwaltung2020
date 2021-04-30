@@ -1056,7 +1056,7 @@ namespace Turnierverwaltung2020.Views
                         }
                         else
                         {
-                            this.Verwalter.NeuesMitglied = null;
+                            return;
                         }
                     }
                     else if (this.Verwalter.NeuesMitglied is Physiotherapeut)
@@ -1095,6 +1095,12 @@ namespace Turnierverwaltung2020.Views
                             else
                             { }
                         }
+                        if(toadd == null)
+                        {
+                            return;
+                        }
+                        else
+                        { }
                         ((Physiotherapeut)this.Verwalter.NeuesMitglied).Sportart = toadd;
                     }
                     else if (this.Verwalter.NeuesMitglied is Trainer)
@@ -1133,6 +1139,12 @@ namespace Turnierverwaltung2020.Views
                             else
                             { }
                         }
+                        if(toadd == null)
+                        {
+                            return;
+                        }
+                        else
+                        { }
                         ((Trainer)this.Verwalter.NeuesMitglied).Sportart = toadd;
                     }
                     else if (this.Verwalter.NeuesMitglied is AndereAufgaben)
@@ -1150,6 +1162,12 @@ namespace Turnierverwaltung2020.Views
                             else
                             { }
                         }
+                        if(toadd == null)
+                        {
+                            return;
+                        }
+                        else
+                        { }
                         ((AndereAufgaben)this.Verwalter.NeuesMitglied).Sportart = toadd;
                     }
                     else
