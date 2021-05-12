@@ -12,10 +12,10 @@
     <asp:Button Visible ="false" ID="btnUpload2" runat="server" Font-Bold="True" Font-Size="Medium" Text="Gruppenliste aus XML-Datei hochladen" OnClick="btnUpload_Click2" />
 
 
-    <p style="font-weight: bold; font-size: large;">Auswählen ob eine Mannschaft oder eine Turniergruppe angelegt oder geändert werden soll</p>
+    <p style="font-weight: bold; font-size: large;">Auswählen ob eine Mannschaft oder eine Einzel - Turniergruppe angelegt oder geändert werden soll</p>
     <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Large">
         <asp:ListItem Selected="True" Text ="Mannschaft"></asp:ListItem>
-        <asp:ListItem>Gruppen</asp:ListItem>
+        <asp:ListItem>Einzel - Gruppen</asp:ListItem>
     </asp:RadioButtonList>
     <br />
     <asp:Label ID="lblsportart" runat="server" Text="Eine Sportart für die Mannschaft auswählen" Font-Bold="True" Font-Size="Large"></asp:Label>

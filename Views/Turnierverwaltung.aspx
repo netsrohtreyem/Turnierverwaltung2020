@@ -15,7 +15,7 @@
     <p style="font-weight: bold; font-size: large;">Art des (neuen) Turniers auswählen/ändern</p>
     <asp:RadioButtonList ID="rbListArt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbListArt_SelectedIndexChanged" Font-Size="Medium">
     <asp:ListItem Selected="True">Mannschaft</asp:ListItem>
-    <asp:ListItem>Gruppen</asp:ListItem>
+    <asp:ListItem>Einzel - Gruppen</asp:ListItem>
     </asp:RadioButtonList>
     <h4 style="font-weight: bold">Eine Sportart für das Turnier auswählen bzw. ändern:</h4>
     <asp:DropDownList ID="drpSportart1" runat="server" AutoPostBack="false" Font-Bold="True" Font-Size="Medium"></asp:DropDownList>
