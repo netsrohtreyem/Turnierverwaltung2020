@@ -75,8 +75,13 @@ namespace Turnierverwaltung2020.Views
                 LoadTurniere();
                 if (this.Verwalter.SelectedTurnierIndex > 0)
                 {
-                    this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[this.Verwalter.SelectedTurnierIndex - 1];
-                    this.drpListTurniere.SelectedIndex = this.Verwalter.SelectedTurnierIndex;
+                    if (this.Verwalter.Turniere.Count > 1)
+                    {
+                        this.Verwalter.SelectedTurnier = this.Verwalter.Turniere[this.Verwalter.SelectedTurnierIndex - 1];
+                        this.drpListTurniere.SelectedIndex = this.Verwalter.SelectedTurnierIndex;
+                    }
+                    else
+                    { }
                 }
                 else
                 { }
@@ -134,7 +139,15 @@ namespace Turnierverwaltung2020.Views
             }
             else
             {
-
+                this.lblTitelTable.Visible = false;
+                this.tblSpiele.Visible = false;
+                this.btnAutomatik.Visible = false;
+                this.btnNeu.Visible = false;
+                this.lblspieltag.Visible = false;
+                this.drplistSpieltag.Visible = false;
+                this.btnspieltagauswaehlen.Visible = false;
+                this.CheckBox1.Visible = false;
+                this.CheckBox2.Visible = false;
             }
         }
         #endregion
@@ -535,14 +548,25 @@ namespace Turnierverwaltung2020.Views
                 this.drplstMannschaft1.Items.Clear();
                 this.drplstMannschaft2.Items.Clear();
 
-                foreach (Mannschaft man in this.Verwalter.SelectedTurnier.getTeilnehmer())
+                if (this.Verwalter.SelectedTurnier.getAnzahlTeilnehmer() > 1)
                 {
-                    this.txtnumber.Text = this.Verwalter.SelectedTurnierSpieltag.ToString();
-                    this.drplstMannschaft1.Items.Add(man.ID + ", " + man.Name);
-                    this.drplstMannschaft2.Items.Add(man.ID + ", " + man.Name);
-                }
+                    foreach (Mannschaft man in this.Verwalter.SelectedTurnier.getTeilnehmer())
+                    {
+                        if (this.Verwalter.SelectedTurnierSpieltag < 1)
+                        {
+                            this.Verwalter.SelectedTurnierSpieltag = 1;
+                        }
+                        else
+                        { }
+                        this.txtnumber.Text = this.Verwalter.SelectedTurnierSpieltag.ToString();
+                        this.drplstMannschaft1.Items.Add(man.ID + ", " + man.Name);
+                        this.drplstMannschaft2.Items.Add(man.ID + ", " + man.Name);
+                    }
 
-                this.mpe.Show();
+                    this.mpe.Show();
+                }
+                else
+                { }
             }
             else if (this.Verwalter.SelectedTurnier is GruppenTurnier)
             {

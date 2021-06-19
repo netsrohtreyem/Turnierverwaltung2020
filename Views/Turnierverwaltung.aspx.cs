@@ -291,6 +291,14 @@ namespace Turnierverwaltung2020.Views
                 {
                     //Turnier löschen
                     index = Convert.ToInt32(id.Substring(9));
+                    if(this.Verwalter.SelectedTurnierIndex == index)
+                    {
+                        this.Verwalter.SelectedTurnierIndex = -1;
+                        this.Verwalter.SelectedTurnier = null;
+                        this.Verwalter.SelectedTurnierSpieltag = 0;
+                    }
+                    else
+                    { }
                     this.Verwalter.DeleteTurnier(index - 1);
                     Response.Redirect(Request.RawUrl);
                 }
@@ -363,6 +371,15 @@ namespace Turnierverwaltung2020.Views
                 {
                     //Gruppe löschen
                     index = Convert.ToInt32(id.Substring(9));
+                    if (this.Verwalter.SelectedTurnierIndex == index )
+                    {
+                        this.Verwalter.SelectedTurnierIndex = -1;
+                        this.Verwalter.SelectedTurnier = null;
+                        this.Verwalter.SelectedTurnierGruppe = 0;
+                        this.Verwalter.SelectedTurnierSpieltag = 0;
+                    }
+                    else
+                    { }
                     this.Verwalter.DeleteTurnier(index - 1);
                     Response.Redirect(Request.RawUrl);
                 }
@@ -428,6 +445,15 @@ namespace Turnierverwaltung2020.Views
 
         protected void btnTurnierHinzufuegenAendern_Click(object sender, EventArgs e)
         {
+            if(txtNameTurnier.Text == "" || this.lstVorhandeneTeilnehmer.Items.Count < 2)
+            {
+                return;
+            }
+            else
+            {
+
+            }
+
             if (this.btnTurnierHinzufuegen.Text != "Turnier ändern")
             {
                 sportart art = null;
@@ -449,7 +475,12 @@ namespace Turnierverwaltung2020.Views
                     {
                         foreach(Mannschaft man in Verwalter.Mannschaften)
                         {
-                            if(man.Equals(ls.Value))
+                            string id = ls.Value.Substring(0,ls.Value.IndexOf(","));
+                            string next = ls.Value.Substring(ls.Value.IndexOf(",")+2);
+                            string manbez = next.Substring(0,next.IndexOf(","));
+                            next = next.Substring(next.IndexOf(",") + 2);
+                            string sportbez = next;
+                            if(man.ID.ToString() == id && manbez == man.Name && man.Sportart.name == sportbez)
                             {
                                 liste.Add(man);
                                 break;
@@ -459,13 +490,20 @@ namespace Turnierverwaltung2020.Views
                         }
                     }
                     Turnier neu = new MannschaftsTurnier(this.txtNameTurnier.Text,art, liste);
-                    if (this.Verwalter.AddTurnier(neu))
+                    if (liste.Count >= 2)
                     {
+                        if (this.Verwalter.AddTurnier(neu))
+                        {
 
+                        }
+                        else
+                        {
+                            //Fehlermeldung
+                        }
                     }
                     else
                     {
-                        //Fehlermeldung
+                        //evtl. Fehlermeldung
                     }
                 }
                 else
@@ -485,14 +523,19 @@ namespace Turnierverwaltung2020.Views
                         }
                     }
                     Turnier neu = new GruppenTurnier(this.txtNameTurnier.Text,art,liste);
-                    if (this.Verwalter.AddTurnier(neu))
+                    if (liste.Count >= 2)
                     {
+                        if (this.Verwalter.AddTurnier(neu))
+                        {
 
+                        }
+                        else
+                        {
+                            //Fehlermeldung
+                        }
                     }
                     else
-                    {
-                        //Fehlermeldung
-                    }
+                    { }
                 }
                 this.btnTurnierHinzufuegen.Text = "Turnier hinzufügen";
             }

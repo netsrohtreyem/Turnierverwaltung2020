@@ -1368,17 +1368,13 @@ namespace Turnierverwaltung2020
                     }
                     //Rueck
                     List<Spiel> SpieleListe = new List<Spiel>(this.SelectedTurnier.Get_Spiele());
-                    for (int spieltag = 18; spieltag <= anzahlspieltage; spieltag++)
+                    foreach (Spiel sp in SpieleListe)
                     {
-                        for (int spiel = 1; spiel <= anzahlTeilnehmer / 2; spiel++)
-                        {
-                            neu = new Mannschaftsspiel(this.SelectedTurnier,
-                                                       ((Mannschaft)SpieleListe[0].getTeilnehmer2()),
-                                                       ((Mannschaft)SpieleListe[0].getTeilnehmer1()),
-                                                       spieltag);
-                            this.SelectedTurnier.addSpiel(neu);
-                            SpieleListe.RemoveAt(0);
-                        }
+                        neu = new Mannschaftsspiel(this.SelectedTurnier,
+                                                   (Mannschaft)sp.getTeilnehmer2(),
+                                                   (Mannschaft)sp.getTeilnehmer1(),
+                                                   sp.Get_Spieltag()+ anzahlspieltage / 2);
+                        this.SelectedTurnier.addSpiel(neu);
                     }
                 }
                 else //nur Hin

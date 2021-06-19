@@ -21,7 +21,7 @@
     <asp:Button ID="btnNeu" runat="server" Text="Ein neues Spiel anlegen" Visible="false" OnClick="btnNeu_Click"/>
     <br />
     <br />
-    <asp:Button ID="btnAutomatik" runat="server" Text ="automatisch alle Spiele erzeugen" OnClick="btnAutomatik_Click" />
+    <asp:Button ID="btnAutomatik" runat="server" Text ="automatisch alle Spiele erzeugen" Visible="false" OnClick="btnAutomatik_Click" />
      &nbsp;&nbsp;
     <asp:CheckBox ID="CheckBox1" runat="server" Checked="True" Text="Hin- und Rückspiele" OnCheckedChanged="CheckBox1_CheckedChanged" Visible="False" AutoPostBack="True" />
      &nbsp;&nbsp;

@@ -102,12 +102,22 @@ namespace Turnierverwaltung2020
 
         public override void setErgebniswert1(string ergebnis1)
         {
-            this.Ergebnis1 = Convert.ToInt32(ergebnis1);
+            if (ergebnis1 != "")
+            {
+                this.Ergebnis1 = Convert.ToInt32(ergebnis1);
+            }
+            else
+            { }
         }
 
         public override void setErgebniswert2(string ergebnis2)
         {
-            this.Ergebnis2 = Convert.ToInt32(ergebnis2);
+            if (ergebnis2 != "")
+            {
+                this.Ergebnis2 = Convert.ToInt32(ergebnis2);
+            }
+            else
+            { }
         }
 
         public override bool TeilnehmerVorhanden(List<Teilnehmer> value)

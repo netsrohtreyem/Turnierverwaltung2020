@@ -863,7 +863,12 @@ namespace Turnierverwaltung2020.Views
                     string nam = this.Request.Form["ctl00$MainContent$txtName"];
                     string vornam = this.Request.Form["ctl00$MainContent$txtVorname"];
                     string gebdat = this.Request.Form["ctl00$MainContent$txtGeburtsdatum"];
-
+                    if(nam == "" || vornam == "" || gebdat == "")
+                    {
+                        return;
+                    }
+                    else
+                    { }
                     this.Verwalter.NeuesMitglied.Name = nam;
                     this.Verwalter.NeuesMitglied.Vorname = vornam;
                     DateTime temp;
@@ -873,7 +878,7 @@ namespace Turnierverwaltung2020.Views
                     }
                     else
                     {
-                        this.Verwalter.NeuesMitglied.Geburtsdatum = DateTime.Parse("1.1.2000");
+                        return;
                     }
 
                     if (this.Verwalter.NeuesMitglied is Fussballspieler)
@@ -1171,7 +1176,9 @@ namespace Turnierverwaltung2020.Views
                         ((AndereAufgaben)this.Verwalter.NeuesMitglied).Sportart = toadd;
                     }
                     else
-                    { }
+                    {
+                        
+                    }
 
                     if (this.Verwalter.NeuesMitglied != null)
                     {
@@ -1192,7 +1199,9 @@ namespace Turnierverwaltung2020.Views
                         this.Verwalter.NeuesMitglied = null;
                     }
                     else
-                    { }
+                    {
+                       
+                    }
 
                     Response.Redirect(Request.RawUrl);
                 }

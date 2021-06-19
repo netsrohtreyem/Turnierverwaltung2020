@@ -528,6 +528,7 @@ namespace Turnierverwaltung2020.Views
         }
         protected void btnHinzufuegen_Aendern_Click(object sender, EventArgs e)
         {
+            //Mannschaft
             if (rbListArt.Items[0].Selected)
             {
                 Mannschaft neu;
@@ -611,6 +612,7 @@ namespace Turnierverwaltung2020.Views
 
                 this.btnHinzufuegenAendern.Text = "Mannschaft hinzufügen";
             }
+            //Gruppe
             else
             {
                 Gruppe neu;
